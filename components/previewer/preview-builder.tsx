@@ -21,12 +21,12 @@ export const PreviewBuilder = () => {
   const renderPreview = () => {
     if (isProcessing) return (
       <div className="h-full flex items-center justify-center">
-        Processing...
+        <span className="font-sans">Processing...</span>
       </div>
     );
     if (error) return (
       <div className="h-full flex items-center justify-center text-red-500">
-        Error: {error.message}
+        <span className="font-sans">Error: {error.message}</span>
       </div>
     );
     return <MJMLPreview html={html} />;
@@ -50,4 +50,4 @@ export const PreviewBuilder = () => {
   );
 }
 
-export default PreviewBuilder;
+export default PreviewBuilder; 

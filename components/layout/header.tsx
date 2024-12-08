@@ -2,6 +2,7 @@
 
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 import { LiquidManager } from "@/components/liquid/liquid-manager"
+import { ViewportManager } from "@/components/previewer/viewport-manager"
 
 export function Header() {
   return (
@@ -16,6 +17,7 @@ export function Header() {
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <nav className="flex items-center space-x-2">
+            <ViewportManager />
             <LiquidManager />
             <ThemeSwitcher />
           </nav>

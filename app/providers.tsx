@@ -4,6 +4,7 @@ import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 import type { ThemeProviderProps } from "next-themes"
 import { MJMLProvider } from "@/hooks/use-mjml-processor"
+import { ViewportProvider } from "@/hooks/use-viewport"
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
@@ -13,9 +14,11 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
       enableSystem
       {...props}
     >
-      <MJMLProvider>
-        {children}
-      </MJMLProvider>
+      <ViewportProvider>
+        <MJMLProvider>
+          {children}
+        </MJMLProvider>
+      </ViewportProvider>
     </NextThemesProvider>
   )
 } 
