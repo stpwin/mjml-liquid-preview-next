@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -14,15 +14,33 @@ interface LiquidInjectorProps {
 
 export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
+  const storageKey = type === "local" ? "local_liquid" : "shared_liquid"
+
+  useEffect(() => {
+    if (isOpen) {
+      try {
+        const storedValue = localStorage.getItem(storageKey) || "{}"
+        setValue(storedValue)
+      } catch (e) {
+        console.error("Failed to load liquid template:", e)
+        setValue("{}")
+      }
+    }
+  }, [isOpen, storageKey])
 
   const handleSave = () => {
-    onSave(value)
-    onClose()
+    try {
+      JSON.parse(value)
+      onSave(value)
+      onClose()
+    } catch (e) {
+      console.error("Invalid JSON format:", e)
+    }
   }
 
   const handleReset = () => {
-    setValue("")
-    onSave("")
+    setValue("{}")
+    onSave("{}")
   }
 
   return (
@@ -35,7 +53,7 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
           <Textarea
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="Enter your liquid template..."
+            placeholder="Enter your liquid variables as JSON..."
             className="min-h-[300px] font-mono"
           />
           <div className="flex justify-end space-x-2">
