@@ -21,8 +21,16 @@ export const PreviewBuilder = () => {
   } = useMJMLProcessor();
 
   const renderPreview = () => {
-    if (isProcessing) return <div className="h-full flex items-center justify-center">Processing...</div>;
-    if (error) return <div className="h-full flex items-center justify-center text-red-500">Error: {error.message}</div>;
+    if (isProcessing) return (
+      <div className="h-full flex items-center justify-center">
+        Processing...
+      </div>
+    );
+    if (error) return (
+      <div className="h-full flex items-center justify-center text-red-500">
+        Error: {error.message}
+      </div>
+    );
     return <MJMLPreview html={html} />;
   }
 
