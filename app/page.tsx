@@ -1,7 +1,5 @@
 import { PreviewBuilder } from "@/components/previewer/preview-builder";
 
-export const HomePage = () => {
+export default function Page() {
   return <PreviewBuilder />;
 }
-
-export default HomePage;
