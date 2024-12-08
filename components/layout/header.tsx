@@ -3,6 +3,7 @@
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 import { LiquidManager } from "@/components/liquid/liquid-manager"
 import { ViewportManager } from "@/components/previewer/viewport-manager"
+import { InfoButton } from "@/components/layout/info"
 
 export function Header() {
   return (
@@ -20,6 +21,7 @@ export function Header() {
             <ViewportManager />
             <LiquidManager />
             <ThemeSwitcher />
+            <InfoButton />
           </nav>
         </div>
       </div>
