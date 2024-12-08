@@ -33,7 +33,7 @@ export const PreviewBuilder = () => {
   }
 
   return (
-    <div className="h-screen">
+    <div className="h-full">
       <ResizablePanelGroup
         direction="horizontal"
         className="h-full"

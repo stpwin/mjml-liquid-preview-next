@@ -4,6 +4,7 @@ import { Space_Grotesk, Newsreader, JetBrains_Mono } from "next/font/google";
 
 import { Providers } from "./providers"
 import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
 
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ["latin"],
@@ -32,12 +33,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.variable} ${newsreader.variable} ${jetbrainsMono.variable} bg-white dark:bg-gray-900 text-black dark:text-white`}>
+      <body className={`${spaceGrotesk.variable} ${newsreader.variable} ${jetbrainsMono.variable} bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col h-screen`}>
         <Providers>
           <Header />
-          <main className="flex-1">
+          <main className="flex-1 overflow-hidden">
             {children}
           </main>
+          <Footer />
         </Providers>
       </body>
     </html>
