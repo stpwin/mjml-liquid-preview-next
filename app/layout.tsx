@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { Space_Grotesk, Newsreader, JetBrains_Mono } from "next/font/google";
 
 import { Providers } from "./providers"
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${spaceGrotesk.variable} ${newsreader.variable} ${jetbrainsMono.variable} bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col h-screen`}>
+        <Analytics />
         <Providers>
           <Header />
           <main className="flex-1 overflow-hidden">
