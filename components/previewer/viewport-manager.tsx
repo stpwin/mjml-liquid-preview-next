@@ -24,7 +24,7 @@ interface ViewportSize {
 }
 
 export function ViewportManager() {
-  const { preset, setPreset, size, setSize } = useViewport()
+  const { preset, setPreset, setSize } = useViewport()
   const [customSize, setCustomSize] = useState<ViewportSize>({ width: 800, height: 600 })
   const [inputValues, setInputValues] = useState({
     width: customSize.width.toString(),

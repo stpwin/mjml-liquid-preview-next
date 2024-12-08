@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useViewport } from "@/hooks/use-viewport";
 import { Maximize, Minimize } from "lucide-react";
 
@@ -14,14 +14,14 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
   const [scale, setScale] = useState(1);
   const [isScaleMode, setIsScaleMode] = useState(true);
 
-  const updateScale = () => {
+  const updateScale = useCallback(() => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
       // Calculate scale based on container width and desired viewport width
       const newScale = Math.min(1, (containerWidth - 48) / size.width); // 48px for padding
       setScale(newScale);
     }
-  };
+  }, [size.width]);
 
   useEffect(() => {
     if (!isScaleMode) {
@@ -40,7 +40,7 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
     return () => {
       resizeObserver.disconnect();
     };
-  }, [size.width, isScaleMode]);
+  }, [size.width, isScaleMode, updateScale]);
 
   if (!html) return (
     <div className="h-full flex items-center justify-center">

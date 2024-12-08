@@ -24,7 +24,7 @@ export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
     if (savedContent) {
       onChange(savedContent);
     }
-  }, []);
+  }, [onChange]);
 
   useEffect(() => {
     setEditorTheme(
