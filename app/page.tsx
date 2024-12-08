@@ -1,4 +1,4 @@
-import { PreviewBuilder } from "@/components/previewer/preview-buidler";
+import { PreviewBuilder } from "@/components/previewer/preview-builder";
 
 export const Home = () => {
   return <PreviewBuilder />;

@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import CodeMirrorBase from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
-import { useEffect, useState } from "react";
 
 export interface CodeMirrorProps {
   value: string;
