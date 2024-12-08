@@ -17,7 +17,12 @@
     "react-dom": "^19.0.0",
     "react-resizable-panels": "^2.1.7",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "@shopify/liquid-html-parser": "^2.1.2",
+    "@uiw/react-codemirror": "^4.23.6",
+    "@codemirror/lang-html": "^6.4.9",
+    "@codemirror/lang-json": "^6.0.1",
+    "thememirror": "^2.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
