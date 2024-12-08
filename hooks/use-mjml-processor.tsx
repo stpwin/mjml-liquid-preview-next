@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import { Liquid } from "liquidjs";
 
@@ -6,13 +8,12 @@ const DEFAULT_MJML = `<mjml>
     <mj-section>
       <mj-column>
         <mj-divider border-color="#F45E43"></mj-divider>
-        <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Hello World</mj-text>
+        <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Hello {{ message }}</mj-text>
       </mj-column>
     </mj-section>
   </mj-body>
 </mjml>`;
 
-// Custom hook for MJML processing
 const useMJMLProcessor = (initialContent: string = DEFAULT_MJML) => {
   const [content, setContent] = useState(initialContent);
   const [html, setHtml] = useState("");
@@ -20,25 +21,51 @@ const useMJMLProcessor = (initialContent: string = DEFAULT_MJML) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
-    const processMJML = async () => {
+    const processTemplate = async () => {
       setIsProcessing(true);
       setError(null);
       
       try {
         const mjml2html = (await import("mjml-browser")).default;
-        // const engine = new Liquid(); // TODO: Add Liquid support
-        const result = mjml2html(content).html;
-        // throw new Error("MJML processing failed - no HTML generated"); // TODO: To remove
+        const engine = new Liquid();
+        
+        // Get stored liquid templates
+        const localLiquid = localStorage.getItem("local_liquid") || "{}";
+        const sharedLiquid = localStorage.getItem("shared_liquid") || "{}";
+        
+        // Parse liquid templates
+        const localVars = JSON.parse(localLiquid);
+        const sharedVars = JSON.parse(sharedLiquid);
+        
+        // Process liquid template
+        const processedContent = await engine.parseAndRender(content, {
+          ...localVars,
+          ...sharedVars,
+        });
+        
+        // Process MJML
+        const result = mjml2html(processedContent).html;
         setHtml(result);
       } catch (e) {
-        setError(e instanceof Error ? e : new Error("Failed to process MJML"));
+        setError(e instanceof Error ? e : new Error("Failed to process template"));
+        console.error(e);
       } finally {
         setIsProcessing(false);
       }
     };
 
-    processMJML();
+    processTemplate();
   }, [content]);
+
+  // Listen for liquid template updates
+  useEffect(() => {
+    const handleLiquidUpdate = () => {
+      setContent(prev => prev); // Trigger reprocess
+    };
+
+    window.addEventListener("liquid_updated", handleLiquidUpdate);
+    return () => window.removeEventListener("liquid_updated", handleLiquidUpdate);
+  }, []);
 
   return {
     content,

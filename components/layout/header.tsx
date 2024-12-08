@@ -1,6 +1,7 @@
 "use client"
 
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
+import { LiquidManager } from "@/components/liquid/liquid-manager"
 
 export function Header() {
   return (
@@ -14,10 +15,8 @@ export function Header() {
           </a>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
-            {/* Add other header items here */}
-          </div>
-          <nav className="flex items-center">
+          <nav className="flex items-center space-x-2">
+            <LiquidManager />
             <ThemeSwitcher />
           </nav>
         </div>
