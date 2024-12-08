@@ -26,13 +26,25 @@ interface ViewportSize {
 export function ViewportManager() {
   const { preset, setPreset, size, setSize } = useViewport()
   const [customSize, setCustomSize] = useState<ViewportSize>({ width: 800, height: 600 })
+  const [inputValues, setInputValues] = useState({
+    width: customSize.width.toString(),
+    height: customSize.height.toString()
+  })
 
   const handlePresetChange = (newPreset: "desktop" | "mobile") => {
     setPreset(newPreset)
-    setSize(VIEWPORT_PRESETS[newPreset])
+    const newSize = VIEWPORT_PRESETS[newPreset]
+    setSize(newSize)
+    setInputValues({
+      width: newSize.width.toString(),
+      height: newSize.height.toString()
+    })
+    setCustomSize(newSize)
   }
 
   const handleCustomSizeChange = (dimension: "width" | "height", value: string) => {
+    setInputValues(prev => ({ ...prev, [dimension]: value }))
+
     const numValue = parseInt(value, 10)
     if (!isNaN(numValue) && numValue > 0) {
       const newSize = { ...customSize, [dimension]: numValue }
@@ -44,8 +56,15 @@ export function ViewportManager() {
   }
 
   const handleCustomSelect = () => {
-    setPreset("custom")
-    setSize(customSize)
+    const width = parseInt(inputValues.width, 10)
+    const height = parseInt(inputValues.height, 10)
+    
+    if (!isNaN(width) && !isNaN(height) && width > 0 && height > 0) {
+      const newSize = { width, height }
+      setCustomSize(newSize)
+      setSize(newSize)
+      setPreset("custom")
+    }
   }
 
   return (
@@ -68,21 +87,21 @@ export function ViewportManager() {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <div className="p-2">
-          <div className="mb-2 flex">
+          <div className="mb-2">
             <span className="font-sans text-sm">Custom Size</span>
           </div>
           <div className="flex gap-2 mb-2">
             <Input
-              type="number"
+              type="text"
               placeholder="Width"
-              value={customSize.width}
+              value={inputValues.width}
               onChange={(e) => handleCustomSizeChange("width", e.target.value)}
               className="w-full"
             />
             <Input
-              type="number"
+              type="text"
               placeholder="Height"
-              value={customSize.height}
+              value={inputValues.height}
               onChange={(e) => handleCustomSizeChange("height", e.target.value)}
               className="w-full"
             />
@@ -92,11 +111,12 @@ export function ViewportManager() {
             className="w-full"
             variant="secondary"
             size="sm"
+            disabled={!inputValues.width || !inputValues.height}
           >
-            <span className="font-sans">{preset === "custom" ? "Applying custom size" : "Apply custom size"}</span>
+            <span className="font-sans">{preset === "custom" ? "Applying custom size..." : "Apply custom size"}</span>
           </Button>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
   )
-} 
+}
