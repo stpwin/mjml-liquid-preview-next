@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import mjml2html from "mjml-browser";
 import { Liquid } from "liquidjs";
+import dynamic from "next/dynamic";
 
 import {
   ResizablePanelGroup,
@@ -10,7 +10,11 @@ import {
   ResizableHandle
 } from "@/components/ui/resizable"
 import CodeMirror from "@/components/previewer/code-mirror"
-import MJMLPreview from "@/components/previewer/mjml-preview"
+
+// Dynamically import MJMLPreview with no SSR
+const MJMLPreview = dynamic(() => import("@/components/previewer/mjml-preview"), {
+  ssr: false
+});
 
 export const PreviewBuilder = () => {
   const [mjmlContent, setMjmlContent] = useState(`<mjml>
@@ -24,28 +28,18 @@ export const PreviewBuilder = () => {
   </mj-body>
 </mjml>`);
   const [parsedHtml, setParsedHtml] = useState("");
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-
-    try {
+    const processMJML = async () => {
+      // Dynamically import mjml-browser only on client side
+      const mjml2html = (await import("mjml-browser")).default;
       const engine = new Liquid();
       const html = mjml2html(mjmlContent).html;
       setParsedHtml(html);
-      console.log(html);
-    } catch (e) {
-      console.log(e);
-    }
-  }, [mjmlContent, isMounted]);
+    };
 
-  if (!isMounted) {
-    return null; // or a loading state
-  }
+    processMJML();
+  }, [mjmlContent]);
 
   return (
     <div className="h-screen">
