@@ -31,6 +31,8 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
           style={{
             border: "none",
             margin: "0 auto",
+            width: size.width,
+            height: size.height,
           }}
         />
       </div>
