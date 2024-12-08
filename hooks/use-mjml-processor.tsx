@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { Liquid } from "liquidjs";
 
-const DEFAULT_MJML = `<mjml>
+export const DEFAULT_MJML = `<mjml>
   <mj-body>
     <mj-section>
       <mj-column>

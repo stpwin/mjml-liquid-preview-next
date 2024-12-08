@@ -13,36 +13,36 @@ interface LiquidInjectorProps {
   onSave: (value: string) => void
 }
 
+export const ASCENDA_LIQUID_TEMPLATE = {
+  "hide_ascenda_brand": false,
+  "theme_brand_primary_color": "#22285A",
+  "theme_brand_secondary_color": "#FFC0CB",
+  "theme_brand_header_color": "#22285A",
+  "theme_brand_header_background_color": "#FFFFFF",
+  "theme_brand_header_font_family": "Lexend",
+  "theme_brand_header_font_family_url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap",
+  "theme_brand_body_font_color": "#22285A",
+  "theme_brand_body_font_family": "Lexend",
+  "theme_brand_body_font_family_url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap",
+  "theme_brand_navigation_background_color": "#FFFFFF",
+  "theme_brand_navigation_logo": "https://offershub-cdn.kaligo-staging.xyz/images/rc-us/demo1RcUs/primary_logo.png",
+  "theme_brand_navigation_text_color": "#22285A",
+  "theme_brand_footer_background_color": "#FFFFFF",
+  "theme_brand_footer_color": "#22285A",
+  "theme_brand_footer_logo": "https://campaigns-rc-us-production.ascenda.com/images/partner_configuration/demo1RcUs/branding/20240418/Ascenda_logo.ca48aa3e.png",
+  "theme_brand_brand_logo": "https://offershub-cdn.kaligo-staging.xyz/images/rc-us/demo1RcUs/primary_logo.png",
+  "theme_brand_inverted_logo": "https://campaigns-rc-us-production.ascenda.com/images/partner_configuration/demo1RcUs/branding/20240418/Ascenda_logo.ca48aa3e.png",
+  "theme_brand_primary_button_border_width": "1px",
+  "theme_brand_primary_button_border_radius": "4px",
+  "theme_brand_secondary_button_border_width": "1px",
+  "theme_brand_secondary_button_border_radius": "4px",
+  "theme_brand_primary_200_color": "#c8c9d6",
+  "theme_brand_secondary_200_color": "#ffeff2"
+}
+
 export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
   const storageKey = type === "local" ? "local_liquid" : "shared_liquid"
-
-  const ascendaTemplate = {
-    "hide_ascenda_brand": false,
-    "theme_brand_primary_color": "#22285A",
-    "theme_brand_secondary_color": "#FFC0CB",
-    "theme_brand_header_color": "#22285A",
-    "theme_brand_header_background_color": "#FFFFFF",
-    "theme_brand_header_font_family": "Lexend",
-    "theme_brand_header_font_family_url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap",
-    "theme_brand_body_font_color": "#22285A",
-    "theme_brand_body_font_family": "Lexend",
-    "theme_brand_body_font_family_url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap",
-    "theme_brand_navigation_background_color": "#FFFFFF",
-    "theme_brand_navigation_logo": "https://offershub-cdn.kaligo-staging.xyz/images/rc-us/demo1RcUs/primary_logo.png",
-    "theme_brand_navigation_text_color": "#22285A",
-    "theme_brand_footer_background_color": "#FFFFFF",
-    "theme_brand_footer_color": "#22285A",
-    "theme_brand_footer_logo": "https://campaigns-rc-us-production.ascenda.com/images/partner_configuration/demo1RcUs/branding/20240418/Ascenda_logo.ca48aa3e.png",
-    "theme_brand_brand_logo": "https://offershub-cdn.kaligo-staging.xyz/images/rc-us/demo1RcUs/primary_logo.png",
-    "theme_brand_inverted_logo": "https://campaigns-rc-us-production.ascenda.com/images/partner_configuration/demo1RcUs/branding/20240418/Ascenda_logo.ca48aa3e.png",
-    "theme_brand_primary_button_border_width": "1px",
-    "theme_brand_primary_button_border_radius": "4px",
-    "theme_brand_secondary_button_border_width": "1px",
-    "theme_brand_secondary_button_border_radius": "4px",
-    "theme_brand_primary_200_color": "#c8c9d6",
-    "theme_brand_secondary_200_color": "#ffeff2"
-  }
 
   useEffect(() => {
     if (isOpen) {
@@ -72,7 +72,7 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
   }
 
   const handleGenerateAscenda = () => {
-    const formattedValue = JSON.stringify(ascendaTemplate, null, 2)
+    const formattedValue = JSON.stringify(ASCENDA_LIQUID_TEMPLATE, null, 2)
     setValue(formattedValue)
   }
 
