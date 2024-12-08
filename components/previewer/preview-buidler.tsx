@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Liquid } from "liquidjs";
 import dynamic from "next/dynamic";
 
 import {
@@ -10,36 +8,23 @@ import {
   ResizableHandle
 } from "@/components/ui/resizable"
 import CodeMirror from "@/components/previewer/code-mirror"
-
-// Dynamically import MJMLPreview with no SSR
-const MJMLPreview = dynamic(() => import("@/components/previewer/mjml-preview"), {
-  ssr: false
-});
+import MJMLPreview from "@/components/previewer/mjml-preview"
+import useMJMLProcessor from "@/hooks/use-mjml-processor"
 
 export const PreviewBuilder = () => {
-  const [mjmlContent, setMjmlContent] = useState(`<mjml>
-  <mj-body>
-    <mj-section>
-      <mj-column>
-        <mj-divider border-color="#F45E43"></mj-divider>
-        <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Hello World</mj-text>
-      </mj-column>
-    </mj-section>
-  </mj-body>
-</mjml>`);
-  const [parsedHtml, setParsedHtml] = useState("");
+  const {
+    content,
+    setContent,
+    html,
+    error,
+    isProcessing
+  } = useMJMLProcessor();
 
-  useEffect(() => {
-    const processMJML = async () => {
-      // Dynamically import mjml-browser only on client side
-      const mjml2html = (await import("mjml-browser")).default;
-      const engine = new Liquid();
-      const html = mjml2html(mjmlContent).html;
-      setParsedHtml(html);
-    };
-
-    processMJML();
-  }, [mjmlContent]);
+  const renderPreview = () => {
+    if (isProcessing) return <div className="h-full flex items-center justify-center">Processing...</div>;
+    if (error) return <div className="h-full flex items-center justify-center text-red-500">Error: {error.message}</div>;
+    return <MJMLPreview html={html} />;
+  }
 
   return (
     <div className="h-screen">
@@ -48,11 +33,11 @@ export const PreviewBuilder = () => {
         className="h-full"
       >
         <ResizablePanel defaultSize={50}>
-          <CodeMirror value={mjmlContent} onChange={setMjmlContent} />
+          <CodeMirror value={content} onChange={setContent} />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={50}>
-          <MJMLPreview html={parsedHtml} />
+          {renderPreview()}
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
