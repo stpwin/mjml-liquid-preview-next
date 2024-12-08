@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { Liquid } from "liquidjs";
 
 const DEFAULT_MJML = `<mjml>
@@ -14,11 +14,23 @@ const DEFAULT_MJML = `<mjml>
   </mj-body>
 </mjml>`;
 
-const useMJMLProcessor = (initialContent: string = DEFAULT_MJML) => {
-  const [content, setContent] = useState(initialContent);
+interface MJMLContextType {
+  content: string;
+  setContent: (content: string) => void;
+  html: string;
+  error: Error | null;
+  isProcessing: boolean;
+  refreshTemplate: () => void;
+}
+
+const MJMLContext = createContext<MJMLContextType | null>(null);
+
+export function MJMLProvider({ children }: { children: React.ReactNode }) {
+  const [content, setContent] = useState(DEFAULT_MJML);
   const [html, setHtml] = useState("");
   const [error, setError] = useState<Error | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     const processTemplate = async () => {
@@ -55,25 +67,32 @@ const useMJMLProcessor = (initialContent: string = DEFAULT_MJML) => {
     };
 
     processTemplate();
-  }, [content]);
+  }, [content, refreshKey]);
 
-  // Listen for liquid template updates
-  useEffect(() => {
-    const handleLiquidUpdate = () => {
-      setContent(prev => prev); // Trigger reprocess
-    };
+  const refreshTemplate = () => setRefreshKey(k => k + 1);
 
-    window.addEventListener("liquid_updated", handleLiquidUpdate);
-    return () => window.removeEventListener("liquid_updated", handleLiquidUpdate);
-  }, []);
+  return (
+    <MJMLContext.Provider 
+      value={{
+        content,
+        setContent,
+        html,
+        error,
+        isProcessing,
+        refreshTemplate
+      }}
+    >
+      {children}
+    </MJMLContext.Provider>
+  );
+}
 
-  return {
-    content,
-    setContent,
-    html,
-    error,
-    isProcessing
-  };
-};
+export function useMJMLProcessor() {
+  const context = useContext(MJMLContext);
+  if (!context) {
+    throw new Error("useMJMLProcessor must be used within a MJMLProvider");
+  }
+  return context;
+}
 
 export default useMJMLProcessor;

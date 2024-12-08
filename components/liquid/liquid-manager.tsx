@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Droplets, User, Users } from "lucide-react"
+import { useMJMLProcessor } from "@/hooks/use-mjml-processor"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,15 +16,16 @@ import { LiquidInjector } from "./liquid-injector"
 export function LiquidManager() {
   const [localOpen, setLocalOpen] = useState(false)
   const [sharedOpen, setSharedOpen] = useState(false)
+  const { refreshTemplate } = useMJMLProcessor()
 
   const handleLocalSave = (value: string) => {
     localStorage.setItem("local_liquid", value)
-    window.dispatchEvent(new Event("liquid_updated"))
+    refreshTemplate()
   }
 
   const handleSharedSave = (value: string) => {
     localStorage.setItem("shared_liquid", value)
-    window.dispatchEvent(new Event("liquid_updated"))
+    refreshTemplate()
   }
 
   return (

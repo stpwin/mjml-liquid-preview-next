@@ -3,6 +3,7 @@
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 import type { ThemeProviderProps } from "next-themes"
+import { MJMLProvider } from "@/hooks/use-mjml-processor"
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
@@ -12,7 +13,9 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
       enableSystem
       {...props}
     >
-      {children}
+      <MJMLProvider>
+        {children}
+      </MJMLProvider>
     </NextThemesProvider>
   )
 } 
