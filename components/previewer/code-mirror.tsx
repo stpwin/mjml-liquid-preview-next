@@ -16,7 +16,6 @@ export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
   const { theme } = useTheme();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
   const [autoSave, setAutoSave] = useState(false);
-  const [showPing, setShowPing] = useState(false);
   
   const STORAGE_KEY = "editor_content";
 
@@ -44,8 +43,6 @@ export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
 
   const toggleAutoSave = () => {
     setAutoSave(!autoSave);
-    setShowPing(true);
-    setTimeout(() => setShowPing(false), 1000);
     
     if (!autoSave) {
       localStorage.setItem(STORAGE_KEY, value);
@@ -87,7 +84,7 @@ export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
           title="Toggle auto-save"
         >
           <Save className="w-4 h-4" />
-          {showPing && autoSave && (
+          {autoSave && (
             <span className="absolute inset-0 rounded-full animate-ping bg-green-400 opacity-75" />
           )}
         </button>
