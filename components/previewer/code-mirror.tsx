@@ -15,7 +15,7 @@ export interface CodeMirrorProps {
 export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
   const { theme } = useTheme();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
-  const [autoSave, setAutoSave] = useState(false);
+  const [autoSave, setAutoSave] = useState(true);
   
   const STORAGE_KEY = "editor_content";
 
