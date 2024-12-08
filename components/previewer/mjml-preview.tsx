@@ -14,22 +14,21 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
   const [scale, setScale] = useState(1);
   const [isScaleMode, setIsScaleMode] = useState(true);
 
+  const updateScale = () => {
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      // Calculate scale based on container width and desired viewport width
+      const newScale = Math.min(1, (containerWidth - 48) / size.width); // 48px for padding
+      setScale(newScale);
+    }
+  };
+
   useEffect(() => {
     if (!isScaleMode) {
       setScale(1);
       return;
     }
 
-    const updateScale = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth;
-        // Calculate scale based on container width and desired viewport width
-        const newScale = Math.min(1, (containerWidth - 48) / size.width); // 48px for padding
-        setScale(newScale);
-      }
-    };
-
-    // Initial calculation
     updateScale();
 
     // Add resize observer
@@ -53,7 +52,7 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
     <div 
       ref={containerRef}
       className={`relative h-full w-full flex items-start justify-center bg-gray-100 dark:bg-gray-800 p-6 ${
-        isScaleMode ? 'overflow-y-auto overflow-x-hidden' : 'overflow-auto'
+        isScaleMode ? 'overflow-y-hidden overflow-x-hidden' : 'overflow-auto'
       }`}
     >
       <div 
