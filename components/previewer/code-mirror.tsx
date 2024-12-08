@@ -1,8 +1,9 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import CodeMirrorBase from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
-// import { dracula } from "thememirror"; // TODO: Update themes in ThemeProvider
+import { useEffect, useState } from "react";
 
 export interface CodeMirrorProps {
   value: string;
@@ -10,10 +11,21 @@ export interface CodeMirrorProps {
 }
 
 export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
+  const { theme } = useTheme();
+  const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    setEditorTheme(
+      theme === 'system'
+        ? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        : theme === 'dark' ? 'dark' : 'light'
+    );
+  }, [theme]);
+
   return (
     <div className="h-full">
       <CodeMirrorBase 
-        // theme={dracula} 
+        theme={editorTheme}
         extensions={[html()]}
         height="100%"
         className="h-full"
