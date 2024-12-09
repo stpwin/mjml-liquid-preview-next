@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { RefreshCcw, Save } from "lucide-react"
+import { useState, useEffect, KeyboardEvent } from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -64,7 +65,10 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
       onSave(value)
       onClose()
     } catch (e) {
-      console.error("Invalid JSON format:", e)
+      toast({
+        variant: "destructive",
+        description: "Invalid JSON format. Please check your input.",
+      })
     }
   }
 
@@ -81,6 +85,13 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
     toast({
       description: "Generated Ascenda shared Liquid template - click Save to confirm your changes",
     })
+  }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault()
+      handleSave()
+    }
   }
 
   const renderAscendaLiquidGenerateButton = () => {
@@ -109,12 +120,24 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
           <Textarea
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Enter your liquid variables as JSON..."
             className="min-h-[300px] font-mono"
           />
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={handleReset}><span className="font-sans">Reset</span></Button>
-            <Button onClick={handleSave}><span className="font-sans">Save</span></Button>
+          <div className="flex justify-end items-center space-x-2">
+            <Button variant="outline" onClick={handleReset}>
+              <RefreshCcw className="h-4 w-4" />
+              <span className="font-sans">Reset</span>
+            </Button>
+            <Button onClick={handleSave}>
+              <Save className="h-4 w-4" />
+              <span className="font-sans">Save</span>
+            </Button>
+          </div>
+          <div className="flex justify-end items-end">
+            <span className="font-sans text-sm text-muted-foreground text-right">
+              Tip: if you're typing in the TextArea, simply press {navigator.platform.includes('Mac') ? '⌘' : 'Ctrl'} + Enter to save!
+            </span>
           </div>
         </div>
       </SheetContent>
