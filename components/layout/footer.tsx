@@ -1,9 +1,14 @@
 "use client"
 
+import { useLayout } from "@/hooks/use-layout"
 import { Github, Link } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function Footer() {
+  const { isFullScreen } = useLayout();
+
+  if (isFullScreen) return null;
+
   return (
     <footer className="w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-14 items-center justify-between">

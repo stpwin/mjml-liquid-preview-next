@@ -5,6 +5,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes"
 import type { ThemeProviderProps } from "next-themes"
 import { MJMLProvider } from "@/hooks/use-mjml-processor"
 import { ViewportProvider } from "@/hooks/use-viewport"
+import { LayoutProvider } from "@/hooks/use-layout"
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
@@ -16,7 +17,9 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
     >
       <ViewportProvider>
         <MJMLProvider>
-          {children}
+          <LayoutProvider>
+            {children}
+          </LayoutProvider>
         </MJMLProvider>
       </ViewportProvider>
     </NextThemesProvider>

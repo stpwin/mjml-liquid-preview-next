@@ -4,9 +4,11 @@ import { Analytics } from "@vercel/analytics/react";
 import { Space_Grotesk, Newsreader, JetBrains_Mono } from "next/font/google";
 
 import { Providers } from "./providers"
+import { ContentWrapper } from "@/components/layout/content-wrapper";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
+
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ["latin"],
   variable: "--font-space-grotesk",
@@ -39,7 +41,9 @@ export default function RootLayout({
         <Providers>
           <Header />
           <main className="flex-1 overflow-hidden">
-            {children}
+            <ContentWrapper>
+              {children}
+            </ContentWrapper>
           </main>
           <Toaster />
           <Footer />
