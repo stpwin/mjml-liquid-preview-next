@@ -44,16 +44,21 @@ export const ASCENDA_LIQUID_TEMPLATE = {
 
 export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
+  const [isMac, setIsMac] = useState(false)
   const { toast } = useToast()
   const storageKey = type === "local" ? "local_liquid" : "shared_liquid"
+
+  useEffect(() => {
+    setIsMac(navigator.platform.includes('Mac'))
+  }, [])
 
   useEffect(() => {
     if (isOpen) {
       try {
         const storedValue = localStorage.getItem(storageKey) || "{}"
         setValue(storedValue)
-      } catch (e) {
-        console.error("Failed to load liquid template:", e)
+      } catch (error) {
+        console.error("Failed to load liquid template:", error)
         setValue("{}")
       }
     }
@@ -64,7 +69,8 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
       JSON.parse(value)
       onSave(value)
       onClose()
-    } catch (e) {
+    } catch (error) {
+      console.error("Failed to save liquid template:", error)
       toast({
         variant: "destructive",
         description: "Invalid JSON format. Please check your input.",
@@ -136,7 +142,7 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
           </div>
           <div className="flex justify-end items-end">
             <span className="font-sans text-sm text-muted-foreground text-right">
-              Tip: if you're typing in the TextArea, simply press {navigator.platform.includes('Mac') ? '⌘' : 'Ctrl'} + Enter to save!
+              Tip: if you&apos;re typing in the TextArea, simply press {isMac ? '⌘' : 'Ctrl'} + Enter to save!
             </span>
           </div>
         </div>

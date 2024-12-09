@@ -2,6 +2,8 @@
 
 A web-based tool for previewing MJML email templates with Liquid templating support.
 
+![](./public/mini-demo.gif)
+
 # Installation
 
 1. Clone the repository
@@ -51,17 +53,17 @@ A web-based tool for previewing MJML email templates with Liquid templating supp
 Welcome any and all contributions, here's how you can help!
 
 1. Fork the repository
-2. Create your feature branch:
+2. Create your feature branch
 
 ```bash
   git checkout -b feature/amazing-feature
 ```
-3. Commit your changes:
+3. Commit your changes
 
 ```bash
   git commit -m 'Add some amazing feature'
 ```
-4. Push to the branch:
+4. Push to the branch
 
 ```bash
   git push origin feature/amazing-feature
