@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Droplets, User, Users } from "lucide-react"
-import { useMJMLProcessor } from "@/hooks/use-mjml-processor"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -12,31 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LiquidInjector } from "./liquid-injector"
-import { useToast } from "@/hooks/use-toast"
 
 export function LiquidManager() {
   const [localOpen, setLocalOpen] = useState(false)
   const [sharedOpen, setSharedOpen] = useState(false)
-  const { refreshTemplate } = useMJMLProcessor()
-  const { toast } = useToast()
-
-  const handleLocalSave = (value: string) => {
-    localStorage.setItem("local_liquid", value)
-    refreshTemplate()
-    toast({
-      description: "Local Liquid saved!",
-      variant: "success",
-    })
-  }
-
-  const handleSharedSave = (value: string) => {
-    localStorage.setItem("shared_liquid", value)
-    refreshTemplate()
-    toast({
-      description: "Shared Liquid saved!",
-      variant: "success",
-    })
-  }
 
   return (
     <>
@@ -62,13 +40,11 @@ export function LiquidManager() {
         type="local"
         isOpen={localOpen}
         onClose={() => setLocalOpen(false)}
-        onSave={handleLocalSave}
       />
       <LiquidInjector
         type="shared"
         isOpen={sharedOpen}
         onClose={() => setSharedOpen(false)}
-        onSave={handleSharedSave}
       />
     </>
   )

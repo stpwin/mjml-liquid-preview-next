@@ -3,6 +3,8 @@
 import { Copy, Check, Code, Braces } from "lucide-react"
 import { useState } from "react"
 import { useMJMLProcessor } from "@/hooks/use-mjml-processor"
+import { useLocalStorage } from "@/hooks/use-local-storage"
+import { STORAGE_KEYS } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,6 +16,8 @@ import { useToast } from "@/hooks/use-toast"
 
 export function CopyManager() {
   const { content, html } = useMJMLProcessor()
+  const [localLiquid] = useLocalStorage(STORAGE_KEYS.LOCAL_LIQUID, "{}")
+  const [sharedLiquid] = useLocalStorage(STORAGE_KEYS.SHARED_LIQUID, "{}")
   const { toast } = useToast()
   const [copying, setCopying] = useState(false)
 
@@ -47,13 +51,11 @@ export function CopyManager() {
   }
 
   const handleCopyLocalLiquid = () => {
-    const localLiquid = localStorage.getItem("local_liquid") || "{}"
-    copyToClipboard(localLiquid, "Local Liquid")
+    copyToClipboard(JSON.stringify(localLiquid, null, 2), "Local Liquid")
   }
 
   const handleCopySharedLiquid = () => {
-    const sharedLiquid = localStorage.getItem("shared_liquid") || "{}"
-    copyToClipboard(sharedLiquid, "Shared Liquid")
+    copyToClipboard(JSON.stringify(sharedLiquid, null, 2), "Shared Liquid")
   }
 
   return (

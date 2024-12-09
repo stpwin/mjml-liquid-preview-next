@@ -73,7 +73,7 @@ export const CodeMirror = ({ value }: CodeMirrorProps) => {
         >
           <Save className="w-4 h-4" />
           {autoSave && (
-            <span className="absolute inset-0 rounded-full animate-ping bg-green-400 opacity-75" />
+            <span className="bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" />
           )}
         </button>
       </div>

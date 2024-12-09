@@ -1,18 +1,24 @@
 "use client"
 
-import { RefreshCcw, Save } from "lucide-react"
-import { useState, useEffect, KeyboardEvent } from "react"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Sparkles } from "lucide-react"
+import { useState, useEffect } from "react"
+import { RefreshCcw, Save, Sparkles } from "lucide-react"
+import { useLocalStorage } from "@/hooks/use-local-storage"
+import { STORAGE_KEYS } from "@/lib/constants"
 import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
+import { Textarea } from "@/components/ui/textarea"
+import useMJMLProcessor from "@/hooks/use-mjml-processor"
 
 interface LiquidInjectorProps {
   type: "local" | "shared"
   isOpen: boolean
   onClose: () => void
-  onSave: (value: string) => void
 }
 
 export const ASCENDA_LIQUID_TEMPLATE = {
@@ -40,13 +46,21 @@ export const ASCENDA_LIQUID_TEMPLATE = {
   "theme_brand_secondary_button_border_radius": "4px",
   "theme_brand_primary_200_color": "#c8c9d6",
   "theme_brand_secondary_200_color": "#ffeff2"
+} 
+
+interface LiquidInjectorProps {
+  type: "local" | "shared"
+  isOpen: boolean
+  onClose: () => void
 }
 
-export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjectorProps) {
+export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
   const [isMac, setIsMac] = useState(false)
   const { toast } = useToast()
-  const storageKey = type === "local" ? "local_liquid" : "shared_liquid"
+  const storageKey = type === "local" ? STORAGE_KEYS.LOCAL_LIQUID : STORAGE_KEYS.SHARED_LIQUID
+  const [storedLiquid, setStoredLiquid] = useLocalStorage<Record<string, unknown>>(storageKey, {})
+  const { refreshTemplate } = useMJMLProcessor()
 
   useEffect(() => {
     setIsMac(navigator.platform.includes('Mac'))
@@ -54,46 +68,43 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
 
   useEffect(() => {
     if (isOpen) {
-      try {
-        const storedValue = localStorage.getItem(storageKey) || "{}"
-        setValue(storedValue)
-      } catch (error) {
-        console.error("Failed to load liquid template:", error)
-        setValue("{}")
-      }
+      setValue(JSON.stringify(storedLiquid, null, 2))
     }
-  }, [isOpen, storageKey])
+  }, [isOpen, storedLiquid])
 
   const handleSave = () => {
     try {
-      JSON.parse(value)
-      onSave(value)
-      onClose()
-    } catch (error) {
-      console.error("Failed to save liquid template:", error)
+      const parsedValue = JSON.parse(value)
+      setStoredLiquid(parsedValue)
+      refreshTemplate()
       toast({
+        description: `${type === "local" ? "Local" : "Shared"} Liquid saved!`,
+        variant: "success",
+      })
+      onClose()
+    } catch {
+      toast({
+        description: "Invalid JSON format",
         variant: "destructive",
-        description: "Invalid JSON format. Please check your input.",
       })
     }
   }
 
   const handleReset = () => {
-    setValue("{}")
+    setValue(JSON.stringify({}, null, 2))
     toast({
       description: "Reset Liquid to empty JSON - click Save to confirm your changes",
     })
   }
 
   const handleGenerateAscenda = () => {
-    const formattedValue = JSON.stringify(ASCENDA_LIQUID_TEMPLATE, null, 2)
-    setValue(formattedValue)
+    setValue(JSON.stringify(ASCENDA_LIQUID_TEMPLATE, null, 2))
     toast({
       description: "Generated Ascenda shared Liquid template - click Save to confirm your changes",
     })
   }
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
       e.preventDefault()
       handleSave()
