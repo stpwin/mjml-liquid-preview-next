@@ -4,6 +4,7 @@ import Link from "next/link"
 import { ThemeSwitcher } from "@/components/theme/theme-switcher"
 import { LiquidManager } from "@/components/liquid/liquid-manager"
 import { ViewportManager } from "@/components/previewer/viewport-manager"
+import { CopyManager } from "@/components/layout/copy-manager"
 import { InfoButton } from "@/components/layout/info"
 
 export function Header() {
@@ -21,6 +22,7 @@ export function Header() {
           <nav className="flex items-center space-x-2">
             <ViewportManager />
             <LiquidManager />
+            <CopyManager />
             <ThemeSwitcher />
             <InfoButton />
           </nav>

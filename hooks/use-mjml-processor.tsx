@@ -27,7 +27,7 @@ const MJMLContext = createContext<MJMLContextType | null>(null);
 
 export function MJMLProvider({ children }: { children: React.ReactNode }) {
   const [content, setContent] = useState(DEFAULT_MJML);
-  const [html, setHtml] = useState("");
+  const [html, setHtml] = useState<string>("");
   const [error, setError] = useState<Error | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -56,11 +56,10 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
         });
         
         // Process MJML
-        const result = mjml2html(processedContent).html;
-        setHtml(result);
+        const { html: processedHtml } = mjml2html(processedContent);
+        setHtml(processedHtml);
       } catch (e) {
         setError(e instanceof Error ? e : new Error("Failed to process template"));
-        console.error(e);
       } finally {
         setIsProcessing(false);
       }
@@ -71,17 +70,17 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
 
   const refreshTemplate = () => setRefreshKey(k => k + 1);
 
+  const contextValue: MJMLContextType = {
+    content,
+    setContent,
+    html,
+    error,
+    isProcessing,
+    refreshTemplate
+  };
+
   return (
-    <MJMLContext.Provider 
-      value={{
-        content,
-        setContent,
-        html,
-        error,
-        isProcessing,
-        refreshTemplate
-      }}
-    >
+    <MJMLContext.Provider value={contextValue}>
       {children}
     </MJMLContext.Provider>
   );

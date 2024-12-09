@@ -41,7 +41,10 @@ export function InfoButton() {
             <div>
               <h3 className="font-sans text-xl mb-2">About</h3>
               <p className="font-serif text-sm">
-                This was originally conceived by <a href="https://github.com/zonghangoh" target="_blank" rel="noopener noreferrer" className="underline">@zonghangoh</a> for use internally at <a href="https://www.ascenda.com/" target="_blank" rel="noopener noreferrer" className="underline">Ascenda</a>.
+                This was originally conceived by <a href="https://github.com/zonghangoh" target="_blank" rel="noopener noreferrer" className="underline">@zonghangoh</a> for productivity when developing with MJML and Liquid at <a href="https://www.ascenda.com/" target="_blank" rel="noopener noreferrer" className="underline">Ascenda</a>.
+              </p>
+              <br />
+              <p className="font-serif text-sm">
                 We thought it might be useful to others, so I added more features to aid developing with it and open-sourced it. If you find this helpful, do give it a <a href="https://github.com/lohkokwee/mjml-liquid-preview" target="_blank" rel="noopener noreferrer" className="underline">star on GitHub</a>!
               </p>
             </div>

@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Sparkles } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 interface LiquidInjectorProps {
   type: "local" | "shared"
@@ -42,6 +43,7 @@ export const ASCENDA_LIQUID_TEMPLATE = {
 
 export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
+  const { toast } = useToast()
   const storageKey = type === "local" ? "local_liquid" : "shared_liquid"
 
   useEffect(() => {
@@ -68,12 +70,17 @@ export function LiquidInjector({ type, isOpen, onClose, onSave }: LiquidInjector
 
   const handleReset = () => {
     setValue("{}")
-    onSave("{}")
+    toast({
+      description: "Reset Liquid to empty JSON - click Save to confirm your changes",
+    })
   }
 
   const handleGenerateAscenda = () => {
     const formattedValue = JSON.stringify(ASCENDA_LIQUID_TEMPLATE, null, 2)
     setValue(formattedValue)
+    toast({
+      description: "Generated Ascenda shared Liquid template - click Save to confirm your changes",
+    })
   }
 
   const renderAscendaLiquidGenerateButton = () => {

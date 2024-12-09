@@ -6,7 +6,7 @@ import { Space_Grotesk, Newsreader, JetBrains_Mono } from "next/font/google";
 import { Providers } from "./providers"
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-
+import { Toaster } from "@/components/ui/toaster"
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ["latin"],
   variable: "--font-space-grotesk",
@@ -41,6 +41,7 @@ export default function RootLayout({
           <main className="flex-1 overflow-hidden">
             {children}
           </main>
+          <Toaster />
           <Footer />
         </Providers>
       </body>
