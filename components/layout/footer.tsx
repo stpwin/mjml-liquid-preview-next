@@ -1,7 +1,7 @@
 "use client"
 
 import { Github, Link } from "lucide-react"
-import { Button } from "@/components/ui/button"
+// import { Button } from "@/components/ui/button"
 
 export function Footer() {
   return (
