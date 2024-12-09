@@ -41,7 +41,7 @@ export function InfoButton() {
             <div>
               <h3 className="font-sans text-xl mb-2">About</h3>
               <p className="font-serif text-sm">
-                This was originally conceived by <a href="https://github.com/zonghangoh" target="_blank" rel="noopener noreferrer" className="underline">@zonghangoh</a> for productivity when developing with MJML and Liquid at <a href="https://www.ascenda.com/" target="_blank" rel="noopener noreferrer" className="underline">Ascenda</a>.
+                This was originally conceived by the amazing <a href="https://github.com/zonghangoh" target="_blank" rel="noopener noreferrer" className="underline">@zonghangoh</a> for productivity when developing with MJML and Liquid at <a href="https://www.ascenda.com/" target="_blank" rel="noopener noreferrer" className="underline">Ascenda</a>.
               </p>
               <br />
               <p className="font-serif text-sm">

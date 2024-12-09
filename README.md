@@ -1,6 +1,6 @@
 # MJML + Liquid Preview
 
-A web-based tool for previewing MJML email templates with Liquid templating support.
+A web-based tool for previewing MJML email templates with Liquid templating support. This was originally conceived by the amazing [@zonghangoh](https://github.com/zonghangoh) for productivity when developing with MJML and Liquid at [Ascenda](https://www.ascenda.com/). We thought it might be useful to others, so I added more features to aid developing with it and open-sourced it. If you find this helpful, do give it a star!
 
 ![](./public/mini-demo.gif)
 
@@ -77,7 +77,6 @@ Welcome any and all contributions, here's how you can help!
 - Test your changes thoroughly
 
 # Buy me a coffee!
-
 If you find this tool helpful, consider supporting its development ❤️
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/kokwee)
