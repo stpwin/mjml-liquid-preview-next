@@ -49,32 +49,34 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
   );
   
   return (
-    <div 
-      ref={containerRef}
-      className={`relative h-full w-full flex items-start justify-center bg-gray-100 dark:bg-gray-800 p-6 ${
-        isScaleMode ? 'overflow-y-hidden overflow-x-hidden' : 'overflow-auto'
-      }`}
-    >
+    <div className="relative h-full">
       <div 
-        className="bg-white shadow-lg origin-top"
-        style={{
-          width: size.width,
-          height: size.height,
-          transform: isScaleMode ? `scale(${scale})` : 'none',
-          transformOrigin: 'top center',
-          marginBottom: isScaleMode ? `${size.height * (1 - scale)}px` : '0'
-        }}
+        ref={containerRef}
+        className={`h-full w-full flex items-start justify-center bg-gray-100 dark:bg-gray-800 p-6 ${
+          isScaleMode ? 'overflow-y-hidden overflow-x-hidden' : 'overflow-auto'
+        }`}
       >
-        <iframe
-          srcDoc={html}
-          className="w-full h-full"
+        <div 
+          className="bg-white shadow-lg origin-top"
           style={{
-            border: "none",
-            margin: "0 auto",
             width: size.width,
             height: size.height,
+            transform: isScaleMode ? `scale(${scale})` : 'none',
+            transformOrigin: 'top center',
+            marginBottom: isScaleMode ? `${size.height * (1 - scale)}px` : '0'
           }}
-        />
+        >
+          <iframe
+            srcDoc={html}
+            className="w-full h-full"
+            style={{
+              border: "none",
+              margin: "0 auto",
+              width: size.width,
+              height: size.height,
+            }}
+          />
+        </div>
       </div>
       
       <button
