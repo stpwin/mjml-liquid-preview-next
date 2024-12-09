@@ -45,7 +45,7 @@ export function InfoButton() {
               </p>
               <br />
               <p className="font-serif text-sm">
-                I thought it might be useful to others, so I added more features to aid developing with it and open-sourced it. If you find this helpful, do give it a <a href="https://github.com/lohkokwee/mjml-liquid-preview" target="_blank" rel="noopener noreferrer" className="underline">star on GitHub</a>!
+                I thought it might be useful to others, so I beautified it, added more features to aid developing with it and open-sourced it. If you find this helpful, do give it a <a href="https://github.com/lohkokwee/mjml-liquid-preview" target="_blank" rel="noopener noreferrer" className="underline">star on GitHub</a>!
               </p>
             </div>
 

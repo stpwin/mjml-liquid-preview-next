@@ -4,7 +4,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { Space_Grotesk, Newsreader, JetBrains_Mono } from "next/font/google";
 
 import { Providers } from "./providers"
-import { ContentWrapper } from "@/components/layout/content-wrapper";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
@@ -41,9 +40,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           <main className="flex-1 overflow-hidden">
-            <ContentWrapper>
-              {children}
-            </ContentWrapper>
+            {children}
           </main>
           <Toaster />
           <Footer />

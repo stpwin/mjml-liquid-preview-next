@@ -15,25 +15,23 @@ export function Header() {
   return (
     <header className={`top-0 z-50 w-full border-b transition-colors duration-200 ${
       isFullScreen 
-        ? 'fixed border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
+        ? 'fixed border-transparent bg-transparent'
         : 'sticky bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
     }`}>
       <div className="container mx-auto flex h-14 justify-between">
         <div className="flex items-center">
           <Link className="flex items-center space-x-2" href="/">
-            <span className="font-sans font-bold sm:inline-block">
+            <span className={`font-sans font-bold ${isFullScreen ? 'hidden' : 'sm:inline-block'}`}>
               MJML + Liquid
             </span>
           </Link>
-        </div>
-        <div className="flex items-center justify-center">
-          <LayoutManager />
         </div>
         <div className="flex items-center justify-between space-x-2 md:justify-end">
           <nav className="flex items-center space-x-2">
             <ViewportManager />
             <LiquidManager />
             <CopyManager />
+            <LayoutManager />
             <ThemeSwitcher />
             <InfoButton />
           </nav>

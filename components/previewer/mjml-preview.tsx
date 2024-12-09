@@ -5,12 +5,14 @@ import { useViewport } from "@/hooks/use-viewport";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { STORAGE_KEYS } from "@/lib/constants";
 import { Maximize, Minimize } from "lucide-react";
+import { useLayout } from "@/hooks/use-layout";
 
 interface MJMLPreviewProps {
   html?: string;
 }
 
 export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
+  const { isFullScreen } = useLayout();
   const { size } = useViewport();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -56,26 +58,28 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
           isScaleMode ? 'overflow-y-hidden overflow-x-hidden' : 'overflow-auto'
         }`}
       >
-        <div 
-          className="bg-white shadow-lg origin-top"
-          style={{
-            width: size.width,
-            height: size.height,
-            transform: isScaleMode ? `scale(${scale})` : 'none',
-            transformOrigin: 'top center',
-            marginBottom: isScaleMode ? `${size.height * (1 - scale)}px` : '0'
-          }}
-        >
-          <iframe
-            srcDoc={html}
-            className="w-full h-full"
+        <div className={`${isFullScreen ? 'mt-14' : ''}`}>
+          <div 
+            className="bg-white shadow-lg origin-top"
             style={{
-              border: "none",
-              margin: "0 auto",
               width: size.width,
               height: size.height,
+              transform: isScaleMode ? `scale(${scale})` : 'none',
+              transformOrigin: 'top center',
+              marginBottom: isScaleMode ? `${size.height * (1 - scale)}px` : '0'
             }}
-          />
+          >
+            <iframe
+              srcDoc={html}
+              className="w-full h-full"
+              style={{
+                border: "none",
+                margin: "0 auto",
+                width: size.width,
+                height: size.height,
+              }}
+            />
+          </div>
         </div>
       </div>
       
