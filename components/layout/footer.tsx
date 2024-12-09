@@ -25,7 +25,7 @@ export function Footer() {
             <Link className="h-4 w-4" />
           </a>
         </div>
-        <a
+        {/* <a
           href="https://buymeacoffee.com/kokwee"
           target="_blank"
           rel="noopener noreferrer"
@@ -33,7 +33,7 @@ export function Footer() {
           <Button variant="outline" size="sm">
             <span className="font-sans">Buy me a coffee :)</span>
           </Button>
-        </a>
+        </a> */}
       </div>
     </footer>
   )

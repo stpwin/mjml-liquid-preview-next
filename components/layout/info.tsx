@@ -44,9 +44,9 @@ export function InfoButton() {
                 This was originally conceived by the amazing <a href="https://github.com/zonghangoh" target="_blank" rel="noopener noreferrer" className="underline">@zonghangoh</a> for productivity when developing with MJML and Liquid at <a href="https://www.ascenda.com/" target="_blank" rel="noopener noreferrer" className="underline">Ascenda</a>.
               </p>
               <br />
-              <p className="font-serif text-sm">
+              {/* <p className="font-serif text-sm">
                 We thought it might be useful to others, so I added more features to aid developing with it and open-sourced it. If you find this helpful, do give it a <a href="https://github.com/lohkokwee/mjml-liquid-preview" target="_blank" rel="noopener noreferrer" className="underline">star on GitHub</a>!
-              </p>
+              </p> */}
             </div>
 
             <div>
