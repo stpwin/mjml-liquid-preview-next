@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { useViewport } from "@/hooks/use-viewport";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { STORAGE_KEYS } from "@/lib/constants";
 import { Maximize, Minimize } from "lucide-react";
 
 interface MJMLPreviewProps {
@@ -12,13 +14,12 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
   const { size } = useViewport();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
-  const [isScaleMode, setIsScaleMode] = useState(true);
+  const [isScaleMode, setIsScaleMode] = useLocalStorage(STORAGE_KEYS.PREVIEW_SCALE_MODE, true);
 
   const updateScale = useCallback(() => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
-      // Calculate scale based on container width and desired viewport width
-      const newScale = Math.min(1, (containerWidth - 48) / size.width); // 48px for padding
+      const newScale = Math.min(1, (containerWidth - 48) / size.width);
       setScale(newScale);
     }
   }, [size.width]);
@@ -31,7 +32,6 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
 
     updateScale();
 
-    // Add resize observer
     const resizeObserver = new ResizeObserver(updateScale);
     if (containerRef.current) {
       resizeObserver.observe(containerRef.current);

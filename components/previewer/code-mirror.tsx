@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { STORAGE_KEYS } from "@/lib/constants";
 import CodeMirrorBase from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
 import { Save, RotateCcw } from "lucide-react";
@@ -15,12 +17,10 @@ export interface CodeMirrorProps {
 export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
   const { theme } = useTheme();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
-  const [autoSave, setAutoSave] = useState(true);
-  
-  const STORAGE_KEY = "editor_content";
+  const [autoSave, setAutoSave] = useLocalStorage(STORAGE_KEYS.EDITOR_AUTO_SAVE, true);
 
   useEffect(() => {
-    const savedContent = localStorage.getItem(STORAGE_KEY);
+    const savedContent = localStorage.getItem(STORAGE_KEYS.EDITOR_CONTENT);
     if (savedContent) {
       onChange(savedContent);
     }
@@ -37,7 +37,7 @@ export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
   const handleChange = (newValue: string) => {
     onChange(newValue);
     if (autoSave) {
-      localStorage.setItem(STORAGE_KEY, newValue);
+      localStorage.setItem(STORAGE_KEYS.EDITOR_CONTENT, newValue);
     }
   };
 
@@ -45,12 +45,12 @@ export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
     setAutoSave(!autoSave);
     
     if (!autoSave) {
-      localStorage.setItem(STORAGE_KEY, value);
+      localStorage.setItem(STORAGE_KEYS.EDITOR_CONTENT, value);
     }
   };
 
   const resetStorage = () => {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(STORAGE_KEYS.EDITOR_CONTENT);
     onChange(DEFAULT_MJML);
   };
 
