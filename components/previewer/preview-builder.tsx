@@ -12,7 +12,6 @@ import useMJMLProcessor from "@/hooks/use-mjml-processor"
 export const PreviewBuilder = () => {
   const {
     content,
-    setContent,
     html,
     error,
     isProcessing
@@ -39,7 +38,7 @@ export const PreviewBuilder = () => {
         className="h-full"
       >
         <ResizablePanel defaultSize={50}>
-          <CodeMirror value={content} onChange={setContent} />
+          <CodeMirror value={content} />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={50}>

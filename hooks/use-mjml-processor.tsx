@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { Liquid } from "liquidjs";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { STORAGE_KEYS } from "@/lib/constants";
 
 export const DEFAULT_MJML = `<mjml>
   <mj-body>
@@ -21,16 +23,33 @@ interface MJMLContextType {
   error: Error | null;
   isProcessing: boolean;
   refreshTemplate: () => void;
+  autoSave: boolean;
+  setAutoSave: (value: boolean) => void;
 }
 
 const MJMLContext = createContext<MJMLContextType | null>(null);
 
 export function MJMLProvider({ children }: { children: React.ReactNode }) {
-  const [content, setContent] = useState(DEFAULT_MJML);
+  const [autoSave, setAutoSave] = useLocalStorage(STORAGE_KEYS.EDITOR_AUTO_SAVE, true);
+  const [internalContent, setInternalContent] = useState(DEFAULT_MJML);
   const [html, setHtml] = useState<string>("");
   const [error, setError] = useState<Error | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    const savedContent = localStorage.getItem(STORAGE_KEYS.EDITOR_CONTENT);
+    if (savedContent) {
+      setInternalContent(JSON.parse(savedContent));
+    }
+  }, []);
+
+  const setContent: MJMLContextType["setContent"] = (newContent) => {
+    setInternalContent(newContent);
+    if (autoSave) {
+      localStorage.setItem(STORAGE_KEYS.EDITOR_CONTENT, JSON.stringify(newContent));
+    }
+  };
 
   useEffect(() => {
     const processTemplate = async () => {
@@ -50,7 +69,7 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
         const sharedVars = JSON.parse(sharedLiquid);
         
         // Process liquid template
-        const processedContent = await engine.parseAndRender(content, {
+        const processedContent = await engine.parseAndRender(internalContent, {
           ...localVars,
           ...sharedVars,
         });
@@ -66,17 +85,19 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
     };
 
     processTemplate();
-  }, [content, refreshKey]);
+  }, [internalContent, refreshKey]);
 
   const refreshTemplate = () => setRefreshKey(k => k + 1);
 
   const contextValue: MJMLContextType = {
-    content,
+    content: internalContent,
     setContent,
     html,
     error,
     isProcessing,
-    refreshTemplate
+    refreshTemplate,
+    autoSave,
+    setAutoSave
   };
 
   return (

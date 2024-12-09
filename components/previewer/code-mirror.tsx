@@ -2,29 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { STORAGE_KEYS } from "@/lib/constants";
 import CodeMirrorBase from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
 import { Save, RotateCcw } from "lucide-react";
-import { DEFAULT_MJML } from "@/hooks/use-mjml-processor";
+import { DEFAULT_MJML, useMJMLProcessor } from "@/hooks/use-mjml-processor";
 
 export interface CodeMirrorProps {
   value: string;
-  onChange: (value: string) => void;
 }
 
-export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
+export const CodeMirror = ({ value }: CodeMirrorProps) => {
   const { theme } = useTheme();
+  const { autoSave, setAutoSave, setContent } = useMJMLProcessor();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
-  const [autoSave, setAutoSave] = useLocalStorage(STORAGE_KEYS.EDITOR_AUTO_SAVE, true);
-
-  useEffect(() => {
-    const savedContent = localStorage.getItem(STORAGE_KEYS.EDITOR_CONTENT);
-    if (savedContent) {
-      onChange(savedContent);
-    }
-  }, [onChange]);
 
   useEffect(() => {
     setEditorTheme(
@@ -35,23 +25,21 @@ export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
   }, [theme]);
 
   const handleChange = (newValue: string) => {
-    onChange(newValue);
-    if (autoSave) {
-      localStorage.setItem(STORAGE_KEYS.EDITOR_CONTENT, newValue);
-    }
+    setContent(newValue);
   };
 
   const toggleAutoSave = () => {
     setAutoSave(!autoSave);
-    
     if (!autoSave) {
-      localStorage.setItem(STORAGE_KEYS.EDITOR_CONTENT, value);
+      setContent(value);
     }
   };
 
   const resetStorage = () => {
-    localStorage.removeItem(STORAGE_KEYS.EDITOR_CONTENT);
-    onChange(DEFAULT_MJML);
+    setContent(DEFAULT_MJML);
+    if (autoSave) {
+      setContent(DEFAULT_MJML);
+    }
   };
 
   return (
@@ -69,7 +57,7 @@ export const CodeMirror = ({ value, onChange }: CodeMirrorProps) => {
         <button
           onClick={resetStorage}
           className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-          title="Reset stored content"
+          title="Reset content"
         >
           <RotateCcw className="w-4 h-4" />
         </button>
