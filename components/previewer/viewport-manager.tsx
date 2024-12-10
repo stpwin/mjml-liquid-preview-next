@@ -91,17 +91,17 @@ export function ViewportManager() {
   useHotkeys('alt+1', (e) => {
     e.preventDefault()
     onOpenChange(true)
-  }, [])
+  }, { enableOnFormTags: true })
 
   const desktopRef = useHotkeys('alt+d', (e) => {
     e.preventDefault()
     if (isOpen) handlePresetChange("desktop")
-  }, [isOpen])
+  }, [isOpen, { enableOnFormTags: true }])
 
   const mobileRef = useHotkeys('alt+m', (e) => {
     e.preventDefault()
     if (isOpen) handlePresetChange("mobile")
-  }, [isOpen])
+  }, [isOpen, { enableOnFormTags: true }])
 
   useHotkeys('alt+w', (e) => {
     e.preventDefault()
