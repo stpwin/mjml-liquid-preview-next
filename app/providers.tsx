@@ -6,6 +6,8 @@ import type { ThemeProviderProps } from "next-themes"
 import { MJMLProvider } from "@/hooks/use-mjml-processor"
 import { ViewportProvider } from "@/hooks/use-viewport"
 import { LayoutProvider } from "@/hooks/use-layout"
+import { KeyboardProvider } from "@/hooks/use-keyboard"
+import { DropdownProvider } from "@/hooks/use-dropdown-state"
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
@@ -15,13 +17,17 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
       enableSystem
       {...props}
     >
-      <ViewportProvider>
-        <MJMLProvider>
-          <LayoutProvider>
-            {children}
-          </LayoutProvider>
-        </MJMLProvider>
-      </ViewportProvider>
+      <KeyboardProvider>
+        <DropdownProvider>
+          <ViewportProvider>
+            <MJMLProvider>
+              <LayoutProvider>
+                {children}
+              </LayoutProvider>
+            </MJMLProvider>
+          </ViewportProvider>
+        </DropdownProvider>
+      </KeyboardProvider>
     </NextThemesProvider>
   )
 } 

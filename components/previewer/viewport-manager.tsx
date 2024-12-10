@@ -3,6 +3,9 @@
 import { useState } from "react"
 import { Monitor, Smartphone, Maximize } from "lucide-react"
 import { useViewport } from "@/hooks/use-viewport"
+import { useKeyboard } from "@/hooks/use-keyboard"
+import { useDropdownState } from "@/hooks/use-dropdown-state"
+import { useHotkeys } from "react-hotkeys-hook"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -25,6 +28,8 @@ interface ViewportSize {
 
 export function ViewportManager() {
   const { preset, setPreset, setSize } = useViewport()
+  const { isAltPressed } = useKeyboard()
+  const { isOpen, onOpenChange } = useDropdownState('viewport')
   const [customSize, setCustomSize] = useState<ViewportSize>({ width: 800, height: 600 })
   const [inputValues, setInputValues] = useState({
     width: customSize.width.toString(),
@@ -40,6 +45,7 @@ export function ViewportManager() {
       height: newSize.height.toString()
     })
     setCustomSize(newSize)
+    onOpenChange(false)
   }
 
   const handleCustomSizeChange = (dimension: "width" | "height", value: string) => {
@@ -64,26 +70,60 @@ export function ViewportManager() {
       setCustomSize(newSize)
       setSize(newSize)
       setPreset("custom")
+      onOpenChange(false)
     }
   }
 
+  useHotkeys('alt+1', (e) => {
+    e.preventDefault()
+    onOpenChange(true)
+  }, [])
+
+  const desktopRef = useHotkeys('alt+d', (e) => {
+    e.preventDefault()
+    if (isOpen) handlePresetChange("desktop")
+  }, [isOpen])
+
+  const mobileRef = useHotkeys('alt+m', (e) => {
+    e.preventDefault()
+    if (isOpen) handlePresetChange("mobile")
+  }, [isOpen])
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="relative">
           {preset === "desktop" && <Monitor className="h-[1.2rem] w-[1.2rem]" />}
           {preset === "mobile" && <Smartphone className="h-[1.2rem] w-[1.2rem]" />}
           {preset === "custom" && <Maximize className="h-[1.2rem] w-[1.2rem]" />}
+          {isAltPressed && !isOpen && (
+            <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
+              1
+            </span>
+          )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px]">
-        <DropdownMenuItem onClick={() => handlePresetChange("desktop")}>
+      <DropdownMenuContent align="end" className="w-[200px]" ref={(el) => {
+        desktopRef(el)
+        mobileRef(el)
+      }}>
+        <DropdownMenuItem onClick={() => handlePresetChange("desktop")} className="relative">
           <Monitor className="mr-2 h-4 w-4" />
           <span className="font-sans">Desktop</span>
+          {isAltPressed && (
+            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
+              d
+            </span>
+          )}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handlePresetChange("mobile")}>
+        <DropdownMenuItem onClick={() => handlePresetChange("mobile")} className="relative">
           <Smartphone className="mr-2 h-4 w-4" />
           <span className="font-sans">Mobile</span>
+          {isAltPressed && (
+            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
+              m
+            </span>
+          )}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <div className="p-2">

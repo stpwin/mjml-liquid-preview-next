@@ -47,7 +47,6 @@ A web-based tool for previewing MJML email templates with Liquid templating supp
 * Switch between light and dark themes
 * Custom viewport sizes available for precise testing
 
-
 # Contributing
 
 Welcome any and all contributions, here's how you can help!

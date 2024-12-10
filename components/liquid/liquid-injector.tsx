@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { RefreshCcw, Save, Sparkles } from "lucide-react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 import { STORAGE_KEYS } from "@/lib/constants"
 import { useToast } from "@/hooks/use-toast"
@@ -106,12 +107,9 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
     })
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault()
-      handleSave()
-    }
-  }
+  useHotkeys('mod+enter', () => {
+    if (isOpen) handleSave()
+  }, { enableOnFormTags: true }, [isOpen, handleSave])
 
   const renderAscendaLiquidGenerateButton = () => {
     if (type === "shared") {
@@ -139,7 +137,6 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
           <Textarea
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            onKeyDown={handleKeyDown}
             placeholder="Enter your liquid variables as JSON..."
             className="min-h-[300px] font-mono"
           />
@@ -155,7 +152,7 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
           </div>
           <div className="flex justify-end items-end">
             <span className="font-sans text-sm text-muted-foreground text-right">
-              Tip: if you&apos;re typing in the TextArea, simply press {isMac ? '⌘' : 'Ctrl'} + Enter to save!
+              Tip: hit {isMac ? '⌘' : 'Ctrl'} + Enter to save or Esc to close the sheet!
             </span>
           </div>
         </div>

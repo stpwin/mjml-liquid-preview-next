@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ThemeSwitcher } from "@/components/theme/theme-switcher"
+import { ThemeManager } from "@/components/theme/theme-manager"
 import { LiquidManager } from "@/components/liquid/liquid-manager"
 import { ViewportManager } from "@/components/previewer/viewport-manager"
 import { CopyManager } from "@/components/layout/copy-manager"
@@ -32,7 +32,7 @@ export function Header() {
             <LiquidManager />
             <CopyManager />
             <LayoutManager />
-            <ThemeSwitcher />
+            <ThemeManager />
             <InfoButton />
           </nav>
         </div>
