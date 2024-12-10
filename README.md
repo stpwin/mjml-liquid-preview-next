@@ -33,6 +33,7 @@ A web-based tool for previewing MJML email templates with Liquid templating supp
 - Write your MJML code in the left panel
 - See live preview updates in the right panel
 - Toggle auto-save to persist your changes locally
+- Keyboard first navigation for developers (hit `option`/`alt` key to start)
 
 ## Liquid Variables
 * Click the Liquid button (💧) in the header

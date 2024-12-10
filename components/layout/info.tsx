@@ -62,6 +62,7 @@ export function InfoButton() {
                 <li><span className="font-serif text-sm">Auto-save functionality</span></li>
                 <li><span className="font-serif text-sm">Dark mode support</span></li>
                 <li><span className="font-serif text-sm">Custom viewport sizes</span></li>
+                <li><span className="font-serif text-sm">Keyboard first navigation for developers (hit the `option`/`alt` key to start)</span></li>
               </ul>
             </div>
 
