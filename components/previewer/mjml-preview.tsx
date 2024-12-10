@@ -6,6 +6,8 @@ import { useLocalStorage } from "@/hooks/use-local-storage";
 import { STORAGE_KEYS } from "@/lib/constants";
 import { Maximize, Minimize } from "lucide-react";
 import { useLayout } from "@/hooks/use-layout";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useKeyboard } from "@/hooks/use-keyboard";
 
 interface MJMLPreviewProps {
   html?: string;
@@ -17,6 +19,7 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [isScaleMode, setIsScaleMode] = useLocalStorage(STORAGE_KEYS.PREVIEW_SCALE_MODE, true);
+  const { isAltPressed } = useKeyboard();
 
   const updateScale = useCallback(() => {
     if (containerRef.current) {
@@ -43,6 +46,11 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
       resizeObserver.disconnect();
     };
   }, [size.width, isScaleMode, updateScale]);
+
+  useHotkeys('alt+f', (e) => {
+    e.preventDefault();
+    setIsScaleMode(!isScaleMode);
+  }, { enableOnFormTags: true });
 
   if (!html) return (
     <div className="h-full flex items-center justify-center">
@@ -93,9 +101,14 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
         title={isScaleMode ? "Switch to overflow mode" : "Switch to scale mode"}
       >
         {isScaleMode ? (
-          <Minimize className="w-4 h-4" />
+          <Minimize className="h-[1.2rem] w-[1.2rem]" />
         ) : (
-          <Maximize className="w-4 h-4" />
+          <Maximize className="h-[1.2rem] w-[1.2rem]" />
+        )}
+        {isAltPressed && (
+          <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
+            f
+          </span>
         )}
       </button>
     </div>
