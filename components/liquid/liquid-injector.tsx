@@ -45,8 +45,10 @@ export const ASCENDA_LIQUID_TEMPLATE = {
   "theme_brand_secondary_button_border_width": "1px",
   "theme_brand_secondary_button_border_radius": "4px",
   "theme_brand_primary_200_color": "#c8c9d6",
-  "theme_brand_secondary_200_color": "#ffeff2"
-} 
+  "theme_brand_secondary_200_color": "#ffeff2",
+  "ascenda_contact_email": "rewardscentral@support.ascenda.com",
+  "ascenda_contact_phone": "[+00 (00) 1234 5678]"
+}
 
 interface LiquidInjectorProps {
   type: "local" | "shared"
