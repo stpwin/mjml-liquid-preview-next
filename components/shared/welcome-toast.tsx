@@ -2,7 +2,6 @@
 
 import { useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
-import { useLocalStorage } from "@/hooks/use-local-storage"
 import Link from "next/link"
 
 export function WelcomeToast() {
