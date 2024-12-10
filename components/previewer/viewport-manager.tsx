@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Monitor, Smartphone, Maximize } from "lucide-react"
 import { useViewport } from "@/hooks/use-viewport"
 import { useKeyboard } from "@/hooks/use-keyboard"
@@ -35,6 +35,8 @@ export function ViewportManager() {
     width: customSize.width.toString(),
     height: customSize.height.toString()
   })
+  const widthInputRef = useRef<HTMLInputElement>(null)
+  const heightInputRef = useRef<HTMLInputElement>(null)
 
   const handlePresetChange = (newPreset: "desktop" | "mobile") => {
     setPreset(newPreset)
@@ -74,6 +76,18 @@ export function ViewportManager() {
     }
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, field: 'width' | 'height') => {
+    if (e.key === 'Enter') {
+      handleCustomSelect()
+    } else if (e.key === 'Tab' && !e.shiftKey && field === 'width') {
+      e.preventDefault()
+      heightInputRef.current?.focus()
+    } else if (e.key === 'Tab' && e.shiftKey && field === 'height') {
+      e.preventDefault()
+      widthInputRef.current?.focus()
+    }
+  }
+
   useHotkeys('alt+1', (e) => {
     e.preventDefault()
     onOpenChange(true)
@@ -88,6 +102,22 @@ export function ViewportManager() {
     e.preventDefault()
     if (isOpen) handlePresetChange("mobile")
   }, [isOpen])
+
+  useHotkeys('alt+w', (e) => {
+    e.preventDefault()
+    if (isOpen) {
+      widthInputRef.current?.focus()
+      widthInputRef.current?.select()
+    }
+  }, [isOpen], { enableOnFormTags: true })
+
+  useHotkeys('alt+h', (e) => {
+    e.preventDefault()
+    if (isOpen) {
+      heightInputRef.current?.focus()
+      heightInputRef.current?.select()
+    }
+  }, [isOpen], { enableOnFormTags: true })
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
@@ -131,20 +161,32 @@ export function ViewportManager() {
             <span className="font-sans text-sm">Custom Size</span>
           </div>
           <div className="flex gap-2 mb-2">
-            <Input
-              type="text"
-              placeholder="Width"
-              value={inputValues.width}
-              onChange={(e) => handleCustomSizeChange("width", e.target.value)}
-              className="w-full"
-            />
-            <Input
-              type="text"
-              placeholder="Height"
-              value={inputValues.height}
-              onChange={(e) => handleCustomSizeChange("height", e.target.value)}
-              className="w-full"
-            />
+            <div className="relative w-full">
+              <Input
+                ref={widthInputRef}
+                type="text"
+                value={inputValues.width}
+                onChange={(e) => handleCustomSizeChange("width", e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, 'width')}
+                className="w-full pr-6 font-sans"
+              />
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-mono">
+                w
+              </span>
+            </div>
+            <div className="relative w-full">
+              <Input
+                ref={heightInputRef}
+                type="text"
+                value={inputValues.height}
+                onChange={(e) => handleCustomSizeChange("height", e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, 'height')}
+                className="w-full pr-6 font-sans"
+              />
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-mono">
+                h
+              </span>
+            </div>
           </div>
           <Button 
             onClick={handleCustomSelect} 
