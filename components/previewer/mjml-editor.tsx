@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useTheme } from "next-themes";
 import CodeMirrorBase from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
 import { Save, RotateCcw } from "lucide-react";
 import { DEFAULT_MJML, useMJMLProcessor } from "@/hooks/use-mjml-processor";
+import { useHotkeys } from "react-hotkeys-hook";
+import { HOTKEYS, UI_STATE } from "@/lib/constants";
+import { useUIState } from "@/hooks/use-ui-state";
 
 export interface MJMLEditorProps {
   value: string;
@@ -15,6 +18,8 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
   const { theme } = useTheme();
   const { autoSave, setAutoSave, setContent } = useMJMLProcessor();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
+  const editorRef = useRef<any>(null);
+  const { onOpenChange  } = useUIState(UI_STATE.MJML_EDITOR);
 
   useEffect(() => {
     setEditorTheme(
@@ -42,9 +47,16 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
     }
   };
 
+  useHotkeys(HOTKEYS.FOCUS_EDITOR, (e) => {
+    e.preventDefault();
+    onOpenChange(true);
+    editorRef.current.view.focus();
+  }, { enableOnFormTags: true, enableOnContentEditable: true });
+
   return (
     <div className="relative h-full">
       <CodeMirrorBase 
+        ref={editorRef}
         theme={editorTheme}
         extensions={[html()]}
         height="100%"

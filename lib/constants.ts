@@ -8,6 +8,7 @@ export const STORAGE_KEYS = {
 } as const;
 
 export const UI_STATE = {
+  MJML_EDITOR: "mjml_editor",
   THEME: "theme",
   LIQUID: "liquid",
   COPY: "copy",
@@ -19,6 +20,9 @@ export const UI_STATE = {
 } as const;
 
 export const HOTKEYS = {
+  // Global Navigation
+  FOCUS_EDITOR: "alt+`",
+
   // Viewport Manager
   TOGGLE_VIEWPORT: "alt+1",
   VIEWPORT_DESKTOP: "alt+d",
