@@ -9,6 +9,7 @@ import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { WelcomeToast } from "@/components/shared/welcome-toast";
 import { HelpDialog } from "@/components/layout/help";
+import { Inter } from "next/font/google"
 
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ["latin"],
@@ -25,10 +26,33 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
+const inter = Inter({ subsets: ["latin"] })
+
 export const metadata: Metadata = {
-  title: "MJML + Liquid Renderer",
-  description: "MJML Preview with Liquid templating",
-};
+  title: "MJML Liquid Preview - Online MJML Editor with Liquid Support",
+  description: "Free online MJML editor with Liquid template support. Preview, edit, and test your MJML email templates with local and shared Liquid variables in real-time.",
+  keywords: "mjml, liquid, email template, email editor, mjml editor, liquid template, email development, responsive email",
+  authors: [{ name: "Kok Wee", url: "https://kokwee.com" }],
+  openGraph: {
+    title: "MJML Liquid Preview - Online MJML Editor with Liquid Support",
+    description: "Free online MJML editor with Liquid template support. Preview, edit, and test your MJML email templates with local and shared Liquid variables in real-time.",
+    url: "https://www.mjmliquid.com/",
+    siteName: "MJML Liquid Preview",
+    locale: "en_US",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  }
+}
 
 export default function RootLayout({
   children,
@@ -39,9 +63,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
 
-      <body className={`${spaceGrotesk.variable} ${newsreader.variable} ${jetbrainsMono.variable} bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col h-screen`}>
+      <body className={`${spaceGrotesk.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${inter.className} bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col h-screen`}>
         <Analytics />
         <Providers>
           <Header />
