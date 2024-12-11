@@ -55,17 +55,12 @@ export const ASCENDA_LIQUID_TEMPLATE = {
 
 export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
-  const [isMac, setIsMac] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   const { toast } = useToast()
   const storageKey = type === "local" ? STORAGE_KEYS.LOCAL_LIQUID : STORAGE_KEYS.SHARED_LIQUID
   const [storedLiquid, setStoredLiquid] = useLocalStorage<Record<string, unknown>>(storageKey, {})
   const { refreshTemplate } = useMJMLProcessor()
   const { isAltPressed } = useKeyboard()
-
-  useEffect(() => {
-    setIsMac(navigator.platform.includes('Mac'))
-  }, [])
 
   useEffect(() => {
     if (isOpen) {
@@ -226,7 +221,7 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
           </div>
           <div className="flex justify-end items-end">
             <span className="font-sans text-sm text-muted-foreground text-right">
-              Tip: hit {isMac ? '⌥' : 'alt'} to view the available hotkey combinations or Esc to close the sheet!
+              Tip: hit <kbd className="px-1 py-0.5 rounded bg-muted">⌥</kbd> or <kbd className="px-1 py-0.5 rounded bg-muted">alt</kbd> to view the available hotkey combinations or <kbd className="px-1 py-0.5 rounded bg-muted">Esc</kbd> to close the sheet!
             </span>
           </div>
         </div>
