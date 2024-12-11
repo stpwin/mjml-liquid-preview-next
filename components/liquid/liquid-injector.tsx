@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { RefreshCcw, Save, Sparkles, Maximize2, Minimize2 } from "lucide-react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useLocalStorage } from "@/hooks/use-local-storage"
-import { STORAGE_KEYS } from "@/lib/constants"
+import { STORAGE_KEYS, HOTKEYS } from "@/lib/constants"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
@@ -104,28 +104,28 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
     setIsExpanded(!isExpanded)
   }, [setIsExpanded, isExpanded])
 
-  useHotkeys('alt+enter', (e) => {
+  useHotkeys(HOTKEYS.LIQUID_SAVE, (e) => {
     e.preventDefault()
     if (isOpen) {
       handleSave()
     }
   }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen, handleSave])
 
-  useHotkeys('alt+r', (e) => {
+  useHotkeys(HOTKEYS.LIQUID_RESET, (e) => {
     e.preventDefault()
     if (isOpen) {
       handleReset()
     }
   }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen])
 
-  useHotkeys('alt+g', (e) => {
+  useHotkeys(HOTKEYS.LIQUID_GENERATE, (e) => {
     e.preventDefault()
     if (isOpen && type === "shared") {
       handleGenerateAscenda()
     }
   }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen, type])
 
-  useHotkeys('alt+e', (e) => {
+  useHotkeys(HOTKEYS.LIQUID_EXPAND, (e) => {
     e.preventDefault()
     if (isOpen) {
       toggleExpand()

@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import { UI_STATE } from "@/lib/constants"
+import { UI_STATE, HOTKEYS } from "@/lib/constants"
 
 const VIEWPORT_PRESETS = {
   desktop: { width: 1280, height: 800 },
@@ -89,22 +89,22 @@ export function ViewportManager() {
     }
   }
 
-  useHotkeys('alt+1', (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_VIEWPORT, (e) => {
     e.preventDefault()
     onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
 
-  const desktopRef = useHotkeys('alt+d', (e) => {
+  const desktopRef = useHotkeys(HOTKEYS.VIEWPORT_DESKTOP, (e) => {
     e.preventDefault()
     if (isOpen) handlePresetChange("desktop")
   }, [isOpen, { enableOnFormTags: true }])
 
-  const mobileRef = useHotkeys('alt+m', (e) => {
+  const mobileRef = useHotkeys(HOTKEYS.VIEWPORT_MOBILE, (e) => {
     e.preventDefault()
     if (isOpen) handlePresetChange("mobile")
   }, [isOpen, { enableOnFormTags: true }])
 
-  useHotkeys('alt+w', (e) => {
+  useHotkeys(HOTKEYS.VIEWPORT_WIDTH, (e) => {
     e.preventDefault()
     if (isOpen) {
       widthInputRef.current?.focus()
@@ -112,7 +112,7 @@ export function ViewportManager() {
     }
   }, [isOpen], { enableOnFormTags: true })
 
-  useHotkeys('alt+h', (e) => {
+  useHotkeys(HOTKEYS.VIEWPORT_HEIGHT, (e) => {
     e.preventDefault()
     if (isOpen) {
       heightInputRef.current?.focus()

@@ -5,7 +5,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
 import { useLayout } from "@/hooks/use-layout"
 import { useUIState } from "@/hooks/use-ui-state"
-import { UI_STATE } from "@/lib/constants"
+import { UI_STATE, HOTKEYS } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
 
 export function LayoutManager() {
@@ -13,7 +13,7 @@ export function LayoutManager() {
   const { isAltPressed } = useKeyboard()
   const { onOpenChange } = useUIState(UI_STATE.LAYOUT)
 
-  useHotkeys('alt+4', (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_LAYOUT, (e) => {
     e.preventDefault()
     onOpenChange(false)
     toggleFullScreen()

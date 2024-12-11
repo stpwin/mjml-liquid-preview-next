@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { useViewport } from "@/hooks/use-viewport";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { STORAGE_KEYS } from "@/lib/constants";
+import { STORAGE_KEYS, HOTKEYS } from "@/lib/constants";
 import { Maximize, Minimize } from "lucide-react";
 import { useLayout } from "@/hooks/use-layout";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -47,7 +47,7 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
     };
   }, [size.width, isScaleMode, updateScale]);
 
-  useHotkeys('alt+f', (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_PREVIEW_SCALE, (e) => {
     e.preventDefault();
     setIsScaleMode(!isScaleMode);
   }, { enableOnFormTags: true, enableOnContentEditable: true });

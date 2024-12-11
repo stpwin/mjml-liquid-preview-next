@@ -4,7 +4,7 @@ import { Droplets, User, Users } from "lucide-react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
 import { useUIState } from "@/hooks/use-ui-state"
-import { UI_STATE } from "@/lib/constants"
+import { UI_STATE, HOTKEYS } from "@/lib/constants"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -21,19 +21,19 @@ export function LiquidManager() {
   const { isOpen: isSharedOpen, onOpenChange: onSharedOpenChange } = useUIState(UI_STATE.SHARED_LIQUID_SHEET)
   const { isAltPressed } = useKeyboard()
 
-  useHotkeys('alt+2', (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_LIQUID, (e) => {
     e.preventDefault()
     onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
 
-  const localRef = useHotkeys('alt+l', (e) => {
+  const localRef = useHotkeys(HOTKEYS.LIQUID_LOCAL, (e) => {
     e.preventDefault()
     if (isOpen) {
       onLocalOpenChange(true)
     }
   }, [isOpen])
 
-  const sharedRef = useHotkeys('alt+s', (e) => {
+  const sharedRef = useHotkeys(HOTKEYS.LIQUID_SHARED, (e) => {
     e.preventDefault()
     if (isOpen) {
       onSharedOpenChange(true)

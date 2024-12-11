@@ -5,7 +5,7 @@ import {
   ResizablePanel,
   ResizableHandle
 } from "@/components/ui/resizable"
-import CodeMirror from "@/components/previewer/code-mirror"
+import MJMLEditor from "@/components/previewer/mjml-editor"
 import MJMLPreview from "@/components/previewer/mjml-preview"
 import useMJMLProcessor from "@/hooks/use-mjml-processor"
 
@@ -38,7 +38,7 @@ export const PreviewBuilder = () => {
         className="h-full"
       >
         <ResizablePanel defaultSize={50}>
-          <CodeMirror value={content} />
+          <MJMLEditor value={content} />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={50}>

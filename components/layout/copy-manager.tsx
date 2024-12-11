@@ -7,7 +7,7 @@ import { useKeyboard } from "@/hooks/use-keyboard"
 import { useUIState } from "@/hooks/use-ui-state"
 import { useMJMLProcessor } from "@/hooks/use-mjml-processor"
 import { useLocalStorage } from "@/hooks/use-local-storage"
-import { STORAGE_KEYS, UI_STATE } from "@/lib/constants"
+import { STORAGE_KEYS, UI_STATE, HOTKEYS } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -53,27 +53,27 @@ export function CopyManager() {
   const handleCopyLocalLiquid = () => copyToClipboard(JSON.stringify(localLiquid, null, 2), "Local Liquid")
   const handleCopySharedLiquid = () => copyToClipboard(JSON.stringify(sharedLiquid, null, 2), "Shared Liquid")
 
-  useHotkeys('alt+3', (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_COPY, (e) => {
     e.preventDefault()
     onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
 
-  const htmlRef = useHotkeys('alt+h', (e) => {
+  const htmlRef = useHotkeys(HOTKEYS.COPY_HTML, (e) => {
     e.preventDefault()
     if (isOpen) handleCopyHTML()
   }, [isOpen, html])
 
-  const mjmlRef = useHotkeys('alt+m', (e) => {
+  const mjmlRef = useHotkeys(HOTKEYS.COPY_MJML, (e) => {
     e.preventDefault()
     if (isOpen) handleCopyMJML()
   }, [isOpen, content])
 
-  const localRef = useHotkeys('alt+l', (e) => {
+  const localRef = useHotkeys(HOTKEYS.COPY_LOCAL, (e) => {
     e.preventDefault()
     if (isOpen) handleCopyLocalLiquid()
   }, [isOpen, localLiquid])
 
-  const sharedRef = useHotkeys('alt+s', (e) => {
+  const sharedRef = useHotkeys(HOTKEYS.COPY_SHARED, (e) => {
     e.preventDefault()
     if (isOpen) handleCopySharedLiquid()
   }, [isOpen, sharedLiquid])

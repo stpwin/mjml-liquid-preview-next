@@ -7,11 +7,11 @@ import { html } from "@codemirror/lang-html";
 import { Save, RotateCcw } from "lucide-react";
 import { DEFAULT_MJML, useMJMLProcessor } from "@/hooks/use-mjml-processor";
 
-export interface CodeMirrorProps {
+export interface MJMLEditorProps {
   value: string;
 }
 
-export const CodeMirror = ({ value }: CodeMirrorProps) => {
+export const MJMLEditor = ({ value }: MJMLEditorProps) => {
   const { theme } = useTheme();
   const { autoSave, setAutoSave, setContent } = useMJMLProcessor();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
@@ -81,4 +81,4 @@ export const CodeMirror = ({ value }: CodeMirrorProps) => {
   );
 }
 
-export default CodeMirror;
+export default MJMLEditor;

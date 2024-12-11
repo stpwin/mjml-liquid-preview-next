@@ -12,13 +12,13 @@ import {
 import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
 import { useUIState } from "@/hooks/use-ui-state"
-import { UI_STATE } from "@/lib/constants"
+import { UI_STATE, HOTKEYS } from "@/lib/constants"
 
 export function InfoButton() {
   const { isOpen, onOpenChange } = useUIState(UI_STATE.INFO)
   const { isAltPressed } = useKeyboard()  
 
-  useHotkeys('alt+i', (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_INFO, (e) => {
     e.preventDefault()
     onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })

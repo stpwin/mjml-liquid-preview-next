@@ -5,7 +5,7 @@ import { useTheme } from "next-themes"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
 import { useUIState } from "@/hooks/use-ui-state"
-import { UI_STATE } from "@/lib/constants"
+import { UI_STATE, HOTKEYS } from "@/lib/constants"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -21,12 +21,12 @@ export function ThemeManager() {
   const { isOpen, onOpenChange } = useUIState(UI_STATE.THEME)
   const { isAltPressed } = useKeyboard()
 
-  useHotkeys('alt+5', (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_THEME, (e) => {
     e.preventDefault()
     onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
 
-  const lightRef = useHotkeys('alt+l', (e) => {
+  const lightRef = useHotkeys(HOTKEYS.THEME_LIGHT, (e) => {
     e.preventDefault()
     if (isOpen) {
       setTheme("light")
@@ -34,7 +34,7 @@ export function ThemeManager() {
     }
   }, [isOpen])
 
-  const darkRef = useHotkeys('alt+d', (e) => {
+  const darkRef = useHotkeys(HOTKEYS.THEME_DARK, (e) => {
     e.preventDefault()
     if (isOpen) {
       setTheme("dark")
@@ -42,7 +42,7 @@ export function ThemeManager() {
     }
   }, [isOpen])
 
-  const systemRef = useHotkeys('alt+s', (e) => {
+  const systemRef = useHotkeys(HOTKEYS.THEME_SYSTEM, (e) => {
     e.preventDefault()
     if (isOpen) {
       setTheme("system")
