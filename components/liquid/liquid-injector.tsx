@@ -21,7 +21,7 @@ import { useKeyboard } from "@/hooks/use-keyboard"
 interface LiquidInjectorProps {
   type: "local" | "shared"
   isOpen: boolean
-  onClose: () => void
+  onOpenChange: (open: boolean) => void
 }
 
 export const ASCENDA_LIQUID_TEMPLATE = {
@@ -53,7 +53,7 @@ export const ASCENDA_LIQUID_TEMPLATE = {
   "ascenda_contact_phone": "[+00 (00) 1234 5678]"
 }
 
-export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
+export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
   const [isMac, setIsMac] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -84,7 +84,7 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
         description: `${type === "local" ? "Local" : "Shared"} Liquid saved!`,
         variant: "success",
       })
-      onClose()
+      onOpenChange(false)
     } catch {
       toast({
         description: "Invalid JSON format",
@@ -111,12 +111,26 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
     setIsExpanded(prev => !prev)
   }, [])
 
-  useHotkeys('mod+enter', (e) => {
+  useHotkeys('alt+enter', (e) => {
     e.preventDefault()
     if (isOpen) {
       handleSave()
     }
   }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen, handleSave])
+
+  useHotkeys('alt+r', (e) => {
+    e.preventDefault()
+    if (isOpen) {
+      handleReset()
+    }
+  }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen])
+
+  useHotkeys('alt+g', (e) => {
+    e.preventDefault()
+    if (isOpen && type === "shared") {
+      handleGenerateAscenda()
+    }
+  }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen, type])
 
   useHotkeys('alt+e', (e) => {
     e.preventDefault()
@@ -130,18 +144,23 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
       return (
         <Button
           variant="outline"
-          className="w-full"
+          className="w-full relative"
           onClick={handleGenerateAscenda}
         >
           <Sparkles className="mr-2 h-4 w-4" />
           <span className="font-sans">Generate Ascenda liquid</span>
+          {isAltPressed && (
+            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
+              g
+            </span>
+          )}
         </Button>
       )
     }
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
+    <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent 
         side="right"
         className={cn(
@@ -185,19 +204,29 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
               )}
             </Button>
             <div className="flex items-center space-x-2">
-              <Button variant="outline" onClick={handleReset}>
+              <Button variant="outline" onClick={handleReset} className="relative">
                 <RefreshCcw className="h-4 w-4" />
                 <span className="font-sans">Reset</span>
+                {isAltPressed && (
+                  <span className="absolute mx-auto text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
+                    r
+                  </span>
+                )}
               </Button>
-              <Button onClick={handleSave}>
+              <Button onClick={handleSave} className="relative">
                 <Save className="h-4 w-4" />
                 <span className="font-sans">Save</span>
+                {isAltPressed && (
+                  <span className="absolute mx-auto text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
+                    ↩
+                  </span>
+                )}
               </Button>
             </div>
           </div>
           <div className="flex justify-end items-end">
             <span className="font-sans text-sm text-muted-foreground text-right">
-              Tip: hit {isMac ? '⌘' : 'Ctrl'} + Enter to save or Esc to close the sheet!
+              Tip: hit {isMac ? '⌥' : 'alt'} to view the available hotkey combinations or Esc to close the sheet!
             </span>
           </div>
         </div>

@@ -7,7 +7,7 @@ import { MJMLProvider } from "@/hooks/use-mjml-processor"
 import { ViewportProvider } from "@/hooks/use-viewport"
 import { LayoutProvider } from "@/hooks/use-layout"
 import { KeyboardProvider } from "@/hooks/use-keyboard"
-import { DropdownProvider } from "@/hooks/use-dropdown-state"
+import { UIStateProvider } from "@/hooks/use-ui-state"
 
 export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
@@ -18,7 +18,7 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
       {...props}
     >
       <KeyboardProvider>
-        <DropdownProvider>
+        <UIStateProvider>
           <ViewportProvider>
             <MJMLProvider>
               <LayoutProvider>
@@ -26,7 +26,7 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
               </LayoutProvider>
             </MJMLProvider>
           </ViewportProvider>
-        </DropdownProvider>
+        </UIStateProvider>
       </KeyboardProvider>
     </NextThemesProvider>
   )

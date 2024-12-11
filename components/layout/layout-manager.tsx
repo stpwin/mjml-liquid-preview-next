@@ -4,13 +4,14 @@ import { Maximize2, Minimize2 } from "lucide-react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
 import { useLayout } from "@/hooks/use-layout"
-import { useDropdownState } from "@/hooks/use-dropdown-state"
+import { useUIState } from "@/hooks/use-ui-state"
+import { UI_STATE } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
 
 export function LayoutManager() {
   const { isFullScreen, toggleFullScreen } = useLayout()
   const { isAltPressed } = useKeyboard()
-  const { onOpenChange } = useDropdownState('layout')
+  const { onOpenChange } = useUIState(UI_STATE.LAYOUT)
 
   useHotkeys('alt+4', (e) => {
     e.preventDefault()

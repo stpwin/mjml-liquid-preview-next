@@ -10,21 +10,37 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet"
+import { useHotkeys } from "react-hotkeys-hook"
+import { useKeyboard } from "@/hooks/use-keyboard"
+import { useUIState } from "@/hooks/use-ui-state"
+import { UI_STATE } from "@/lib/constants"
 
 export function InfoButton() {
-  const [open, setOpen] = useState(false)
+  const { isOpen, onOpenChange } = useUIState(UI_STATE.INFO)
+  const { isAltPressed } = useKeyboard()  
+
+  useHotkeys('alt+i', (e) => {
+    e.preventDefault()
+    onOpenChange(!isOpen)
+  }, { enableOnFormTags: true, enableOnContentEditable: true })
 
   return (
     <>
       <Button 
         variant="ghost" 
         size="icon"
-        onClick={() => setOpen(true)}
+        onClick={() => onOpenChange(true)}
+        className="relative"
       >
         <Info className="h-[1.2rem] w-[1.2rem]" />
+        {isAltPressed && !isOpen && (
+          <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
+            i
+          </span>
+        )}
       </Button>
 
-      <Sheet open={open} onOpenChange={setOpen}>
+      <Sheet open={isOpen} onOpenChange={onOpenChange}>
         <SheetContent>
           <SheetHeader>
             <SheetTitle>

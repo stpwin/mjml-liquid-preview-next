@@ -4,7 +4,8 @@ import * as React from "react"
 import { useTheme } from "next-themes"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
-import { useDropdownState } from "@/hooks/use-dropdown-state"
+import { useUIState } from "@/hooks/use-ui-state"
+import { UI_STATE } from "@/lib/constants"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -17,7 +18,7 @@ import { Moon, Sun, Monitor } from "lucide-react"
 
 export function ThemeManager() {
   const { setTheme } = useTheme()
-  const { isOpen, onOpenChange } = useDropdownState('theme')
+  const { isOpen, onOpenChange } = useUIState(UI_STATE.THEME)
   const { isAltPressed } = useKeyboard()
 
   useHotkeys('alt+5', (e) => {

@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
 import { Droplets, User, Users } from "lucide-react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
-import { useDropdownState } from "@/hooks/use-dropdown-state"
+import { useUIState } from "@/hooks/use-ui-state"
+import { UI_STATE } from "@/lib/constants"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -16,9 +16,9 @@ import {
 import { LiquidInjector } from "./liquid-injector"
 
 export function LiquidManager() {
-  const [localOpen, setLocalOpen] = useState(false)
-  const [sharedOpen, setSharedOpen] = useState(false)
-  const { isOpen, onOpenChange } = useDropdownState('liquid')
+  const { isOpen, onOpenChange } = useUIState(UI_STATE.LIQUID)
+  const { isOpen: isLocalOpen, onOpenChange: onLocalOpenChange } = useUIState(UI_STATE.LOCAL_LIQUID_SHEET)
+  const { isOpen: isSharedOpen, onOpenChange: onSharedOpenChange } = useUIState(UI_STATE.SHARED_LIQUID_SHEET)
   const { isAltPressed } = useKeyboard()
 
   useHotkeys('alt+2', (e) => {
@@ -29,16 +29,14 @@ export function LiquidManager() {
   const localRef = useHotkeys('alt+l', (e) => {
     e.preventDefault()
     if (isOpen) {
-      setLocalOpen(true)
-      onOpenChange(false)
+      onLocalOpenChange(true)
     }
   }, [isOpen])
 
   const sharedRef = useHotkeys('alt+s', (e) => {
     e.preventDefault()
     if (isOpen) {
-      setSharedOpen(true)
-      onOpenChange(false)
+      onSharedOpenChange(true)
     }
   }, [isOpen])
 
@@ -60,8 +58,7 @@ export function LiquidManager() {
           sharedRef(el)
         }}>
           <DropdownMenuItem onClick={() => {
-            setLocalOpen(true)
-            onOpenChange(false)
+            onLocalOpenChange(true)
           }} className="relative">
             <User className="mr-2 h-4 w-4" />
             <span className="font-sans">Local Liquid</span>
@@ -72,8 +69,7 @@ export function LiquidManager() {
             )}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => {
-            setSharedOpen(true)
-            onOpenChange(false)
+            onSharedOpenChange(true)
           }} className="relative">
             <Users className="mr-2 h-4 w-4" />
             <span className="font-sans">Shared Liquid</span>
@@ -88,13 +84,13 @@ export function LiquidManager() {
 
       <LiquidInjector
         type="local"
-        isOpen={localOpen}
-        onClose={() => setLocalOpen(false)}
+        isOpen={isLocalOpen}
+        onOpenChange={onLocalOpenChange}
       />
       <LiquidInjector
         type="shared"
-        isOpen={sharedOpen}
-        onClose={() => setSharedOpen(false)}
+        isOpen={isSharedOpen}
+        onOpenChange={onSharedOpenChange}
       />
     </>
   )

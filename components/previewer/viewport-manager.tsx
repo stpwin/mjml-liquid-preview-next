@@ -4,7 +4,7 @@ import { useRef, useState } from "react"
 import { Monitor, Smartphone, Maximize } from "lucide-react"
 import { useViewport } from "@/hooks/use-viewport"
 import { useKeyboard } from "@/hooks/use-keyboard"
-import { useDropdownState } from "@/hooks/use-dropdown-state"
+import { useUIState } from "@/hooks/use-ui-state"
 import { useHotkeys } from "react-hotkeys-hook"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import { UI_STATE } from "@/lib/constants"
 
 const VIEWPORT_PRESETS = {
   desktop: { width: 1280, height: 800 },
@@ -29,7 +30,7 @@ interface ViewportSize {
 export function ViewportManager() {
   const { preset, setPreset, setSize } = useViewport()
   const { isAltPressed } = useKeyboard()
-  const { isOpen, onOpenChange } = useDropdownState('viewport')
+  const { isOpen, onOpenChange } = useUIState(UI_STATE.VIEWPORT)
   const [customSize, setCustomSize] = useState<ViewportSize>({ width: 800, height: 600 })
   const [inputValues, setInputValues] = useState({
     width: customSize.width.toString(),

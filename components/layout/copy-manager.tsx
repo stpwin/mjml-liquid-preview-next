@@ -4,10 +4,10 @@ import { Copy, Check, Code, Braces } from "lucide-react"
 import { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
-import { useDropdownState } from "@/hooks/use-dropdown-state"
+import { useUIState } from "@/hooks/use-ui-state"
 import { useMJMLProcessor } from "@/hooks/use-mjml-processor"
 import { useLocalStorage } from "@/hooks/use-local-storage"
-import { STORAGE_KEYS } from "@/lib/constants"
+import { STORAGE_KEYS, UI_STATE } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -23,7 +23,7 @@ export function CopyManager() {
   const [sharedLiquid] = useLocalStorage(STORAGE_KEYS.SHARED_LIQUID, "{}")
   const { toast } = useToast()
   const [copying, setCopying] = useState(false)
-  const { isOpen, onOpenChange } = useDropdownState('copy')
+  const { isOpen, onOpenChange } = useUIState(UI_STATE.COPY)
   const { isAltPressed } = useKeyboard()
 
   const copyToClipboard = async (text: string, type: string) => {
