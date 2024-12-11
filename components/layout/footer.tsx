@@ -1,7 +1,7 @@
 "use client"
 
 import { useLayout } from "@/hooks/use-layout"
-import { Github, Link } from "lucide-react"
+import { Github, BookHeart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function Footer() {
@@ -14,20 +14,20 @@ export function Footer() {
       <div className="container mx-auto flex h-14 items-center justify-between">
         <div className="flex items-center space-x-4">
           <a
-            href="https://github.com/lohkokwee"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-foreground/80"
-          >
-            <Github className="h-4 w-5" />
-          </a>
-          <a
             href="https://kokwee.com"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground/80"
           >
-            <Link className="h-4 w-4" />
+            <BookHeart className="h-4 w-4" />
+          </a>
+          <a
+            href="https://github.com/lohkokwee/mjml-liquid-preview"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground/80"
+          >
+            <Github className="h-4 w-5" />
           </a>
         </div>
         <a
