@@ -159,6 +159,7 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
               value={value}
               onChange={setValue}
               className="min-h-[300px]"
+              isExpanded={isExpanded}
             />
           </div>
           <div className="flex justify-between items-center">
@@ -166,8 +167,11 @@ export function LiquidInjector({ type, isOpen, onClose }: LiquidInjectorProps) {
               variant="outline"
               size="icon"
               onClick={toggleExpand}
-              title={isExpanded ? "Shrink sheet (alt+e)" : "Expand sheet (alt+e)"}
-              className="relative"
+              title={isExpanded ? "Shrink sheet" : "Expand sheet"}
+              className={cn(
+                "relative",
+                isExpanded ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : ""
+              )}
             >
               {isExpanded ? (
                 <Minimize2 className="h-4 w-4" />

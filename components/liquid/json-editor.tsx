@@ -10,9 +10,10 @@ export interface JSONEditorProps {
   value: string
   onChange: (value: string) => void
   className?: string
+  isExpanded?: boolean
 }
 
-export function JSONEditor({ value, onChange, className }: JSONEditorProps) {
+export function JSONEditor({ value, onChange, className, isExpanded }: JSONEditorProps) {
   const { theme } = useTheme()
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light')
 
@@ -35,7 +36,7 @@ export function JSONEditor({ value, onChange, className }: JSONEditorProps) {
           EditorView.lineWrapping
         ]}
         className={className}
-        height="300px"
+        height={isExpanded ? "500px" : "300px"}
         basicSetup={{
           lineNumbers: true,
           foldGutter: true,

@@ -27,7 +27,7 @@ export function WelcomeToast() {
       ),
       duration: 10000,
     })
-  }, [])
+  }, [toast])
 
   return null
 } 
