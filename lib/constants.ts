@@ -3,7 +3,8 @@ export const STORAGE_KEYS = {
   EDITOR_AUTO_SAVE: "editor_auto_save",
   PREVIEW_SCALE_MODE: "preview_scale_mode",
   LOCAL_LIQUID: "local_liquid",
-  SHARED_LIQUID: "shared_liquid"
+  SHARED_LIQUID: "shared_liquid",
+  LIQUID_EXPANDED: "liquid_expanded"
 } as const;
 
 export const UI_STATE = {

@@ -55,7 +55,7 @@ export const ASCENDA_LIQUID_TEMPLATE = {
 
 export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useLocalStorage(STORAGE_KEYS.LIQUID_EXPANDED, false)
   const { toast } = useToast()
   const storageKey = type === "local" ? STORAGE_KEYS.LOCAL_LIQUID : STORAGE_KEYS.SHARED_LIQUID
   const [storedLiquid, setStoredLiquid] = useLocalStorage<Record<string, unknown>>(storageKey, {})
@@ -65,8 +65,6 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
   useEffect(() => {
     if (isOpen) {
       setValue(JSON.stringify(storedLiquid, null, 2))
-    } else {
-      setIsExpanded(false)
     }
   }, [isOpen, storedLiquid])
 
@@ -103,8 +101,8 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
   }
 
   const toggleExpand = useCallback(() => {
-    setIsExpanded(prev => !prev)
-  }, [])
+    setIsExpanded(!isExpanded)
+  }, [setIsExpanded, isExpanded])
 
   useHotkeys('alt+enter', (e) => {
     e.preventDefault()
