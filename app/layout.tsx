@@ -26,7 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MJML Preview",
+  title: "MJML + Liquid Renderer",
   description: "MJML Preview with Liquid templating",
 };
 
