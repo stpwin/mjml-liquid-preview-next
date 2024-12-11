@@ -50,7 +50,7 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
   useHotkeys('alt+f', (e) => {
     e.preventDefault();
     setIsScaleMode(!isScaleMode);
-  }, { enableOnFormTags: true });
+  }, { enableOnFormTags: true, enableOnContentEditable: true });
 
   if (!html) return (
     <div className="h-full flex items-center justify-center">

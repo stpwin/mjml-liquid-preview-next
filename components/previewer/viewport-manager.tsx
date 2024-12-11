@@ -91,7 +91,7 @@ export function ViewportManager() {
   useHotkeys('alt+1', (e) => {
     e.preventDefault()
     onOpenChange(true)
-  }, { enableOnFormTags: true })
+  }, { enableOnFormTags: true, enableOnContentEditable: true })
 
   const desktopRef = useHotkeys('alt+d', (e) => {
     e.preventDefault()

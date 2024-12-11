@@ -16,7 +16,7 @@ export function LayoutManager() {
     e.preventDefault()
     onOpenChange(false)
     toggleFullScreen()
-  }, { enableOnFormTags: true })
+  }, { enableOnFormTags: true, enableOnContentEditable: true })
 
   return (
     <Button
