@@ -14,7 +14,8 @@ export function WelcomeToast() {
         <div className="flex flex-col gap-4 mt-2">
           <div className="flex items-start gap-2">
             <span className="font-sans text-xs">
-              Pro tip: hold the <kbd className="px-1 py-0.5 rounded bg-muted">⌥</kbd> or <kbd className="px-1 py-0.5 rounded bg-muted">alt</kbd> keys to see keyboard shortcuts for faster navigation.
+              Hold the <kbd className="px-1 py-0.5 rounded bg-muted text-xs">⌥</kbd> or <kbd className="px-1 py-0.5 rounded bg-muted text-xs">alt</kbd> keys to see keyboard shortcuts for faster navigation 
+              or hit <kbd className="px-1 py-0.5 rounded bg-muted text-xs">alt + .</kbd> to see a list of hotkeys.
             </span>
           </div>
           <div className="flex flex-col gap-2">

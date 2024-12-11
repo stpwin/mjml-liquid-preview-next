@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useTheme } from "next-themes";
-import CodeMirrorBase from "@uiw/react-codemirror";
+import CodeMirrorBase, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
 import { Save, RotateCcw } from "lucide-react";
 import { DEFAULT_MJML, useMJMLProcessor } from "@/hooks/use-mjml-processor";
@@ -18,7 +18,7 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
   const { theme } = useTheme();
   const { autoSave, setAutoSave, setContent } = useMJMLProcessor();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<ReactCodeMirrorRef>(null);
   const { onOpenChange  } = useUIState(UI_STATE.MJML_EDITOR);
 
   useEffect(() => {
@@ -50,7 +50,9 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
   useHotkeys(HOTKEYS.FOCUS_EDITOR, (e) => {
     e.preventDefault();
     onOpenChange(true);
-    editorRef.current.view.focus();
+    setTimeout(() => {
+      editorRef.current?.view?.focus();
+    }, 100);
   }, { enableOnFormTags: true, enableOnContentEditable: true });
 
   return (

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ThemeManager } from "@/components/theme/theme-manager"
+import { ThemeManager } from "@/components/layout/theme-manager"
 import { LiquidManager } from "@/components/liquid/liquid-manager"
 import { ViewportManager } from "@/components/previewer/viewport-manager"
 import { CopyManager } from "@/components/layout/copy-manager"
