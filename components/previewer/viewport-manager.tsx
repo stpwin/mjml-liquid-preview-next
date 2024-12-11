@@ -28,7 +28,7 @@ interface ViewportSize {
 }
 
 export function ViewportManager() {
-  const { preset, setPreset, setSize } = useViewport(VIEWPORT_PRESETS.desktop)
+  const { preset, setPreset, setSize } = useViewport()
   const { isAltPressed } = useKeyboard()
   const { isOpen, onOpenChange } = useUIState(UI_STATE.VIEWPORT)
   const [customSize, setCustomSize] = useState<ViewportSize>({ width: 800, height: 600 })
