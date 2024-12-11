@@ -20,7 +20,7 @@ export function WelcomeToast() {
           <div className="flex flex-col gap-2">
             <div className="h-px bg-border" />
             <span className="font-sans text-xs text-muted-foreground text-right">
-              Developed by <Link href="https://github.com/lohkokwee" target="_blank" className="text-primary underline">@lohkokwee</Link> with ❤️
+              Developed with ❤︎ by <Link href="https://github.com/lohkokwee" target="_blank" className="text-primary underline">@lohkokwee</Link>
             </span>
           </div>
         </div>
