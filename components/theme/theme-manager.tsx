@@ -22,7 +22,7 @@ export function ThemeManager() {
 
   useHotkeys('alt+5', (e) => {
     e.preventDefault()
-    onOpenChange(true)
+    onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
 
   const lightRef = useHotkeys('alt+l', (e) => {

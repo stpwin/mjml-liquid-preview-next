@@ -55,7 +55,7 @@ export function CopyManager() {
 
   useHotkeys('alt+3', (e) => {
     e.preventDefault()
-    onOpenChange(true)
+    onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
 
   const htmlRef = useHotkeys('alt+h', (e) => {

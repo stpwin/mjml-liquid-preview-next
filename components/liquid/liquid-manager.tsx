@@ -23,7 +23,7 @@ export function LiquidManager() {
 
   useHotkeys('alt+2', (e) => {
     e.preventDefault()
-    onOpenChange(true)
+    onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
 
   const localRef = useHotkeys('alt+l', (e) => {
