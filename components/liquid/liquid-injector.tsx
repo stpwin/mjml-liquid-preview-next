@@ -202,7 +202,7 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
                 <span className="font-sans">Reset</span>
                 {isAltPressed && (
                   <span className="absolute mx-auto text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-                    r
+                    ⌫
                   </span>
                 )}
               </Button>

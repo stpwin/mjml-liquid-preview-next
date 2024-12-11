@@ -56,10 +56,11 @@ export const HOTKEYS = {
 
   // Liquid Injector
   LIQUID_SAVE: "alt+enter",
-  LIQUID_RESET: "alt+r",
+  LIQUID_RESET: "alt+backspace",
   LIQUID_GENERATE: "alt+g",
   LIQUID_EXPAND: "alt+e",
 
   // MJML Preview
-  TOGGLE_PREVIEW_SCALE: "alt+f"
+  TOGGLE_PREVIEW_SCALE: "alt+f",
+  REFRESH_PREVIEW: "alt+r"
 } as const;

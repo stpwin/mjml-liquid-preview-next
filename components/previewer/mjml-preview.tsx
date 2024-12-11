@@ -4,10 +4,11 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { useViewport } from "@/hooks/use-viewport";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { STORAGE_KEYS, HOTKEYS } from "@/lib/constants";
-import { Maximize, Minimize } from "lucide-react";
+import { Maximize, Minimize, RefreshCw } from "lucide-react";
 import { useLayout } from "@/hooks/use-layout";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useKeyboard } from "@/hooks/use-keyboard";
+import { useMJMLProcessor } from "@/hooks/use-mjml-processor";
 
 interface MJMLPreviewProps {
   html?: string;
@@ -16,10 +17,12 @@ interface MJMLPreviewProps {
 export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
   const { isFullScreen } = useLayout();
   const { size } = useViewport();
+  const { refreshTemplate } = useMJMLProcessor();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [isScaleMode, setIsScaleMode] = useLocalStorage(STORAGE_KEYS.PREVIEW_SCALE_MODE, true);
   const { isAltPressed } = useKeyboard();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const updateScale = useCallback(() => {
     if (containerRef.current) {
@@ -50,6 +53,19 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
   useHotkeys(HOTKEYS.TOGGLE_PREVIEW_SCALE, (e) => {
     e.preventDefault();
     setIsScaleMode(!isScaleMode);
+  }, { enableOnFormTags: true, enableOnContentEditable: true });
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    refreshTemplate();
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 1000);
+  };
+
+  useHotkeys(HOTKEYS.REFRESH_PREVIEW, (e) => {
+    e.preventDefault();
+    handleRefresh();
   }, { enableOnFormTags: true, enableOnContentEditable: true });
 
   if (!html) return (
@@ -91,26 +107,45 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
         </div>
       </div>
       
-      <button
-        onClick={() => setIsScaleMode(!isScaleMode)}
-        className={`absolute bottom-4 right-4 p-2 rounded-full transition-colors ${
-          isScaleMode 
-            ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" 
-            : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
-        }`}
-        title={isScaleMode ? "Switch to overflow mode" : "Switch to scale mode"}
-      >
-        {isScaleMode ? (
-          <Minimize className="h-[1.2rem] w-[1.2rem]" />
-        ) : (
-          <Maximize className="h-[1.2rem] w-[1.2rem]" />
-        )}
-        {isAltPressed && (
-          <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
-            f
-          </span>
-        )}
-      </button>
+      <div className="absolute bottom-4 right-4 flex gap-2">
+        <button
+          onClick={handleRefresh}
+          className={`p-2 rounded-full transition-colors relative ${
+            isRefreshing 
+              ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" 
+              : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+          }`}
+          title="Refresh preview"
+        >
+          <RefreshCw className={`h-[1.2rem] w-[1.2rem] ${isRefreshing ? 'animate-spin' : ''}`} />
+          {isAltPressed && (
+            <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
+              r
+            </span>
+          )}
+        </button>
+
+        <button
+          onClick={() => setIsScaleMode(!isScaleMode)}
+          className={`p-2 rounded-full transition-colors relative ${
+            isScaleMode 
+              ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" 
+              : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+          }`}
+          title={isScaleMode ? "Switch to overflow mode" : "Switch to scale mode"}
+        >
+          {isScaleMode ? (
+            <Minimize className="h-[1.2rem] w-[1.2rem]" />
+          ) : (
+            <Maximize className="h-[1.2rem] w-[1.2rem]" />
+          )}
+          {isAltPressed && (
+            <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
+              f
+            </span>
+          )}
+        </button>
+      </div>
     </div>
   );
 }
