@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { RefreshCcw, Save, Sparkles, Maximize2, Minimize2 } from "lucide-react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useLocalStorage } from "@/hooks/use-local-storage"
-import { STORAGE_KEYS, HOTKEYS } from "@/lib/constants"
+import { STORAGE_KEYS, HOTKEYS, DEFAULT_LOCAL_LIQUID, DEFAULT_SHARED_LIQUID, ASCENDA_LIQUID_TEMPLATE } from "@/lib/constants"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
@@ -24,41 +24,13 @@ interface LiquidInjectorProps {
   onOpenChange: (open: boolean) => void
 }
 
-export const ASCENDA_LIQUID_TEMPLATE = {
-  "hide_ascenda_brand": false,
-  "theme_brand_primary_color": "#22285A",
-  "theme_brand_secondary_color": "#FFC0CB",
-  "theme_brand_header_color": "#22285A",
-  "theme_brand_header_background_color": "#FFFFFF",
-  "theme_brand_header_font_family": "Lexend",
-  "theme_brand_header_font_family_url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap",
-  "theme_brand_body_font_color": "#22285A",
-  "theme_brand_body_font_family": "Lexend",
-  "theme_brand_body_font_family_url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap",
-  "theme_brand_navigation_background_color": "#FFFFFF",
-  "theme_brand_navigation_logo": "",
-  "theme_brand_navigation_text_color": "#22285A",
-  "theme_brand_footer_background_color": "#FFFFFF",
-  "theme_brand_footer_color": "#22285A",
-  "theme_brand_footer_logo": "",
-  "theme_brand_brand_logo": "",
-  "theme_brand_inverted_logo": "",
-  "theme_brand_primary_button_border_width": "1px",
-  "theme_brand_primary_button_border_radius": "4px",
-  "theme_brand_secondary_button_border_width": "1px",
-  "theme_brand_secondary_button_border_radius": "4px",
-  "theme_brand_primary_200_color": "#c8c9d6",
-  "theme_brand_secondary_200_color": "#ffeff2",
-  "ascenda_contact_email": "rewardscentral@support.ascenda.com",
-  "ascenda_contact_phone": "[+00 (00) 1234 5678]"
-}
-
 export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorProps) {
   const [value, setValue] = useState("")
   const [isExpanded, setIsExpanded] = useLocalStorage(STORAGE_KEYS.LIQUID_EXPANDED, false)
   const { toast } = useToast()
   const storageKey = type === "local" ? STORAGE_KEYS.LOCAL_LIQUID : STORAGE_KEYS.SHARED_LIQUID
-  const [storedLiquid, setStoredLiquid] = useLocalStorage<Record<string, unknown>>(storageKey, {})
+  const defaultLiquid = type === "local" ? DEFAULT_LOCAL_LIQUID : DEFAULT_SHARED_LIQUID
+  const [storedLiquid, setStoredLiquid] = useLocalStorage<Record<string, unknown>>(storageKey, defaultLiquid)
   const { refreshTemplate } = useMJMLProcessor()
   const { isAltPressed } = useKeyboard()
 
@@ -87,7 +59,7 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
   }
 
   const handleReset = () => {
-    setValue(JSON.stringify({}, null, 2))
+    setValue(JSON.stringify(defaultLiquid, null, 2))
     toast({
       description: "Reset Liquid to empty JSON - click Save to confirm your changes",
     })

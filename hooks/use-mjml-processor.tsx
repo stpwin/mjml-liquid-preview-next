@@ -3,18 +3,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { Liquid } from "liquidjs";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { STORAGE_KEYS } from "@/lib/constants";
-
-export const DEFAULT_MJML = `<mjml>
-  <mj-body>
-    <mj-section>
-      <mj-column>
-        <mj-divider border-color="#F45E43"></mj-divider>
-        <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Hello {{ message }}</mj-text>
-      </mj-column>
-    </mj-section>
-  </mj-body>
-</mjml>`;
+import { DEFAULT_LOCAL_LIQUID, DEFAULT_MJML, DEFAULT_SHARED_LIQUID, STORAGE_KEYS } from "@/lib/constants";
 
 interface MJMLContextType {
   content: string;
@@ -60,9 +49,9 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
         const mjml2html = (await import("mjml-browser")).default;
         const engine = new Liquid();
         
-        // Get stored liquid templates
-        const localLiquid = localStorage.getItem("local_liquid") || "{}";
-        const sharedLiquid = localStorage.getItem("shared_liquid") || "{}";
+        // Get stored liquid templates with defaults
+        const localLiquid = localStorage.getItem(STORAGE_KEYS.LOCAL_LIQUID) || JSON.stringify(DEFAULT_LOCAL_LIQUID);
+        const sharedLiquid = localStorage.getItem(STORAGE_KEYS.SHARED_LIQUID) || JSON.stringify(DEFAULT_SHARED_LIQUID);
         
         // Parse liquid templates
         const localVars = JSON.parse(localLiquid);

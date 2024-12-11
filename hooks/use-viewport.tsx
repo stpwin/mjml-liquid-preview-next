@@ -1,5 +1,6 @@
 "use client"
 
+import { VIEWPORT_PRESETS } from "@/components/previewer/viewport-manager"
 import { createContext, useContext, useState } from "react"
 
 interface ViewportSize {
@@ -17,7 +18,7 @@ interface ViewportContextType {
 const ViewportContext = createContext<ViewportContextType | null>(null)
 
 export function ViewportProvider({ children }: { children: React.ReactNode }) {
-  const [size, setSize] = useState<ViewportSize>({ width: 1280, height: 800 })
+  const [size, setSize] = useState<ViewportSize>(VIEWPORT_PRESETS.desktop)
   const [preset, setPreset] = useState<"desktop" | "mobile" | "custom">("desktop")
 
   return (

@@ -102,3 +102,121 @@ export const HOTKEYS = {
     )
   )
 } as const;
+
+export const DEFAULT_SHARED_LIQUID = {
+  "app_name": "MJML Liquid Preview",
+  "brand": {
+    "primary_color": "#F97316",
+  },
+  "cta": {
+    "text": "Try Me!",
+    "url": "https://github.com/lohkokwee/mjml-liquid-preview"
+  }
+};
+
+export const DEFAULT_LOCAL_LIQUID = {
+  "user": {
+    "id": "32418121239",
+    "name": "random person on the internet"
+  },
+  "features": [
+    { "title": "Trying out different viewports", "shortcut": "alt + 1" },
+    { 
+      "title": "Accessing and updating local & shared liquid", 
+      "shortcut": "alt + 2", 
+      "description": "Local liquids carry the concept of more dynamic attributes, while shared liquids carry the concept of more static attributes. At it's core, both evaluate to the same JSON data." 
+    },
+    { "title": "Quick copying MJML, HTML, local & shared liquid", "shortcut": "alt + 3" },
+    { "title": "Toggling fullscreen mode", "shortcut": "alt + 4" },
+    { "title": "Switching themes", "shortcut": "alt + 5" }
+  ]
+};
+
+export const DEFAULT_MJML = `<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-family="helvetica" />
+      <mj-text font-size="16px" color="#333" />
+      <mj-button background-color="{{ brand.primary_color }}" />
+    </mj-attributes>
+  </mj-head>
+
+  <mj-body>
+    <mj-section background-color="{{ brand.primary_color }}">
+      <mj-column>
+        <mj-text color="#fff" font-size="28px" align="center">
+          Welcome to {{ app_name }}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px">
+          Hey {{ user.name }}! 👋
+        </mj-text>
+        <mj-text>
+          Ready to explore as our {{ user.id }}th user? Give these features a shot!
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        {% for feature in features %}
+          <mj-text>
+            <strong>{{ feature.title }}</strong>
+          </mj-text>
+          <mj-text>
+            • Hotkey: <code>{{ feature.shortcut }}</code>
+          </mj-text>
+          {% if feature.description %}
+            <mj-text>
+              {{ feature.description }}
+            </mj-text>
+          {% endif %}
+        {% endfor %}
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column>
+        <mj-button href="{{ cta.url }}">
+          {{ cta.text }}
+        </mj-button>
+        <mj-text align="center" font-size="14px" color="#666">
+          Hit <code>alt + .</code> anytime to see all shortcuts!
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>`;
+
+export const ASCENDA_LIQUID_TEMPLATE = {
+  "hide_ascenda_brand": false,
+  "theme_brand_primary_color": "#22285A",
+  "theme_brand_secondary_color": "#FFC0CB",
+  "theme_brand_header_color": "#22285A",
+  "theme_brand_header_background_color": "#FFFFFF",
+  "theme_brand_header_font_family": "Lexend",
+  "theme_brand_header_font_family_url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap",
+  "theme_brand_body_font_color": "#22285A",
+  "theme_brand_body_font_family": "Lexend",
+  "theme_brand_body_font_family_url": "https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap",
+  "theme_brand_navigation_background_color": "#FFFFFF",
+  "theme_brand_navigation_logo": "",
+  "theme_brand_navigation_text_color": "#22285A",
+  "theme_brand_footer_background_color": "#FFFFFF",
+  "theme_brand_footer_color": "#22285A",
+  "theme_brand_footer_logo": "",
+  "theme_brand_brand_logo": "",
+  "theme_brand_inverted_logo": "",
+  "theme_brand_primary_button_border_width": "1px",
+  "theme_brand_primary_button_border_radius": "4px",
+  "theme_brand_secondary_button_border_width": "1px",
+  "theme_brand_secondary_button_border_radius": "4px",
+  "theme_brand_primary_200_color": "#c8c9d6",
+  "theme_brand_secondary_200_color": "#ffeff2",
+  "ascenda_contact_email": "rewardscentral@support.ascenda.com",
+  "ascenda_contact_phone": "[+00 (00) 1234 5678]"
+}

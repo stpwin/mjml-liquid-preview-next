@@ -17,8 +17,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { UI_STATE, HOTKEYS } from "@/lib/constants"
 
-const VIEWPORT_PRESETS = {
-  desktop: { width: 1280, height: 800 },
+export const VIEWPORT_PRESETS = {
+  desktop: { width: 780, height: 800 },
   mobile: { width: 375, height: 667 }
 } as const
 
@@ -28,7 +28,7 @@ interface ViewportSize {
 }
 
 export function ViewportManager() {
-  const { preset, setPreset, setSize } = useViewport()
+  const { preset, setPreset, setSize } = useViewport(VIEWPORT_PRESETS.desktop)
   const { isAltPressed } = useKeyboard()
   const { isOpen, onOpenChange } = useUIState(UI_STATE.VIEWPORT)
   const [customSize, setCustomSize] = useState<ViewportSize>({ width: 800, height: 600 })

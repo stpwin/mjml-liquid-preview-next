@@ -5,9 +5,9 @@ import { useTheme } from "next-themes";
 import CodeMirrorBase, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
 import { Save, RotateCcw } from "lucide-react";
-import { DEFAULT_MJML, useMJMLProcessor } from "@/hooks/use-mjml-processor";
+import { useMJMLProcessor } from "@/hooks/use-mjml-processor";
 import { useHotkeys } from "react-hotkeys-hook";
-import { HOTKEYS, UI_STATE } from "@/lib/constants";
+import { DEFAULT_MJML, HOTKEYS, UI_STATE } from "@/lib/constants";
 import { useUIState } from "@/hooks/use-ui-state";
 
 export interface MJMLEditorProps {
@@ -52,7 +52,7 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
     onOpenChange(true);
     setTimeout(() => {
       editorRef.current?.view?.focus();
-    }, 100);
+    }, 300);
   }, { enableOnFormTags: true, enableOnContentEditable: true });
 
   return (
