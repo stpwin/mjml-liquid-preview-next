@@ -26,6 +26,8 @@ export const HOTKEY_SECTIONS = [
     title: "Global Navigation",
     hotkeys: [
       { id: "FOCUS_EDITOR", key: "alt+`", description: "Focus MJML editor" },
+      { id: "SNAP_PREVIEW_LEFT", key: "alt+left", description: "Snap previewer to the left" },
+      { id: "SNAP_PREVIEW_RIGHT", key: "alt+right", description: "Snap previewer to the right" },
       { id: "TOGGLE_HELP", key: "alt+.", description: "Toggle help dialog" }
     ]
   },
@@ -91,9 +93,7 @@ export const HOTKEY_SECTIONS = [
     title: "MJML Preview",
     hotkeys: [
       { id: "TOGGLE_PREVIEW_SCALE", key: "alt+f", description: "Toggle preview scale mode" },
-      { id: "REFRESH_PREVIEW", key: "alt+r", description: "Refresh preview" },
-      { id: "SNAP_PREVIEW_LEFT", key: "alt+left", description: "Snap preview left" },
-      { id: "SNAP_PREVIEW_RIGHT", key: "alt+right", description: "Snap preview right" }
+      { id: "REFRESH_PREVIEW", key: "alt+r", description: "Refresh preview" }
     ]
   }
 ] as const;
