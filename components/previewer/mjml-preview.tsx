@@ -102,6 +102,30 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
                 width: size.width,
                 height: size.height,
               }}
+              onLoad={(e) => {
+                const iframe = e.target as HTMLIFrameElement;
+                if (iframe.contentWindow) {
+                  // Forward all keyboard events from iframe to parent
+                  ['keydown', 'keyup', 'keypress'].forEach(eventType => {
+                    iframe.contentWindow?.addEventListener(eventType, ((event: Event) => {
+                      const keyboardEvent = event as KeyboardEvent;
+                      const simulatedEvent = new KeyboardEvent(eventType, {
+                        key: keyboardEvent.key,
+                        code: keyboardEvent.code,
+                        ctrlKey: keyboardEvent.ctrlKey,
+                        shiftKey: keyboardEvent.shiftKey,
+                        altKey: keyboardEvent.altKey,
+                        metaKey: keyboardEvent.metaKey,
+                        bubbles: true,
+                        cancelable: true,
+                        composed: true
+                      });
+                      
+                      document.dispatchEvent(simulatedEvent);
+                    }) as EventListener);
+                  });
+                }
+              }}
             />
           </div>
         </div>

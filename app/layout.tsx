@@ -38,8 +38,22 @@ export const metadata: Metadata = {
     description: "Free online MJML editor with Liquid template support. Preview, edit, and test your MJML email templates with local and shared Liquid variables in real-time.",
     url: "https://www.mjmliquid.com/",
     siteName: "MJML Liquid Preview",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "MJML Liquid Preview"
+      }
+    ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MJML Liquid Preview - Online MJML Editor with Liquid Support",
+    description: "Free online MJML editor with Liquid template support. Preview, edit, and test your MJML email templates with local and shared Liquid variables in real-time.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

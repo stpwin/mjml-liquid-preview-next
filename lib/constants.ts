@@ -9,6 +9,7 @@ export const STORAGE_KEYS = {
 
 export const UI_STATE = {
   MJML_EDITOR: "mjml_editor",
+  RESIZABLE_PANEL: "resizable_panel",
   THEME: "theme",
   LIQUID: "liquid",
   COPY: "copy",
@@ -90,7 +91,9 @@ export const HOTKEY_SECTIONS = [
     title: "MJML Preview",
     hotkeys: [
       { id: "TOGGLE_PREVIEW_SCALE", key: "alt+f", description: "Toggle preview scale mode" },
-      { id: "REFRESH_PREVIEW", key: "alt+r", description: "Refresh preview" }
+      { id: "REFRESH_PREVIEW", key: "alt+r", description: "Refresh preview" },
+      { id: "SNAP_PREVIEW_LEFT", key: "alt+left", description: "Snap preview left" },
+      { id: "SNAP_PREVIEW_RIGHT", key: "alt+right", description: "Snap preview right" }
     ]
   }
 ] as const;

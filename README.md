@@ -48,35 +48,7 @@ A web-based tool for previewing MJML email templates with Liquid templating supp
 * Switch between light and dark themes
 * Custom viewport sizes available for precise testing
 
-# Contributing
-
-Welcome any and all contributions, here's how you can help!
-
-1. Fork the repository
-2. Create your feature branch
-
-```bash
-  git checkout -b feature/amazing-feature
-```
-3. Commit your changes
-
-```bash
-  git commit -m 'Add some amazing feature'
-```
-4. Push to the branch
-
-```bash
-  git push origin feature/amazing-feature
-```
-5. Open a Pull Request
-
-## Development Guidelines
-- Follow the existing code style
-- Add comments for complex logic
-- Update documentation as needed
-- Test your changes thoroughly
-
 # Buy me a coffee!
-If you find this tool helpful, consider supporting its development ❤️
+Loving this? Consider buying me a coffee! Your support (and coffee) lights up my world! 💖
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/kokwee)
