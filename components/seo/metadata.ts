@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 export const siteConfig = {
   name: "MJML Editor",
-  title: "MJML Editor - Online MJML Email Template Builder with Liquid Support",
+  title: "MJML Editor • Online MJML Email Template Builder with Liquid Support",
   description: "Free online MJML editor and email template builder. Create, edit, and preview responsive email templates with MJML and Liquid support. Real-time preview, with local and shared variables for flexible Liquid templating.",
   keywords: "mjml, mjml editor, mjml online, email template builder, mjml template, email editor, liquid template, mjml playground, responsive email, email development, mjml live editor, free mjml editor",
   authors: [{ name: "Kok Wee", url: "https://kokwee.com" }],
