@@ -34,9 +34,10 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
   };
 
   const toggleAutoSave = () => {
-    setAutoSave(!autoSave);
-    if (!autoSave) {
-      setContent(value);
+    const newAutoSaveState = !autoSave;
+    setAutoSave(newAutoSaveState);
+    if (newAutoSaveState) {
+      setContent(value, true);
     }
   };
 

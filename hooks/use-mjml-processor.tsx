@@ -7,7 +7,7 @@ import { DEFAULT_LOCAL_LIQUID, DEFAULT_MJML, DEFAULT_SHARED_LIQUID, STORAGE_KEYS
 
 interface MJMLContextType {
   content: string;
-  setContent: (content: string) => void;
+  setContent: (content: string, forceSave?: boolean) => void;
   html: string;
   error: Error | null;
   isProcessing: boolean;
@@ -33,9 +33,9 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const setContent: MJMLContextType["setContent"] = (newContent) => {
+  const setContent: MJMLContextType["setContent"] = (newContent, forceSave = false) => {
     setInternalContent(newContent);
-    if (autoSave) {
+    if (autoSave || forceSave) {
       localStorage.setItem(STORAGE_KEYS.EDITOR_CONTENT, JSON.stringify(newContent));
     }
   };
