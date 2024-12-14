@@ -101,15 +101,22 @@ export const HOTKEY_SECTIONS: {
   }
 ] as const;
 
-export const HOTKEYS: Record<string, string> = {
+export const HOTKEYS: Record<string, { key: string, description: string, hint: string }> = {
   ...Object.fromEntries(
     HOTKEY_SECTIONS.flatMap(section =>
-      section.hotkeys.map(hotkey => [hotkey.id, hotkey.key])
+      section.hotkeys.map(hotkey => [
+        hotkey.id,
+        {
+          key: hotkey.key, 
+          description: hotkey.description,
+          hint: hotkey.key.split("+")[1]
+        }
+      ])
     )
   )
 } as const;
 
-export const DEFAULT_SHARED_LIQUID: Record<string, any> = {
+export const DEFAULT_SHARED_LIQUID: Record<string, unknown> = {
   "app_name": "MJML Liquid Preview",
   "brand": {
     "primary_color": "#F97316",
@@ -120,7 +127,7 @@ export const DEFAULT_SHARED_LIQUID: Record<string, any> = {
   }
 };
 
-export const DEFAULT_LOCAL_LIQUID: Record<string, any> = {
+export const DEFAULT_LOCAL_LIQUID: Record<string, unknown> = {
   "user": {
     "id": "32418121239",
     "name": "random person on the internet"
@@ -198,7 +205,7 @@ export const DEFAULT_MJML: string = `<mjml>
   </mj-body>
 </mjml>`;
 
-export const ASCENDA_LIQUID_TEMPLATE: Record<string, any> = {
+export const ASCENDA_LIQUID_TEMPLATE: Record<string, unknown> = {
   "hide_ascenda_brand": false,
   "theme_brand_primary_color": "#22285A",
   "theme_brand_secondary_color": "#FFC0CB",

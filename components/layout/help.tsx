@@ -2,10 +2,8 @@
 
 import { HelpCircle } from "lucide-react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useKeyboard } from "@/hooks/use-keyboard"
-import { useUIState } from "@/hooks/use-ui-state"
-import { UI_STATE, HOTKEYS, HOTKEY_SECTIONS } from "@/lib/constants"
-import { Button } from "@/components/ui/button"
+
+
 import {
   Dialog,
   DialogContent,
@@ -14,10 +12,14 @@ import {
 } from "@/components/ui/dialog"
 import { DialogDescription } from "@radix-ui/react-dialog"
 
+import { useUIState } from "@/hooks/use-ui-state"
+import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
+import { UI_STATE, HOTKEYS, HOTKEY_SECTIONS } from "@/lib/constants"
+
 export function HelpDialog() {
   const { isOpen, onOpenChange } = useUIState(UI_STATE.HELP)
 
-  useHotkeys(HOTKEYS.TOGGLE_HELP, (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_HELP.key, (e) => {
     e.preventDefault()
     onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
@@ -60,22 +62,16 @@ export function HelpDialog() {
 }
 
 export function HelpButton() {
-  const { isOpen, onOpenChange } = useUIState(UI_STATE.HELP)
-  const { isAltPressed } = useKeyboard()
+  const { onOpenChange } = useUIState(UI_STATE.HELP)
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
+    <HotkeyIconButton
+      icon={HelpCircle}
+      hotkey={HOTKEYS.TOGGLE_HELP.hint}
+      srText={HOTKEYS.TOGGLE_HELP.description}
+      title={HOTKEYS.TOGGLE_HELP.description}
       onClick={() => onOpenChange(true)}
       className="relative"
-    >
-      <HelpCircle className="h-[1.2rem] w-[1.2rem]" />
-      {isAltPressed && !isOpen && (
-        <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
-          .
-        </span>
-      )}
-    </Button>
+    />
   )
 } 

@@ -48,13 +48,17 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
     }
   };
 
-  useHotkeys(HOTKEYS.FOCUS_EDITOR, (e) => {
-    e.preventDefault();
-    onOpenChange(true);
-    setTimeout(() => {
-      editorRef.current?.view?.focus();
-    }, 300);
-  }, { enableOnFormTags: true, enableOnContentEditable: true });
+  useHotkeys(
+    HOTKEYS.FOCUS_EDITOR.key,
+    (e) => {
+      e.preventDefault();
+      onOpenChange(true);
+      setTimeout(() => {
+        editorRef.current?.view?.focus();
+      }, 300);
+    },
+    { enableOnFormTags: true, enableOnContentEditable: true }
+  );
 
   return (
     <div className="relative h-full">

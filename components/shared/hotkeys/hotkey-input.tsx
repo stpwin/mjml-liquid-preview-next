@@ -1,8 +1,11 @@
 "use client"
 
 import { forwardRef } from "react"
+
 import { Input } from "@/components/ui/input"
+
 import { HotkeyHint } from "./hotkey-hint"
+import { useKeyboard } from "@/hooks/use-keyboard"
 
 interface HotkeyInputProps extends React.ComponentProps<"input"> {
   hotkey: string
@@ -10,8 +13,10 @@ interface HotkeyInputProps extends React.ComponentProps<"input"> {
   units?: string
 }
 
-export const HotkeyInput = forwardRef<HTMLInputElement, HotkeyInputProps>(
+const HotkeyInput = forwardRef<HTMLInputElement, HotkeyInputProps>(
   ({ hotkey, className = "", units = "", ...props }, ref) => {
+    const { isAltPressed } = useKeyboard()
+
     return (
       <div className="relative w-full">
         <Input
@@ -20,12 +25,16 @@ export const HotkeyInput = forwardRef<HTMLInputElement, HotkeyInputProps>(
           {...props}
         />
         {units && <span className="font-mono absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">{units}</span>}
-        <HotkeyHint 
-          hotkey={hotkey} 
-          variant="middle-right" 
+        <HotkeyHint
+          show={isAltPressed}
+          hotkey={hotkey}
+          variant="middle-right"
           className="top-1/2 -translate-y-1/2 text-xs text-muted-foreground"
         />
       </div>
     )
   }
 )
+HotkeyInput.displayName = "HotkeyInput"
+
+export { HotkeyInput }

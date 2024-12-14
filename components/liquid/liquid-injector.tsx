@@ -2,21 +2,24 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { RefreshCcw, Save, Sparkles, Maximize2, Minimize2 } from "lucide-react"
-import { useHotkeys } from "react-hotkeys-hook"
-import { useLocalStorage } from "@/hooks/use-local-storage"
-import { STORAGE_KEYS, HOTKEYS, DEFAULT_LOCAL_LIQUID, DEFAULT_SHARED_LIQUID, ASCENDA_LIQUID_TEMPLATE } from "@/lib/constants"
-import { useToast } from "@/hooks/use-toast"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+
 import { JSONEditor } from "./json-editor"
 import useMJMLProcessor from "@/hooks/use-mjml-processor"
-import { cn } from "@/lib/utils"
+import { useLocalStorage } from "@/hooks/use-local-storage"
 import { useKeyboard } from "@/hooks/use-keyboard"
+import { useToast } from "@/hooks/use-toast"
+import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
+import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
+import { STORAGE_KEYS, HOTKEYS, DEFAULT_LOCAL_LIQUID, DEFAULT_SHARED_LIQUID, ASCENDA_LIQUID_TEMPLATE } from "@/lib/constants"
 
 interface LiquidInjectorProps {
   type: "local" | "shared"
@@ -76,33 +79,37 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
     setIsExpanded(!isExpanded)
   }, [setIsExpanded, isExpanded])
 
-  useHotkeys(HOTKEYS.LIQUID_SAVE, (e) => {
-    e.preventDefault()
-    if (isOpen) {
-      handleSave()
-    }
-  }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen, handleSave])
+  useHotkeysHandler({
+    hotkey: HOTKEYS.LIQUID_SAVE.key,
+    onTrigger: () => {
+      if (isOpen) { handleSave() }
+    },
+    dependencies: [isOpen, handleSave]
+  })
 
-  useHotkeys(HOTKEYS.LIQUID_RESET, (e) => {
-    e.preventDefault()
-    if (isOpen) {
-      handleReset()
-    }
-  }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen])
+  useHotkeysHandler({
+    hotkey: HOTKEYS.LIQUID_RESET.key,
+    onTrigger: () => {
+      if (isOpen) { handleReset() }
+    },
+    dependencies: [isOpen, handleReset]
+  })
 
-  useHotkeys(HOTKEYS.LIQUID_GENERATE, (e) => {
-    e.preventDefault()
-    if (isOpen && type === "shared") {
-      handleGenerateAscenda()
-    }
-  }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen, type])
+  useHotkeysHandler({
+    hotkey: HOTKEYS.LIQUID_GENERATE.key,
+    onTrigger: () => {
+      if (isOpen && type === "shared") { handleGenerateAscenda() }
+    },
+    dependencies: [isOpen, type]
+  })
 
-  useHotkeys(HOTKEYS.LIQUID_EXPAND, (e) => {
-    e.preventDefault()
-    if (isOpen) {
-      toggleExpand()
-    }
-  }, { enableOnFormTags: true, enableOnContentEditable: true }, [isOpen, toggleExpand])
+  useHotkeysHandler({
+    hotkey: HOTKEYS.LIQUID_EXPAND.key,
+    onTrigger: () => {
+      if (isOpen) { toggleExpand() }
+    },
+    dependencies: [isOpen, toggleExpand]
+  })
 
   const renderAscendaLiquidGenerateButton = () => {
     if (type === "shared") {
@@ -113,10 +120,10 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
           onClick={handleGenerateAscenda}
         >
           <Sparkles className="mr-2 h-4 w-4" />
-          <span className="font-sans">Generate Ascenda liquid</span>
+          <span className="font-sans">{HOTKEYS.LIQUID_GENERATE.description}</span>
           {isAltPressed && (
             <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              g
+              {HOTKEYS.LIQUID_GENERATE.hint}
             </span>
           )}
         </Button>
@@ -147,27 +154,15 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
             />
           </div>
           <div className="flex justify-between items-center">
-            <Button
-              variant="outline"
-              size="icon"
+            <HotkeyIconButton
+              icon={isExpanded ? Minimize2 : Maximize2}
+              hotkey={HOTKEYS.LIQUID_EXPAND.hint}
+              srText={HOTKEYS.LIQUID_EXPAND.description}
+              title={HOTKEYS.LIQUID_EXPAND.description}
               onClick={toggleExpand}
-              title={isExpanded ? "Shrink sheet" : "Expand sheet"}
-              className={cn(
-                "relative",
-                isExpanded ? "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400" : ""
-              )}
-            >
-              {isExpanded ? (
-                <Minimize2 className="h-4 w-4" />
-              ) : (
-                <Maximize2 className="h-4 w-4" />
-              )}
-              {isAltPressed && (
-                <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
-                  e
-                </span>
-              )}
-            </Button>
+              isActive={isExpanded}
+              variant="outline"
+            />
             <div className="flex items-center space-x-2">
               <Button variant="outline" onClick={handleReset} className="relative">
                 <RefreshCcw className="h-4 w-4" />

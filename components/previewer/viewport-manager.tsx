@@ -2,21 +2,22 @@
 
 import { useRef, useState } from "react"
 import { Monitor, Smartphone, Maximize } from "lucide-react"
-import { useViewport } from "@/hooks/use-viewport"
-import { useKeyboard } from "@/hooks/use-keyboard"
-import { useUIState } from "@/hooks/use-ui-state"
+
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { UI_STATE, HOTKEYS } from "@/lib/constants"
-import { HotkeyInput } from "../shared/hotkeys/hotkey-input"
+import { useViewport } from "@/hooks/use-viewport"
+import { useUIState } from "@/hooks/use-ui-state"
 import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
+import { HotkeyInput } from "../shared/hotkeys/hotkey-input"
+import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
+import { HotkeyDropdownItem } from "../shared/hotkeys/hotkey-dropdown-item"
+import { UI_STATE, HOTKEYS } from "@/lib/constants"
 
 export const VIEWPORT_PRESETS = {
   desktop: { width: 780, height: 800 },
@@ -30,7 +31,6 @@ interface ViewportSize {
 
 export function ViewportManager() {
   const { preset, setPreset, setSize } = useViewport()
-  const { isAltPressed } = useKeyboard()
   const { isOpen, onOpenChange } = useUIState(UI_STATE.VIEWPORT)
   const [customSize, setCustomSize] = useState<ViewportSize>({ width: 800, height: 600 })
   const [inputValues, setInputValues] = useState({
@@ -91,14 +91,14 @@ export function ViewportManager() {
   }
 
   useHotkeysHandler({
-    hotkey: HOTKEYS.TOGGLE_VIEWPORT,
+    hotkey: HOTKEYS.TOGGLE_VIEWPORT.key,
     onTrigger: () => {
       onOpenChange(!isOpen)
     }
   })
 
   const desktopRef = useHotkeysHandler({
-    hotkey: HOTKEYS.VIEWPORT_DESKTOP,
+    hotkey: HOTKEYS.VIEWPORT_DESKTOP.key,
     onTrigger: () => {
       if (isOpen) handlePresetChange("desktop")
     },
@@ -107,7 +107,7 @@ export function ViewportManager() {
     
 
   const mobileRef = useHotkeysHandler({
-    hotkey: HOTKEYS.VIEWPORT_MOBILE,
+    hotkey: HOTKEYS.VIEWPORT_MOBILE.key,
     onTrigger: () => {
       if (isOpen) handlePresetChange("mobile")
     },
@@ -116,7 +116,7 @@ export function ViewportManager() {
   
 
   useHotkeysHandler({
-    hotkey: HOTKEYS.VIEWPORT_WIDTH,
+    hotkey: HOTKEYS.VIEWPORT_WIDTH.key,
     onTrigger: () => {
       if (isOpen) {
         widthInputRef.current?.focus()
@@ -127,7 +127,7 @@ export function ViewportManager() {
   })
 
   useHotkeysHandler({
-    hotkey: HOTKEYS.VIEWPORT_HEIGHT,
+    hotkey: HOTKEYS.VIEWPORT_HEIGHT.key,
     onTrigger: () => {
       if (isOpen) {
         heightInputRef.current?.focus()
@@ -140,39 +140,30 @@ export function ViewportManager() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
-          {preset === "desktop" && <Monitor className="h-[1.2rem] w-[1.2rem]" />}
-          {preset === "mobile" && <Smartphone className="h-[1.2rem] w-[1.2rem]" />}
-          {preset === "custom" && <Maximize className="h-[1.2rem] w-[1.2rem]" />}
-          {isAltPressed && !isOpen && (
-            <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
-              1
-            </span>
-          )}
-        </Button>
+        <HotkeyIconButton
+          icon={preset === "desktop" ? Monitor : preset === "mobile" ? Smartphone : Maximize}
+          hotkey={HOTKEYS.TOGGLE_VIEWPORT.hint}
+          srText={HOTKEYS.TOGGLE_VIEWPORT.description}
+          title={HOTKEYS.TOGGLE_VIEWPORT.description}
+          showHotkeyOverride={isOpen}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[200px]" ref={(el) => {
         desktopRef(el)
         mobileRef(el)
       }}>
-        <DropdownMenuItem onClick={() => handlePresetChange("desktop")} className="relative">
-          <Monitor className="mr-2 h-4 w-4" />
-          <span className="font-sans">Desktop</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              d
-            </span>
-          )}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handlePresetChange("mobile")} className="relative">
-          <Smartphone className="mr-2 h-4 w-4" />
-          <span className="font-sans">Mobile</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              m
-            </span>
-          )}
-        </DropdownMenuItem>
+        <HotkeyDropdownItem
+          icon={Monitor}
+          label="Desktop"
+          hotkey={HOTKEYS.VIEWPORT_DESKTOP.hint}
+          onClick={() => handlePresetChange("desktop")}
+        />
+        <HotkeyDropdownItem
+          icon={Smartphone}
+          label="Mobile"
+          hotkey={HOTKEYS.VIEWPORT_MOBILE.hint}
+          onClick={() => handlePresetChange("mobile")}
+        />
         <DropdownMenuSeparator />
         <div className="p-2">
           <div className="mb-2">
@@ -181,7 +172,7 @@ export function ViewportManager() {
           <div className="flex gap-2 mb-2">
             <div className="relative w-full">
               <HotkeyInput
-                hotkey="w"
+                hotkey={HOTKEYS.VIEWPORT_WIDTH.hint}
                 units="w"
                 ref={widthInputRef}
                 type="text"
@@ -193,7 +184,7 @@ export function ViewportManager() {
             </div>
             <div className="relative w-full">
               <HotkeyInput
-                hotkey="h"
+                hotkey={HOTKEYS.VIEWPORT_HEIGHT.hint}
                 units="h"
                 ref={heightInputRef}
                 type="text"

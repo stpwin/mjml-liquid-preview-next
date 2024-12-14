@@ -1,41 +1,28 @@
 "use client"
 
 import { Maximize2, Minimize2 } from "lucide-react"
-import { useHotkeys } from "react-hotkeys-hook"
-import { useKeyboard } from "@/hooks/use-keyboard"
+
 import { useLayout } from "@/hooks/use-layout"
-import { useUIState } from "@/hooks/use-ui-state"
-import { UI_STATE, HOTKEYS } from "@/lib/constants"
-import { Button } from "@/components/ui/button"
+import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
+import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
+import { HOTKEYS } from "@/lib/constants"
 
 export function LayoutManager() {
   const { isFullScreen, toggleFullScreen } = useLayout()
-  const { isAltPressed } = useKeyboard()
-  const { onOpenChange } = useUIState(UI_STATE.LAYOUT)
 
-  useHotkeys(HOTKEYS.TOGGLE_LAYOUT, (e) => {
-    e.preventDefault()
-    onOpenChange(false)
-    toggleFullScreen()
-  }, { enableOnFormTags: true, enableOnContentEditable: true })
+  useHotkeysHandler({
+    hotkey: HOTKEYS.TOGGLE_LAYOUT.key,
+    onTrigger: () => { toggleFullScreen() }
+  })
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
+    <HotkeyIconButton
+      icon={isFullScreen ? Minimize2 : Maximize2}
+      hotkey={HOTKEYS.TOGGLE_LAYOUT.hint}
+      srText={HOTKEYS.TOGGLE_LAYOUT.description}
+      title={HOTKEYS.TOGGLE_LAYOUT.description}
       onClick={toggleFullScreen}
       className={`relative ${isFullScreen ? 'bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400' : ''}`}
-    >
-      {isFullScreen ? (
-        <Minimize2 className="h-[1.2rem] w-[1.2rem]" />
-      ) : (
-        <Maximize2 className="h-[1.2rem] w-[1.2rem]" />
-      )}
-      {isAltPressed && (
-        <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
-          4
-        </span>
-      )}
-    </Button>
+    />
   )
 } 

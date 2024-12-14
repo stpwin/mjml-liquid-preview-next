@@ -50,7 +50,7 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
     };
   }, [size.width, isScaleMode, updateScale]);
 
-  useHotkeys(HOTKEYS.TOGGLE_PREVIEW_SCALE, (e) => {
+  useHotkeys(HOTKEYS.TOGGLE_PREVIEW_SCALE.key, (e) => {
     e.preventDefault();
     setIsScaleMode(!isScaleMode);
   }, { enableOnFormTags: true, enableOnContentEditable: true });
@@ -63,7 +63,7 @@ export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
     }, 1000);
   };
 
-  useHotkeys(HOTKEYS.REFRESH_PREVIEW, (e) => {
+  useHotkeys(HOTKEYS.REFRESH_PREVIEW.key, (e) => {
     e.preventDefault();
     handleRefresh();
   }, { enableOnFormTags: true, enableOnContentEditable: true });

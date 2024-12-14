@@ -1,7 +1,7 @@
 "use client"
 
 import { Info } from "lucide-react"
-import { Button } from "@/components/ui/button"
+
 import {
   Sheet,
   SheetContent,
@@ -9,35 +9,30 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet"
-import { useHotkeys } from "react-hotkeys-hook"
-import { useKeyboard } from "@/hooks/use-keyboard"
+
 import { useUIState } from "@/hooks/use-ui-state"
+import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
+import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
 import { UI_STATE, HOTKEYS } from "@/lib/constants"
 
 export function InfoButton() {
   const { isOpen, onOpenChange } = useUIState(UI_STATE.INFO)
-  const { isAltPressed } = useKeyboard()  
 
-  useHotkeys(HOTKEYS.TOGGLE_INFO, (e) => {
-    e.preventDefault()
-    onOpenChange(!isOpen)
-  }, { enableOnFormTags: true, enableOnContentEditable: true })
+  useHotkeysHandler({
+    hotkey: HOTKEYS.TOGGLE_INFO.key,
+    onTrigger: () => { onOpenChange(!isOpen) },
+    dependencies: [isOpen]
+  })
 
   return (
     <>
-      <Button 
-        variant="ghost" 
-        size="icon"
+      <HotkeyIconButton
+        icon={Info}
+        hotkey={HOTKEYS.TOGGLE_INFO.hint}
+        srText={HOTKEYS.TOGGLE_INFO.description}
+        title={HOTKEYS.TOGGLE_INFO.description}
         onClick={() => onOpenChange(true)}
-        className="relative"
-      >
-        <Info className="h-[1.2rem] w-[1.2rem]" />
-        {isAltPressed && !isOpen && (
-          <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
-            i
-          </span>
-        )}
-      </Button>
+      />
 
       <Sheet open={isOpen} onOpenChange={onOpenChange}>
         <SheetContent>

@@ -35,7 +35,7 @@ export const PreviewBuilder = () => {
     isProcessing
   } = useMJMLProcessor();
 
-  useHotkeys(HOTKEYS.SNAP_PREVIEW_LEFT, (e) => {
+  useHotkeys(HOTKEYS.SNAP_PREVIEW_LEFT.key, (e) => {
     e.preventDefault();
     if (leftPanelRef.current) {
       if (leftPanelSize === 50) {
@@ -52,7 +52,7 @@ export const PreviewBuilder = () => {
     }
   }, { enableOnFormTags: true, enableOnContentEditable: true });
 
-  useHotkeys(HOTKEYS.SNAP_PREVIEW_RIGHT, (e) => {
+  useHotkeys(HOTKEYS.SNAP_PREVIEW_RIGHT.key, (e) => {
     e.preventDefault();
     if (leftPanelRef.current) {
       if (leftPanelSize === 50) {

@@ -1,21 +1,22 @@
 "use client"
 
-import { Copy, Check, Code, Braces } from "lucide-react"
 import { useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
-import { useKeyboard } from "@/hooks/use-keyboard"
-import { useUIState } from "@/hooks/use-ui-state"
-import { useMJMLProcessor } from "@/hooks/use-mjml-processor"
-import { useLocalStorage } from "@/hooks/use-local-storage"
-import { STORAGE_KEYS, UI_STATE, HOTKEYS } from "@/lib/constants"
-import { Button } from "@/components/ui/button"
+import { Copy, Check, Code, Braces } from "lucide-react"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 import { useToast } from "@/hooks/use-toast"
+import { useUIState } from "@/hooks/use-ui-state"
+import { useMJMLProcessor } from "@/hooks/use-mjml-processor"
+import { useLocalStorage } from "@/hooks/use-local-storage"
+import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
+import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
+import { HotkeyDropdownItem } from "../shared/hotkeys/hotkey-dropdown-item"
+import { STORAGE_KEYS, UI_STATE, HOTKEYS } from "@/lib/constants"
 
 export function CopyManager() {
   const { content, html } = useMJMLProcessor()
@@ -24,7 +25,6 @@ export function CopyManager() {
   const { toast } = useToast()
   const [copying, setCopying] = useState(false)
   const { isOpen, onOpenChange } = useUIState(UI_STATE.COPY)
-  const { isAltPressed } = useKeyboard()
 
   const copyToClipboard = async (text: string, type: string) => {
     try {
@@ -53,46 +53,45 @@ export function CopyManager() {
   const handleCopyLocalLiquid = () => copyToClipboard(JSON.stringify(localLiquid, null, 2), "Local Liquid")
   const handleCopySharedLiquid = () => copyToClipboard(JSON.stringify(sharedLiquid, null, 2), "Shared Liquid")
 
-  useHotkeys(HOTKEYS.TOGGLE_COPY, (e) => {
-    e.preventDefault()
-    onOpenChange(!isOpen)
-  }, { enableOnFormTags: true, enableOnContentEditable: true })
+  useHotkeysHandler({
+    hotkey: HOTKEYS.TOGGLE_COPY.key,
+    onTrigger: () => { onOpenChange(!isOpen) },
+  })
 
-  const htmlRef = useHotkeys(HOTKEYS.COPY_HTML, (e) => {
-    e.preventDefault()
-    if (isOpen) handleCopyHTML()
-  }, [isOpen, html])
+  const htmlRef = useHotkeysHandler({
+    hotkey: HOTKEYS.COPY_HTML.key,
+    onTrigger: () => { if (isOpen) handleCopyHTML() },
+    dependencies: [isOpen, html]
+  })
+  
+  const mjmlRef = useHotkeysHandler({
+    hotkey: HOTKEYS.COPY_MJML.key,
+    onTrigger: () => { if (isOpen) handleCopyMJML() },
+    dependencies: [isOpen, content]
+  })
 
-  const mjmlRef = useHotkeys(HOTKEYS.COPY_MJML, (e) => {
-    e.preventDefault()
-    if (isOpen) handleCopyMJML()
-  }, [isOpen, content])
+  const localRef = useHotkeysHandler({
+    hotkey: HOTKEYS.COPY_LOCAL.key,
+    onTrigger: () => { if (isOpen) handleCopyLocalLiquid() },
+    dependencies: [isOpen, localLiquid]
+  })
 
-  const localRef = useHotkeys(HOTKEYS.COPY_LOCAL, (e) => {
-    e.preventDefault()
-    if (isOpen) handleCopyLocalLiquid()
-  }, [isOpen, localLiquid])
-
-  const sharedRef = useHotkeys(HOTKEYS.COPY_SHARED, (e) => {
-    e.preventDefault()
-    if (isOpen) handleCopySharedLiquid()
-  }, [isOpen, sharedLiquid])
+  const sharedRef = useHotkeysHandler({
+    hotkey: HOTKEYS.COPY_SHARED.key,
+    onTrigger: () => { if (isOpen) handleCopySharedLiquid() },
+    dependencies: [isOpen, sharedLiquid]
+  })
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
-          {copying ? (
-            <Check className="h-[1.2rem] w-[1.2rem] text-green-500" />
-          ) : (
-            <Copy className="h-[1.2rem] w-[1.2rem]" />
-          )}
-          {isAltPressed && !isOpen && (
-            <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
-              3
-            </span>
-          )}
-        </Button>
+        <HotkeyIconButton
+          icon={copying ? <Check className="text-green-500" /> : Copy}
+          hotkey={HOTKEYS.TOGGLE_COPY.hint}
+          srText={HOTKEYS.TOGGLE_COPY.description}
+          title={HOTKEYS.TOGGLE_COPY.description}
+          showHotkeyOverride={isOpen}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[220px]" align="end" ref={(el) => {
         htmlRef(el)
@@ -100,42 +99,30 @@ export function CopyManager() {
         localRef(el)
         sharedRef(el)
       }}>
-        <DropdownMenuItem onClick={handleCopyHTML} className="relative">
-          <Code className="h-4 w-4 mr-2" />
-          <span className="font-sans">Copy HTML</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              h
-            </span>
-          )}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleCopyMJML} className="relative">
-          <Code className="h-4 w-4 mr-2" />
-          <span className="font-sans">Copy MJML</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              m
-            </span>
-          )}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleCopyLocalLiquid} className="relative">
-          <Braces className="h-4 w-4 mr-2" />
-          <span className="font-sans">Copy Local Liquid</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              l
-            </span>
-          )}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleCopySharedLiquid} className="relative">
-          <Braces className="h-4 w-4 mr-2" />
-          <span className="font-sans">Copy Shared Liquid</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              s
-            </span>
-          )}
-        </DropdownMenuItem>
+        <HotkeyDropdownItem
+          icon={Code}
+          label={HOTKEYS.COPY_HTML.description}
+          hotkey={HOTKEYS.COPY_HTML.hint}
+          onClick={handleCopyHTML}
+        />
+        <HotkeyDropdownItem
+          icon={Code}
+          label={HOTKEYS.COPY_MJML.description}
+          hotkey={HOTKEYS.COPY_MJML.hint}
+          onClick={handleCopyMJML}
+        />
+        <HotkeyDropdownItem
+          icon={Braces}
+          label={HOTKEYS.COPY_LOCAL.description}
+          hotkey={HOTKEYS.COPY_LOCAL.hint}
+          onClick={handleCopyLocalLiquid}
+        />
+        <HotkeyDropdownItem
+          icon={Braces}
+          label={HOTKEYS.COPY_SHARED.description}
+          hotkey={HOTKEYS.COPY_SHARED.hint}
+          onClick={handleCopySharedLiquid}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   )
