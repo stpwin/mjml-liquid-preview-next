@@ -1,8 +1,6 @@
 "use client"
 
-import { useKeyboard } from "@/hooks/use-keyboard"
 import { cva, type VariantProps } from "class-variance-authority"
-
 import { cn } from "@/lib/utils"
 
 const hotkeyHintVariants = cva(
@@ -27,11 +25,8 @@ interface HotkeyHintProps {
   variant?: VariantProps<typeof hotkeyHintVariants>["variant"]
 }
 
-export function HotkeyHint({ hotkey, show, className = "", variant = "bottom-right" }: HotkeyHintProps) {
-  const { isAltPressed } = useKeyboard()
-  const shouldShow = show ?? isAltPressed
-
-  if (!shouldShow) return null
+export function HotkeyHint({ hotkey, show = false, className = "", variant = "bottom-right" }: HotkeyHintProps) {
+  if (!show) return null
 
   return (
     <span className={cn(hotkeyHintVariants({ variant }), className)}>

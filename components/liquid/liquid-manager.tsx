@@ -14,39 +14,48 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LiquidInjector } from "./liquid-injector"
+import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
 
 export function LiquidManager() {
-  const { isOpen, onOpenChange } = useUIState(UI_STATE.LIQUID)
+  const { isOpen: isManagerOpen, onOpenChange: onManagerOpenChange } = useUIState(UI_STATE.LIQUID)
   const { isOpen: isLocalOpen, onOpenChange: onLocalOpenChange } = useUIState(UI_STATE.LOCAL_LIQUID_SHEET)
   const { isOpen: isSharedOpen, onOpenChange: onSharedOpenChange } = useUIState(UI_STATE.SHARED_LIQUID_SHEET)
   const { isAltPressed } = useKeyboard()
 
-  useHotkeys(HOTKEYS.TOGGLE_LIQUID, (e) => {
-    e.preventDefault()
-    onOpenChange(!isOpen)
-  }, { enableOnFormTags: true, enableOnContentEditable: true })
+  useHotkeysHandler({
+    hotkey: HOTKEYS.TOGGLE_LIQUID,
+    onTrigger: () => {
+      onManagerOpenChange(!isManagerOpen)
+    },
+  })
 
-  const localRef = useHotkeys(HOTKEYS.LIQUID_LOCAL, (e) => {
-    e.preventDefault()
-    if (isOpen) {
-      onLocalOpenChange(true)
-    }
-  }, [isOpen])
+  const localRef = useHotkeysHandler({
+    hotkey: HOTKEYS.LIQUID_LOCAL,
+    onTrigger: () => {
+      if (isManagerOpen) {
+        onLocalOpenChange(true)
+      }
+    },
+    dependencies: [isManagerOpen]
+  })
 
-  const sharedRef = useHotkeys(HOTKEYS.LIQUID_SHARED, (e) => {
-    e.preventDefault()
-    if (isOpen) {
-      onSharedOpenChange(true)
-    }
-  }, [isOpen])
+  const sharedRef = useHotkeysHandler({
+    hotkey: HOTKEYS.LIQUID_SHARED,
+    onTrigger: () => {
+      if (isManagerOpen) {
+        onSharedOpenChange(true)
+      }
+    },
+    dependencies: [isManagerOpen]
+  })
 
   return (
     <>
-      <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
+      <DropdownMenu open={isManagerOpen} onOpenChange={onManagerOpenChange}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="relative">
             <Droplets className="h-[1.2rem] w-[1.2rem]" />
-            {isAltPressed && !isOpen && (
+            {isAltPressed && !isManagerOpen && (
               <span className="absolute bottom-0 right-0 text-[10px] font-mono bg-muted px-1 rounded">
                 2
               </span>

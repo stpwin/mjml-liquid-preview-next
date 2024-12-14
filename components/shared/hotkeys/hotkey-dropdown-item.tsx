@@ -3,6 +3,7 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { HotkeyHint } from "./hotkey-hint"
 import { LucideIcon } from "lucide-react"
+import { useKeyboard } from "@/hooks/use-keyboard"
 
 interface HotkeyDropdownItemProps {
   icon: LucideIcon
@@ -19,11 +20,13 @@ export function HotkeyDropdownItem({
   onClick,
   className = ""
 }: HotkeyDropdownItemProps) {
+  const { isAltPressed } = useKeyboard()
+
   return (
     <DropdownMenuItem onClick={onClick} className={`relative ${className}`}>
       <Icon className="mr-2 h-4 w-4" />
       <span className="font-sans">{label}</span>
-      <HotkeyHint hotkey={hotkey} variant="middle-right" />
+      <HotkeyHint hotkey={hotkey} show={isAltPressed} variant="middle-right" />
     </DropdownMenuItem>
   )
 } 
