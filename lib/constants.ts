@@ -1,4 +1,4 @@
-export const STORAGE_KEYS = {
+export const STORAGE_KEYS: Record<string, string> = {
   EDITOR_CONTENT: "editor_content",
   EDITOR_AUTO_SAVE: "editor_auto_save",
   PREVIEW_SCALE_MODE: "preview_scale_mode",
@@ -7,7 +7,7 @@ export const STORAGE_KEYS = {
   LIQUID_EXPANDED: "liquid_expanded"
 } as const;
 
-export const UI_STATE = {
+export const UI_STATE: Record<string, string> = {
   MJML_EDITOR: "mjml_editor",
   RESIZABLE_PANEL: "resizable_panel",
   THEME: "theme",
@@ -21,7 +21,10 @@ export const UI_STATE = {
   SHARED_LIQUID_SHEET: "shared_liquid_sheet"
 } as const;
 
-export const HOTKEY_SECTIONS = [
+export const HOTKEY_SECTIONS: {
+  title: string;
+  hotkeys: { id: string; key: string; description: string }[];
+}[] = [
   {
     title: "Global Navigation",
     hotkeys: [
@@ -98,7 +101,7 @@ export const HOTKEY_SECTIONS = [
   }
 ] as const;
 
-export const HOTKEYS = {
+export const HOTKEYS: Record<string, string> = {
   ...Object.fromEntries(
     HOTKEY_SECTIONS.flatMap(section =>
       section.hotkeys.map(hotkey => [hotkey.id, hotkey.key])
@@ -106,7 +109,7 @@ export const HOTKEYS = {
   )
 } as const;
 
-export const DEFAULT_SHARED_LIQUID = {
+export const DEFAULT_SHARED_LIQUID: Record<string, any> = {
   "app_name": "MJML Liquid Preview",
   "brand": {
     "primary_color": "#F97316",
@@ -117,7 +120,7 @@ export const DEFAULT_SHARED_LIQUID = {
   }
 };
 
-export const DEFAULT_LOCAL_LIQUID = {
+export const DEFAULT_LOCAL_LIQUID: Record<string, any> = {
   "user": {
     "id": "32418121239",
     "name": "random person on the internet"
@@ -135,7 +138,7 @@ export const DEFAULT_LOCAL_LIQUID = {
   ]
 };
 
-export const DEFAULT_MJML = `<mjml>
+export const DEFAULT_MJML: string = `<mjml>
   <mj-head>
     <mj-attributes>
       <mj-all font-family="helvetica" />
@@ -195,7 +198,7 @@ export const DEFAULT_MJML = `<mjml>
   </mj-body>
 </mjml>`;
 
-export const ASCENDA_LIQUID_TEMPLATE = {
+export const ASCENDA_LIQUID_TEMPLATE: Record<string, any> = {
   "hide_ascenda_brand": false,
   "theme_brand_primary_color": "#22285A",
   "theme_brand_secondary_color": "#FFC0CB",

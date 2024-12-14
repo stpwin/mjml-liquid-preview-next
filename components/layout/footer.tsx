@@ -53,10 +53,10 @@ export function Footer() {
   }
 
   return (
-    <footer className={`bottom-0 z-50 w-full transition-colors duration-200 ${
+    <footer className={`bottom-0 w-full transition-all duration-200 ${
       isFullScreen 
-        ? 'fixed border-transparent bg-transparent'
-        : 'sticky border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
+        ? 'fixed border-transparent bg-transparent pointer-events-none'
+        : 'sticky border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50'
     }`}>
       <div className="container mx-auto h-14">
         {renderFooterContent()}
