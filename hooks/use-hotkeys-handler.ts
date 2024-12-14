@@ -29,10 +29,6 @@ export function useHotkeysHandler({
 
   return useHotkeys(hotkey, (e) => {
     e.preventDefault()
-
-    if (uiStateKey) {
-      onOpenChange(!isOpen)
-    }
     
     onTrigger?.()
   }, [...dependencies, isOpen], options)

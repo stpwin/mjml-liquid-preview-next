@@ -22,33 +22,44 @@ export function ThemeManager() {
   const { isOpen, onOpenChange } = useUIState(UI_STATE.THEME)
   const { isAltPressed } = useKeyboard()
 
-  useHotkeys(HOTKEYS.TOGGLE_THEME, (e) => {
-    e.preventDefault()
-    onOpenChange(!isOpen)
-  }, { enableOnFormTags: true, enableOnContentEditable: true })
+  useHotkeysHandler({
+    hotkey: HOTKEYS.TOGGLE_THEME,
+    onTrigger: () => {
+      onOpenChange(!isOpen)
+    },
+  })
 
   const lightRef = useHotkeysHandler({
     hotkey: HOTKEYS.THEME_LIGHT,
     onTrigger: () => {
-      setTheme("light")
-      onOpenChange(false)
-    }
+      if (isOpen) {
+        setTheme("light")
+        onOpenChange(false)
+      }
+    },
+    dependencies: [isOpen]
   })
 
   const darkRef = useHotkeysHandler({
     hotkey: HOTKEYS.THEME_DARK,
     onTrigger: () => {
-      setTheme("dark")
-      onOpenChange(false)
-    }
+      if (isOpen) {
+        setTheme("dark")
+        onOpenChange(false)
+      }
+    },
+    dependencies: [isOpen]
   })
 
   const systemRef = useHotkeysHandler({
     hotkey: HOTKEYS.THEME_SYSTEM,
     onTrigger: () => {
-      setTheme("system")
-      onOpenChange(false)
-    }
+      if (isOpen) {
+        setTheme("system")
+        onOpenChange(false)
+      }
+    },
+    dependencies: [isOpen]
   })
 
   return (
