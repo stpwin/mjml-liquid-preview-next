@@ -6,7 +6,7 @@ import { Providers } from "./providers"
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
-import { WelcomeToast } from "@/components/shared/welcome-toast";
+import { WelcomeToast } from "@/components/shared/toasts/welcome-toast";
 import { HelpDialog } from "@/components/layout/help";
 import { JsonLd } from "@/components/seo/json-ld";
 

@@ -6,15 +6,16 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { useKeyboard } from "@/hooks/use-keyboard"
 import { useUIState } from "@/hooks/use-ui-state"
 import { UI_STATE, HOTKEYS } from "@/lib/constants"
+import { HotkeyDropdownItem } from "@/components/shared/hotkeys/hotkey-dropdown-item"
 
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Moon, Sun, Monitor } from "lucide-react"
+import { useHotkeysHandler } from "../../hooks/use-hotkeys-handler"
 
 export function ThemeManager() {
   const { setTheme } = useTheme()
@@ -26,29 +27,29 @@ export function ThemeManager() {
     onOpenChange(!isOpen)
   }, { enableOnFormTags: true, enableOnContentEditable: true })
 
-  const lightRef = useHotkeys(HOTKEYS.THEME_LIGHT, (e) => {
-    e.preventDefault()
-    if (isOpen) {
+  const lightRef = useHotkeysHandler({
+    hotkey: HOTKEYS.THEME_LIGHT,
+    onTrigger: () => {
       setTheme("light")
       onOpenChange(false)
     }
-  }, [isOpen])
+  })
 
-  const darkRef = useHotkeys(HOTKEYS.THEME_DARK, (e) => {
-    e.preventDefault()
-    if (isOpen) {
+  const darkRef = useHotkeysHandler({
+    hotkey: HOTKEYS.THEME_DARK,
+    onTrigger: () => {
       setTheme("dark")
       onOpenChange(false)
     }
-  }, [isOpen])
+  })
 
-  const systemRef = useHotkeys(HOTKEYS.THEME_SYSTEM, (e) => {
-    e.preventDefault()
-    if (isOpen) {
+  const systemRef = useHotkeysHandler({
+    hotkey: HOTKEYS.THEME_SYSTEM,
+    onTrigger: () => {
       setTheme("system")
       onOpenChange(false)
     }
-  }, [isOpen])
+  })
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
@@ -69,42 +70,33 @@ export function ThemeManager() {
         darkRef(el)
         systemRef(el)
       }}>
-        <DropdownMenuItem onClick={() => {
-          setTheme("light")
-          onOpenChange(false)
-        }} className="relative">
-          <Sun className="mr-2 h-4 w-4" />
-          <span className="font-sans">Light</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              l
-            </span>
-          )}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {
-          setTheme("dark")
-          onOpenChange(false)
-        }} className="relative">
-          <Moon className="mr-2 h-4 w-4" />
-          <span className="font-sans">Dark</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              d
-            </span>
-          )}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {
-          setTheme("system")
-          onOpenChange(false)
-        }} className="relative">
-          <Monitor className="mr-2 h-4 w-4" />
-          <span className="font-sans">System</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              s
-            </span>
-          )}
-        </DropdownMenuItem>
+        <HotkeyDropdownItem
+          icon={Sun}
+          label="Light"
+          hotkey="l"
+          onClick={() => {
+            setTheme("light")
+            onOpenChange(false)
+          }}
+        />
+        <HotkeyDropdownItem
+          icon={Moon}
+          label="Dark"
+          hotkey="d"
+          onClick={() => {
+            setTheme("dark")
+            onOpenChange(false)
+          }}
+        />
+        <HotkeyDropdownItem
+          icon={Monitor}
+          label="System"
+          hotkey="s"
+          onClick={() => {
+            setTheme("system")
+            onOpenChange(false)
+          }}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   )
