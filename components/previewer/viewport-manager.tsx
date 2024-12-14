@@ -5,7 +5,6 @@ import { Monitor, Smartphone, Maximize } from "lucide-react"
 import { useViewport } from "@/hooks/use-viewport"
 import { useKeyboard } from "@/hooks/use-keyboard"
 import { useUIState } from "@/hooks/use-ui-state"
-import { useHotkeys } from "react-hotkeys-hook"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -14,8 +13,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+
 import { UI_STATE, HOTKEYS } from "@/lib/constants"
+import { HotkeyInput } from "../shared/hotkeys/hotkey-input"
+import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
 
 export const VIEWPORT_PRESETS = {
   desktop: { width: 780, height: 800 },
@@ -89,36 +90,52 @@ export function ViewportManager() {
     }
   }
 
-  useHotkeys(HOTKEYS.TOGGLE_VIEWPORT, (e) => {
-    e.preventDefault()
-    onOpenChange(!isOpen)
-  }, { enableOnFormTags: true, enableOnContentEditable: true })
-
-  const desktopRef = useHotkeys(HOTKEYS.VIEWPORT_DESKTOP, (e) => {
-    e.preventDefault()
-    if (isOpen) handlePresetChange("desktop")
-  }, [isOpen, { enableOnFormTags: true }])
-
-  const mobileRef = useHotkeys(HOTKEYS.VIEWPORT_MOBILE, (e) => {
-    e.preventDefault()
-    if (isOpen) handlePresetChange("mobile")
-  }, [isOpen, { enableOnFormTags: true }])
-
-  useHotkeys(HOTKEYS.VIEWPORT_WIDTH, (e) => {
-    e.preventDefault()
-    if (isOpen) {
-      widthInputRef.current?.focus()
-      widthInputRef.current?.select()
+  useHotkeysHandler({
+    hotkey: HOTKEYS.TOGGLE_VIEWPORT,
+    onTrigger: () => {
+      onOpenChange(!isOpen)
     }
-  }, [isOpen], { enableOnFormTags: true })
+  })
 
-  useHotkeys(HOTKEYS.VIEWPORT_HEIGHT, (e) => {
-    e.preventDefault()
-    if (isOpen) {
-      heightInputRef.current?.focus()
-      heightInputRef.current?.select()
-    }
-  }, [isOpen], { enableOnFormTags: true })
+  const desktopRef = useHotkeysHandler({
+    hotkey: HOTKEYS.VIEWPORT_DESKTOP,
+    onTrigger: () => {
+      if (isOpen) handlePresetChange("desktop")
+    },
+    dependencies: [isOpen]
+  })
+    
+
+  const mobileRef = useHotkeysHandler({
+    hotkey: HOTKEYS.VIEWPORT_MOBILE,
+    onTrigger: () => {
+      if (isOpen) handlePresetChange("mobile")
+    },
+    dependencies: [isOpen]
+  })
+  
+
+  useHotkeysHandler({
+    hotkey: HOTKEYS.VIEWPORT_WIDTH,
+    onTrigger: () => {
+      if (isOpen) {
+        widthInputRef.current?.focus()
+        widthInputRef.current?.select()
+      }
+    },
+    dependencies: [isOpen]
+  })
+
+  useHotkeysHandler({
+    hotkey: HOTKEYS.VIEWPORT_HEIGHT,
+    onTrigger: () => {
+      if (isOpen) {
+        heightInputRef.current?.focus()
+        heightInputRef.current?.select()
+      }
+    },
+    dependencies: [isOpen]
+  })
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
@@ -163,7 +180,9 @@ export function ViewportManager() {
           </div>
           <div className="flex gap-2 mb-2">
             <div className="relative w-full">
-              <Input
+              <HotkeyInput
+                hotkey="w"
+                units="w"
                 ref={widthInputRef}
                 type="text"
                 value={inputValues.width}
@@ -171,12 +190,11 @@ export function ViewportManager() {
                 onKeyDown={(e) => handleKeyDown(e, 'width')}
                 className="w-full pr-6 font-sans"
               />
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-mono">
-                w
-              </span>
             </div>
             <div className="relative w-full">
-              <Input
+              <HotkeyInput
+                hotkey="h"
+                units="h"
                 ref={heightInputRef}
                 type="text"
                 value={inputValues.height}
@@ -184,9 +202,6 @@ export function ViewportManager() {
                 onKeyDown={(e) => handleKeyDown(e, 'height')}
                 className="w-full pr-6 font-sans"
               />
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-mono">
-                h
-              </span>
             </div>
           </div>
           <Button 
