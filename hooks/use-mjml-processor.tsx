@@ -2,41 +2,47 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { Liquid } from "liquidjs";
+
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { DEFAULT_LOCAL_LIQUID, DEFAULT_MJML, DEFAULT_SHARED_LIQUID, STORAGE_KEYS } from "@/lib/constants";
 
 interface MJMLContextType {
   content: string;
-  setContent: (content: string, forceSave?: boolean) => void;
+  setContent: (value: string) => void;
   html: string;
   error: Error | null;
   isProcessing: boolean;
   refreshTemplate: () => void;
   autoSave: boolean;
   setAutoSave: (value: boolean) => void;
+  forceSave: () => void;
 }
 
 const MJMLContext = createContext<MJMLContextType | null>(null);
 
 export function MJMLProvider({ children }: { children: React.ReactNode }) {
   const [autoSave, setAutoSave] = useLocalStorage(STORAGE_KEYS.EDITOR_AUTO_SAVE, true);
-  const [internalContent, setInternalContent] = useState(DEFAULT_MJML);
+  const [ephemeralContent, setEphemeralContent] = useState<string>(DEFAULT_MJML);
+  const [internalContent, setInternalContent] = useLocalStorage(STORAGE_KEYS.EDITOR_CONTENT, DEFAULT_MJML);
   const [html, setHtml] = useState<string>("");
   const [error, setError] = useState<Error | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    const savedContent = localStorage.getItem(STORAGE_KEYS.EDITOR_CONTENT);
-    if (savedContent) {
-      setInternalContent(JSON.parse(savedContent));
+    if (internalContent) {
+      setEphemeralContent(internalContent);
     }
-  }, []);
+  }, [internalContent]);
+
+  const forceSave = () => {
+    setInternalContent(ephemeralContent);
+  }
 
   const setContent: MJMLContextType["setContent"] = (newContent, forceSave = false) => {
-    setInternalContent(newContent);
-    if (autoSave || forceSave) {
-      localStorage.setItem(STORAGE_KEYS.EDITOR_CONTENT, JSON.stringify(newContent));
+    setEphemeralContent(newContent);
+    if (autoSave) {
+      setInternalContent(newContent);
     }
   };
 
@@ -58,7 +64,7 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
         const sharedVars = JSON.parse(sharedLiquid);
         
         // Process liquid template
-        const processedContent = await engine.parseAndRender(internalContent, {
+        const processedContent = await engine.parseAndRender(ephemeralContent, {
           ...localVars,
           ...sharedVars,
         });
@@ -74,19 +80,20 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
     };
 
     processTemplate();
-  }, [internalContent, refreshKey]);
+  }, [ephemeralContent, refreshKey]);
 
   const refreshTemplate = () => setRefreshKey(k => k + 1);
 
   const contextValue: MJMLContextType = {
-    content: internalContent,
+    content: ephemeralContent,
     setContent,
     html,
     error,
     isProcessing,
     refreshTemplate,
     autoSave,
-    setAutoSave
+    setAutoSave,
+    forceSave
   };
 
   return (

@@ -1,23 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useState } from "react";
+import { Maximize, Minimize, RefreshCw } from "lucide-react";
+
 import { useViewport } from "@/hooks/use-viewport";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { STORAGE_KEYS, HOTKEYS } from "@/lib/constants";
-import { Maximize, Minimize, RefreshCw } from "lucide-react";
 import { useLayout } from "@/hooks/use-layout";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useKeyboard } from "@/hooks/use-keyboard";
 import { useMJMLProcessor } from "@/hooks/use-mjml-processor";
+import { STORAGE_KEYS, HOTKEYS } from "@/lib/constants";
 
-interface MJMLPreviewProps {
-  html?: string;
-}
-
-export const MJMLPreview = ({ html }: MJMLPreviewProps) => {
+export const MJMLPreview = () => {
   const { isFullScreen } = useLayout();
   const { size } = useViewport();
-  const { refreshTemplate } = useMJMLProcessor();
+  const { refreshTemplate, html } = useMJMLProcessor();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [isScaleMode, setIsScaleMode] = useLocalStorage(STORAGE_KEYS.PREVIEW_SCALE_MODE, true);

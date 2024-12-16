@@ -14,9 +14,9 @@ export interface MJMLEditorProps {
   value: string;
 }
 
-export const MJMLEditor = ({ value }: MJMLEditorProps) => {
+export const MJMLEditor = () => {
   const { theme } = useTheme();
-  const { autoSave, setAutoSave, setContent } = useMJMLProcessor();
+  const { autoSave, setAutoSave, setContent, content, forceSave } = useMJMLProcessor();
   const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>('light');
   const editorRef = useRef<ReactCodeMirrorRef>(null);
   const { onOpenChange  } = useUIState(UI_STATE.MJML_EDITOR);
@@ -29,15 +29,11 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
     );
   }, [theme]);
 
-  const handleChange = (newValue: string) => {
-    setContent(newValue);
-  };
-
   const toggleAutoSave = () => {
     const newAutoSaveState = !autoSave;
     setAutoSave(newAutoSaveState);
     if (newAutoSaveState) {
-      setContent(value, true);
+      forceSave();
     }
   };
 
@@ -68,8 +64,8 @@ export const MJMLEditor = ({ value }: MJMLEditorProps) => {
         extensions={[html()]}
         height="100%"
         className="h-full"
-        value={value}
-        onChange={handleChange}
+        value={content}
+        onChange={setContent}
       />
       
       <div className="absolute bottom-4 right-4 flex gap-2">

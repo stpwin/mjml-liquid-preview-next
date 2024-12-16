@@ -1,19 +1,21 @@
 "use client";
 
+import { useRef } from "react"
 import { useHotkeys } from "react-hotkeys-hook";
+
 import type { ImperativePanelHandle } from "react-resizable-panels"
 import {
   ResizablePanelGroup,
   ResizablePanel,
   ResizableHandle,
 } from "@/components/ui/resizable"
+
 import { useKeyboard } from "@/hooks/use-keyboard"
 import { usePreviewLayout } from "@/hooks/use-preview-layout"
+import useMJMLProcessor from "@/hooks/use-mjml-processor"
 import MJMLEditor from "@/components/previewer/mjml-editor"
 import MJMLPreview from "@/components/previewer/mjml-preview"
-import useMJMLProcessor from "@/hooks/use-mjml-processor"
 import { HOTKEYS } from "@/lib/constants"
-import { useRef } from "react"
 
 export const PreviewBuilder = () => {
   const { isAltPressed } = useKeyboard();
@@ -29,8 +31,6 @@ export const PreviewBuilder = () => {
   } = usePreviewLayout();
 
   const {
-    content,
-    html,
     error,
     isProcessing
   } = useMJMLProcessor();
@@ -80,7 +80,7 @@ export const PreviewBuilder = () => {
         <span className="font-sans">Error: {error.message}</span>
       </div>
     );
-    return <MJMLPreview html={html} />;
+    return <MJMLPreview />;
   }
 
   return (
@@ -94,7 +94,7 @@ export const PreviewBuilder = () => {
           defaultSize={leftPanelSize}
           minSize={0}
         >
-          <MJMLEditor value={content} />
+          <MJMLEditor />
         </ResizablePanel>
         <ResizableHandle 
           withHandle 
