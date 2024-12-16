@@ -18,7 +18,7 @@ export function Header() {
         ? 'fixed border-transparent bg-transparent'
         : 'sticky bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
     }`}>
-      <div className={`${isFullScreen ? 'mx-4' : 'container'} mx-auto flex h-14 justify-between`}>
+      <div className={`${isFullScreen ? 'px-4' : 'container'} mx-auto flex h-14 justify-between`}>
         <div className="flex items-center">
           <Link className="flex items-center space-x-2" href="/">
             <span className={`font-sans font-bold ${isFullScreen ? 'hidden' : 'sm:inline-block'}`}>
