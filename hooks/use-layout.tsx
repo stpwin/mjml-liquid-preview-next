@@ -5,6 +5,7 @@ import { createContext, useContext, useState } from "react";
 interface LayoutContextType {
   isFullScreen: boolean;
   toggleFullScreen: () => void;
+  offFullScreen: () => void;
 }
 
 const LayoutContext = createContext<LayoutContextType | null>(null);
@@ -21,9 +22,10 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const toggleFullScreen = () => setIsFullScreen(prev => !prev);
+  const offFullScreen = () => setIsFullScreen(false);
 
   return (
-    <LayoutContext.Provider value={{ isFullScreen, toggleFullScreen }}>
+    <LayoutContext.Provider value={{ isFullScreen, toggleFullScreen, offFullScreen }}>
       {children}
     </LayoutContext.Provider>
   );
