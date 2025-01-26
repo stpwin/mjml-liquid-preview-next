@@ -20,7 +20,7 @@ const PageLoading = React.forwardRef<HTMLDivElement, LoadingProps>(
         )}
         {...props}
       >
-        <Spinner size="md" className="bg-black dark:bg-white" />
+        <Spinner size={spinnerSize} className="bg-black dark:bg-white" />
       </div>
     )
   }

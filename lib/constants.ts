@@ -15,7 +15,6 @@ export const UI_STATE: Record<string, string> = {
   COPY: "copy",
   LAYOUT: "layout",
   VIEWPORT: "viewport",
-  INFO: "info",
   HELP: "help",
   LOCAL_LIQUID_SHEET: "local_liquid_sheet",
   SHARED_LIQUID_SHEET: "shared_liquid_sheet"
@@ -84,12 +83,6 @@ export const HOTKEY_SECTIONS: {
       { id: "THEME_LIGHT", key: "alt+l", description: "Switch to light theme" },
       { id: "THEME_DARK", key: "alt+d", description: "Switch to dark theme" },
       { id: "THEME_SYSTEM", key: "alt+s", description: "Switch to system theme" }
-    ]
-  },
-  {
-    title: "Info Panel",
-    hotkeys: [
-      { id: "TOGGLE_INFO", key: "alt+i", description: "Toggle info panel" }
     ]
   },
   {

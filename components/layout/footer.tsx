@@ -37,13 +37,23 @@ export function Footer() {
           </Link>
           <HelpButton />
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="hidden md:block">
+          <span className="text-muted-foreground font-serif text-sm">
+            Made with ❤️ by&nbsp;
+              <Button variant="link" asChild className="px-0">
+                <a href="https://github.com/lohkokwee" target="_blank" rel="noopener noreferrer">
+                  @lohkokwee
+                </a>
+              </Button>
+          </span>
+        </div>
+        <div className="hidden md:block flex items-center space-x-2">
           <Link
             href="https://buymeacoffee.com/kokwee"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button variant="outline" size="sm">
+            <Button variant="link" size="sm">
               <span className="font-sans">Buy me a coffee :)</span>
             </Button>
           </Link>
@@ -53,7 +63,7 @@ export function Footer() {
   }
 
   return (
-    <footer className={`bottom-0 w-full transition-all duration-200 ${
+    <footer className={`bottom-0 w-full transition-all duration-200 px-5 ${
       isFullScreen 
         ? 'fixed border-transparent bg-transparent pointer-events-none'
         : 'sticky border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50'

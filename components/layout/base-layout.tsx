@@ -1,16 +1,12 @@
-import "./globals.css";
+import Head from "next/head";
 import { Analytics } from "@vercel/analytics/react";
 import { Space_Grotesk, Newsreader, JetBrains_Mono, Inter } from "next/font/google";
 
-import { Providers } from "./providers"
-import { Header } from "@/components/layout/header";
+import { Providers } from "@/app/providers"
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
-import { WelcomeToast } from "@/components/shared/toasts/welcome-toast";
 import { HelpDialog } from "@/components/layout/help";
 import { JsonLd } from "@/components/seo/json-ld";
-
-export { metadata } from "@/components/seo/metadata"
 
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ["latin"],
@@ -29,32 +25,33 @@ const jetbrainsMono = JetBrains_Mono({
 
 const inter = Inter({ subsets: ["latin"] })
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface BaseLayoutProps {
   children: React.ReactNode;
-}>) {
+  overflowHidden?: boolean;
+  Header: React.ComponentType;
+}
+
+export function BaseLayout({ children, Header, overflowHidden = true }: BaseLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <Head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <JsonLd />
-      </head>
+      </Head>
 
       <body className={`${spaceGrotesk.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${inter.className} bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col h-screen`}>
         <Analytics />
         <Providers>
           <Header />
-          <main className="flex-1 overflow-hidden">
+          <main className={`flex-1 ${overflowHidden ? "overflow-hidden" : ""}`}>
             {children}
           </main>
           <Toaster />
           <HelpDialog />
           <Footer />
-          <WelcomeToast />
         </Providers>
       </body>
     </html>
   );
-}
+} 
