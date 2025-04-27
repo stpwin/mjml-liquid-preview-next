@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useEffect, useState } from "react"
 import { useTheme } from "next-themes"
 import { Moon, Sun, Monitor } from "lucide-react"
 
@@ -19,6 +20,13 @@ import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
 export function ThemeManager() {
   const { theme, setTheme } = useTheme()
   const { isOpen, onOpenChange } = useUIState(UI_STATE.THEME)
+  const [mounted, setMounted] = useState(false)
+  const [themeIcon, setThemeIcon] = useState<typeof Sun | typeof Moon>(Moon)
+
+  useEffect(() => {
+    setMounted(true)
+    setThemeIcon(theme === "light" ? Sun : Moon)
+  }, [theme])
 
   useHotkeysHandler({
     hotkey: HOTKEYS.TOGGLE_THEME.key,
@@ -60,11 +68,15 @@ export function ThemeManager() {
     dependencies: [isOpen]
   })
 
+  if (!mounted) {
+    return null
+  }
+
   return (
     <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
         <HotkeyIconButton
-          icon={theme === "light" ? Sun : Moon}
+          icon={themeIcon}
           hotkey={HOTKEYS.TOGGLE_THEME.hint}
           srText={HOTKEYS.TOGGLE_THEME.description}
           title={HOTKEYS.TOGGLE_THEME.description}

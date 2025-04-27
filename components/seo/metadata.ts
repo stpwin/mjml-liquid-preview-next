@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   keywords: siteConfig.keywords,
   authors: siteConfig.authors,
+  metadataBase: new URL(siteConfig.url),
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,

@@ -1,7 +1,5 @@
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
 import { FlipText } from "@/components/ui/flip-text";
+import HoverLink from "@/components/shared/buttons/hover-link";
 
 export default function HomePage() {
   const renderHero = () => {
@@ -25,33 +23,31 @@ export default function HomePage() {
 
   const renderEditorButton = () => {
     return (
-      <Button asChild size="lg" variant="outline">
-        <Link 
-          href="/editor"
-          className="font-sans group flex items-center space-x-2 text-xl hover:text-primary transition-colors duration-200"
-        >
-          <span>Go to editor</span>
-          <span className="inline-block transition-transform duration-700 ease-in-out group-hover:translate-x-1 group-hover:duration-300">
-            →
-          </span>
-        </Link>
-      </Button>
+      <HoverLink 
+        title="Go to editor"
+        href="/editor"
+        fontSize="text-xl"
+      />
     )
   }
 
   const renderAboutButton = () => {
     return (
-      <Button asChild size="lg" variant="outline">
-        <Link 
-          href="/about"
-          className="font-sans group flex items-center space-x-2 text-xl hover:text-primary transition-colors duration-200"
-        >
-          <span>Learn more</span>
-          <span className="inline-block transition-transform duration-700 ease-in-out group-hover:translate-x-1 group-hover:duration-300">
-            →
-          </span>
-        </Link>
-      </Button>
+      <HoverLink
+        title="Learn more"
+        href="/about"
+        fontSize="text-xl"
+      />
+    )
+  }
+
+  const renderChangelogButton = () => {
+    return (
+      <HoverLink
+        title="View changelog"
+        href="/changelog"
+        fontSize="text-xl"
+      />
     )
   }
 
@@ -59,8 +55,9 @@ export default function HomePage() {
     <div className="h-full flex flex-col items-center justify-center bg-background mx-auto p-10">
       <div className="max-w-xl mx-auto space-y-20">
         {renderHero()}
-        <div className="flex flex-col items-end space-y-3">
+        <div className="flex flex-col items-end space-y-4">
           {renderEditorButton()}
+          {renderChangelogButton()}
           {renderAboutButton()}
         </div>
       </div>

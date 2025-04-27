@@ -1,9 +1,7 @@
-import Link from "next/link";
-
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
-import { Button } from "@/components/ui/button";
 import { FlipText } from "@/components/ui/flip-text";
+import HoverLink from "@/components/shared/buttons/hover-link";
 
 export default function HomePage() {
   const renderHero = () => {
@@ -105,17 +103,11 @@ export default function HomePage() {
 
   const renderEditorButton = () => {
     return (
-      <Button asChild size="lg" variant="outline">
-        <Link 
-          href="/editor"
-          className="font-sans group flex items-center space-x-2 text-xl hover:text-primary transition-colors duration-200"
-        >
-          <span>Visit the editor</span>
-          <span className="inline-block transition-transform duration-700 ease-in-out group-hover:translate-x-1 group-hover:duration-300">
-            →
-          </span>
-        </Link>
-      </Button>
+      <HoverLink 
+        title="Visit the editor"
+        href="/editor"
+        fontSize="text-xl"
+      />
     )
   }
 

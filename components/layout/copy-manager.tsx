@@ -17,6 +17,7 @@ import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
 import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
 import { HotkeyDropdownItem } from "../shared/hotkeys/hotkey-dropdown-item"
 import { STORAGE_KEYS, UI_STATE, HOTKEYS } from "@/lib/constants"
+import { copyToClipboard } from "@/lib/copy"
 
 export function CopyManager() {
   const { content, html } = useMJMLProcessor()
@@ -26,32 +27,20 @@ export function CopyManager() {
   const [copying, setCopying] = useState(false)
   const { isOpen, onOpenChange } = useUIState(UI_STATE.COPY)
 
-  const copyToClipboard = async (text: string, type: string) => {
-    try {
-      setCopying(true)
-      await navigator.clipboard.writeText(text)
-      toast({
-        description: `${type} copied to clipboard!`,
-        variant: "success",
-      })
-      onOpenChange(false)
-    } catch (err) {
-      console.error("Failed to copy text: ", err)
-      toast({
-        variant: "destructive",
-        description: "Failed to copy to clipboard",
-      })
-    } finally {
-      setTimeout(() => {
-        setCopying(false)
-      }, 1000);
-    }
+  const handleCopy = async (data: string, type: string) => {
+    await copyToClipboard(data, {
+      onCopyStart: () => setCopying(true),
+      onCopySuccess: () => onOpenChange(false),
+      onCopyComplete: () => setCopying(false),
+      toastMessage: `${type} copied to clipboard!`,
+      toast,
+    })
   }
 
-  const handleCopyHTML = () => copyToClipboard(html, "HTML")
-  const handleCopyMJML = () => copyToClipboard(content, "MJML")
-  const handleCopyLocalLiquid = () => copyToClipboard(JSON.stringify(localLiquid, null, 2), "Local Liquid")
-  const handleCopySharedLiquid = () => copyToClipboard(JSON.stringify(sharedLiquid, null, 2), "Shared Liquid")
+  const handleCopyHTML = () => handleCopy(html, "HTML")
+  const handleCopyMJML = () => handleCopy(content, "MJML")
+  const handleCopyLocalLiquid = () => handleCopy(JSON.stringify(localLiquid, null, 2), "Local Liquid")
+  const handleCopySharedLiquid = () => handleCopy(JSON.stringify(sharedLiquid, null, 2), "Shared Liquid")
 
   useHotkeysHandler({
     hotkey: HOTKEYS.TOGGLE_COPY.key,
