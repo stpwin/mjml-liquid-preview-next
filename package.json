@@ -23,6 +23,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "liquidjs": "^10.19.0",
     "lucide-react": "^0.468.0",
     "mjml-browser": "^4.15.3",

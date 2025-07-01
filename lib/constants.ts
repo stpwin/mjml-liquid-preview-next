@@ -12,7 +12,7 @@ export const UI_STATE: Record<string, string> = {
   RESIZABLE_PANEL: "resizable_panel",
   THEME: "theme",
   LIQUID: "liquid",
-  COPY: "copy",
+  EXPORT: "export",
   LAYOUT: "layout",
   VIEWPORT: "viewport",
   HELP: "help",
@@ -61,13 +61,14 @@ export const HOTKEY_SECTIONS: {
     ]
   },
   {
-    title: "Copy Manager",
+    title: "Export Manager",
     hotkeys: [
       { id: "TOGGLE_COPY", key: "alt+3", description: "Toggle copy menu" },
       { id: "COPY_HTML", key: "alt+h", description: "Copy HTML" },
       { id: "COPY_MJML", key: "alt+m", description: "Copy MJML" },
       { id: "COPY_LOCAL", key: "alt+l", description: "Copy local liquid" },
-      { id: "COPY_SHARED", key: "alt+s", description: "Copy shared liquid" }
+      { id: "COPY_SHARED", key: "alt+s", description: "Copy shared liquid" },
+      { id: "EXPORT_IMAGE", key: "alt+i", description: "Export image" }
     ]
   },
   {

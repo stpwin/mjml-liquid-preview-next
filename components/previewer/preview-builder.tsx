@@ -76,8 +76,11 @@ export const PreviewBuilder = () => {
       </div>
     );
     if (error) return (
-      <div className="h-full flex items-center justify-center text-red-500">
-        <span className="font-sans">Error: {error.message}</span>
+      <div className="h-full p-12 flex items-center justify-center space-y-4 text-red-500">
+        <div className="flex flex-col items-start justify-center space-y-2">
+          <span className="text-2xl font-sans">Error</span>
+          <span className="font-serif">{error.message}</span>
+        </div>
       </div>
     );
     return <MJMLPreview />;

@@ -4,7 +4,7 @@ import Link from "next/link"
 import { ThemeManager } from "@/components/layout/theme-manager"
 import { LiquidManager } from "@/components/liquid/liquid-manager"
 import { ViewportManager } from "@/components/previewer/viewport-manager"
-import { CopyManager } from "@/components/layout/copy-manager"
+import { ExportManager } from "@/components/layout/export-manager"
 import { useLayout } from "@/hooks/use-layout"
 import { LayoutManager } from "@/components/layout/layout-manager"
 
@@ -35,7 +35,7 @@ export function EditorHeader() {
           <nav className="flex items-center space-x-2">
             <ViewportManager />
             <LiquidManager />
-            <CopyManager />
+            <ExportManager />
             <LayoutManager />
             <ThemeManager />
           </nav>

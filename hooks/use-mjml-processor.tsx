@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { Liquid } from "liquidjs";
 
 import { useLocalStorage } from "@/hooks/use-local-storage";
@@ -70,7 +70,7 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
         });
         
         // Process MJML
-        const { html: processedHtml } = mjml2html(processedContent);
+        const { html: processedHtml } = mjml2html(processedContent, {minify: true});
         setHtml(processedHtml);
       } catch (e) {
         setError(e instanceof Error ? e : new Error("Failed to process template"));
