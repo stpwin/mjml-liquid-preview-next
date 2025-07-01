@@ -63,7 +63,7 @@ export const HOTKEY_SECTIONS: {
   {
     title: "Export Manager",
     hotkeys: [
-      { id: "TOGGLE_COPY", key: "alt+3", description: "Toggle copy menu" },
+      { id: "TOGGLE_COPY", key: "alt+3", description: "Toggle export menu" },
       { id: "COPY_HTML", key: "alt+h", description: "Copy HTML" },
       { id: "COPY_MJML", key: "alt+m", description: "Copy MJML" },
       { id: "COPY_LOCAL", key: "alt+l", description: "Copy local liquid" },

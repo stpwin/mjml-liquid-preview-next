@@ -2,6 +2,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 
 import { FlipText } from "@/components/ui/flip-text";
 import HoverLink from "@/components/shared/buttons/hover-link";
+import { Hyperlink } from "@/components/shared/common/typography";
 
 export default function HomePage() {
   const renderHero = () => {
@@ -93,7 +94,7 @@ export default function HomePage() {
           I&apos;ve been enjoying working on this project and have been slowly adding features to it. Here are some of the features that are in the pipeline!
         </p>
         <ul className="list-disc list-inside space-y-2">
-          <li>Copying previews directly as images</li>
+          <li>✅ <Hyperlink href="/changelog/2025-07-02">Copying previews directly as images</Hyperlink></li>
           <li>Accounts for data persistence</li>
           <li>Facilities to share previews and liquid variables through links</li>
         </ul>
