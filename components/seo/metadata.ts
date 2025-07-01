@@ -2,11 +2,18 @@ import type { Metadata } from "next"
 
 export const siteConfig = {
   name: "MJML Editor",
-  title: "MJML Editor • Online MJML Email Template Builder with Liquid Support",
+  title: "MJMLiquid • Online MJML Email Template Builder with Liquid Support",
   description: "Free online MJML editor and email template builder. Create, edit, and preview responsive email templates with MJML and Liquid support. Real-time preview, with local and shared variables for flexible Liquid templating.",
   keywords: "mjml, mjml editor, mjml online, email template builder, mjml template, email editor, liquid template, mjml playground, responsive email, email development, mjml live editor, free mjml editor",
   authors: [{ name: "Kok Wee", url: "https://kokwee.com" }],
   url: "https://www.mjmliquid.com",
+}
+
+export const generateCustomMetadata = (title: string): Metadata => {
+  return {
+    ...metadata,
+    title: `MJMLiquid • ${title}`,
+  }
 }
 
 export const metadata: Metadata = {

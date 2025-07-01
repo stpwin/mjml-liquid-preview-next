@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   
   return {
-    title: `${entry.title} | Changelog`,
+    title: `MJMLiquid • ${entry.title}`,
     description: entry.excerpt,
   };
 }

@@ -1,8 +1,9 @@
 import "../globals.css";
 import { LandingHeader } from "@/components/layout/headers/landing-header";
 import { BaseLayout } from "@/components/layout/base-layout";
+import { generateCustomMetadata } from "@/components/seo/metadata"
 
-export { metadata } from "@/components/seo/metadata"
+export const metadata = generateCustomMetadata("About")
 
 export default function RootLayout({
   children,
