@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export function useLocalStorage<T>(
   key: string,
   initialValue: T
-): [T, (value: T) => void] {
+): [T, (value: T) => void, () => void] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(initialValue);
@@ -36,5 +36,17 @@ export function useLocalStorage<T>(
     }
   };
 
-  return [storedValue, setValue];
-} 
+  const reloadValue = () => {
+    console.log('reloading local storage', key)
+    try {
+      const item = localStorage.getItem(key);
+      if (item !== null) {
+        setStoredValue(JSON.parse(item));
+      }
+    } catch (error) {
+      console.warn(`Error reading localStorage key "${key}":`, error);
+    }
+  }
+
+  return [storedValue, setValue, reloadValue];
+}

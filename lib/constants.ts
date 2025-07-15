@@ -5,8 +5,7 @@ export const STORAGE_KEYS: Record<string, string> = {
   LOCAL_LIQUID: "local_liquid",
   SHARED_LIQUID: "shared_liquid",
   LIQUID_EXPANDED: "liquid_expanded",
-  OPEN_FILE: "open_file",
-  OPEN_FILE_EXPANDED: "open_file_expanded",
+  LOAD_TEMPLATE: "load_template"
 } as const;
 
 export const UI_STATE: Record<string, string> = {

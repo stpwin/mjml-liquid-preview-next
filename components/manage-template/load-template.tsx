@@ -27,7 +27,7 @@ interface LoadTemplateProps {
 export function LoadTemplate({ isOpen, onOpenChange }: LoadTemplateProps) {
   const [value, setValue] = useState('');
   const { toast } = useToast();
-  const storageKey = STORAGE_KEYS.OPEN_FILE;
+  const storageKey = STORAGE_KEYS.LOAD_TEMPLATE;
   const defaultTemplate = {};
   const [storedTemplate, setStoredTemplate] = useLocalStorage<
     Record<string, unknown>

@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "mjml-editor",
+  "compatibility_date": "2025-07-03",
+  "compatibility_flags": [
+    "nodejs_compat_v2",
+    "global_fetch_strictly_public",
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "mjml-editor",
+    },
+  ],
+  "routes": [
+    {
+      "pattern": "mjml-editor.codemonday.io",
+      "custom_domain": true
+    }
+  ]
+}

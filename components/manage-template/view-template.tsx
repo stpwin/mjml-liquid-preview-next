@@ -20,12 +20,16 @@ interface ViewTemplateProps {
 
 export function ViewTemplate({ isOpen, onOpenChange }: ViewTemplateProps) {
   const [value, setValue] = useState('');
-  const storageKey = STORAGE_KEYS.OPEN_FILE;
+  const storageKey = STORAGE_KEYS.LOAD_TEMPLATE;
   const defaultTemplate = {};
-  const [storedTemplate] = useLocalStorage<
+  const [storedTemplate, , reloadValue] = useLocalStorage<
     Record<string, unknown>
   >(storageKey, defaultTemplate);
   const { content } = useMJMLProcessor();
+
+  useEffect(() => {
+    reloadValue()
+  }, [value, content])
 
   useEffect(() => {
     const templateBase = {
