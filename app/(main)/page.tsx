@@ -23,29 +23,9 @@ export default function HomePage() {
 
   const renderEditorButton = () => {
     return (
-      <HoverLink 
+      <HoverLink
         title="Go to editor"
         href="/editor"
-        fontSize="text-xl"
-      />
-    )
-  }
-
-  const renderAboutButton = () => {
-    return (
-      <HoverLink
-        title="Learn more"
-        href="/about"
-        fontSize="text-xl"
-      />
-    )
-  }
-
-  const renderChangelogButton = () => {
-    return (
-      <HoverLink
-        title="View changelog"
-        href="/changelog"
         fontSize="text-xl"
       />
     )
@@ -57,8 +37,6 @@ export default function HomePage() {
         {renderHero()}
         <div className="flex flex-col items-end space-y-4">
           {renderEditorButton()}
-          {renderChangelogButton()}
-          {renderAboutButton()}
         </div>
       </div>
     </div>

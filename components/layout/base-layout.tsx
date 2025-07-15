@@ -3,17 +3,16 @@ import { Analytics } from "@vercel/analytics/react";
 import { Space_Grotesk, Newsreader, JetBrains_Mono, Inter } from "next/font/google";
 
 import { Providers } from "@/app/providers"
-import { Footer } from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { HelpDialog } from "@/components/layout/help";
 import { JsonLd } from "@/components/seo/json-ld";
 
-const spaceGrotesk = Space_Grotesk({ 
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
 });
 
-const newsreader = Newsreader({ 
+const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
 });
@@ -49,9 +48,8 @@ export function BaseLayout({ children, Header, overflowHidden = true }: BaseLayo
           </main>
           <Toaster />
           <HelpDialog />
-          <Footer />
         </Providers>
       </body>
     </html>
   );
-} 
+}

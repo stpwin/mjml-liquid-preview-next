@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { Liquid } from "liquidjs";
 
 import { useLocalStorage } from "@/hooks/use-local-storage";
@@ -39,7 +39,7 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
     setInternalContent(ephemeralContent);
   }
 
-  const setContent: MJMLContextType["setContent"] = (newContent, forceSave = false) => {
+  const setContent: MJMLContextType["setContent"] = (newContent) => {
     setEphemeralContent(newContent);
     if (autoSave) {
       setInternalContent(newContent);
@@ -50,25 +50,25 @@ export function MJMLProvider({ children }: { children: React.ReactNode }) {
     const processTemplate = async () => {
       setIsProcessing(true);
       setError(null);
-      
+
       try {
         const mjml2html = (await import("mjml-browser")).default;
         const engine = new Liquid();
-        
+
         // Get stored liquid templates with defaults
         const localLiquid = localStorage.getItem(STORAGE_KEYS.LOCAL_LIQUID) || JSON.stringify(DEFAULT_LOCAL_LIQUID);
         const sharedLiquid = localStorage.getItem(STORAGE_KEYS.SHARED_LIQUID) || JSON.stringify(DEFAULT_SHARED_LIQUID);
-        
+
         // Parse liquid templates
         const localVars = JSON.parse(localLiquid);
         const sharedVars = JSON.parse(sharedLiquid);
-        
+
         // Process liquid template
         const processedContent = await engine.parseAndRender(ephemeralContent, {
           ...localVars,
           ...sharedVars,
         });
-        
+
         // Process MJML
         const { html: processedHtml } = mjml2html(processedContent, {minify: true});
         setHtml(processedHtml);

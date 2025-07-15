@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { RefreshCcw, Save, Sparkles, Maximize2, Minimize2 } from "lucide-react"
+import { RefreshCcw, Save, Maximize2, Minimize2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 import {
@@ -19,7 +19,7 @@ import { useKeyboard } from "@/hooks/use-keyboard"
 import { useToast } from "@/hooks/use-toast"
 import { useHotkeysHandler } from "@/hooks/use-hotkeys-handler"
 import { HotkeyIconButton } from "../shared/hotkeys/hotkey-icon-button"
-import { STORAGE_KEYS, HOTKEYS, DEFAULT_LOCAL_LIQUID, DEFAULT_SHARED_LIQUID, ASCENDA_LIQUID_TEMPLATE } from "@/lib/constants"
+import { STORAGE_KEYS, HOTKEYS, DEFAULT_LOCAL_LIQUID, DEFAULT_SHARED_LIQUID } from "@/lib/constants"
 
 interface LiquidInjectorProps {
   type: "local" | "shared"
@@ -68,13 +68,6 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
     })
   }
 
-  const handleGenerateAscenda = () => {
-    setValue(JSON.stringify(ASCENDA_LIQUID_TEMPLATE, null, 2))
-    toast({
-      description: "Generated Ascenda shared Liquid template - click Save to confirm your changes",
-    })
-  }
-
   const toggleExpand = useCallback(() => {
     setIsExpanded(!isExpanded)
   }, [setIsExpanded, isExpanded])
@@ -96,14 +89,6 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
   })
 
   useHotkeysHandler({
-    hotkey: HOTKEYS.LIQUID_GENERATE.key,
-    onTrigger: () => {
-      if (isOpen && type === "shared") { handleGenerateAscenda() }
-    },
-    dependencies: [isOpen, type]
-  })
-
-  useHotkeysHandler({
     hotkey: HOTKEYS.LIQUID_EXPAND.key,
     onTrigger: () => {
       if (isOpen) { toggleExpand() }
@@ -111,29 +96,9 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
     dependencies: [isOpen, toggleExpand]
   })
 
-  const renderAscendaLiquidGenerateButton = () => {
-    if (type === "shared") {
-      return (
-        <Button
-          variant="outline"
-          className="w-full relative"
-          onClick={handleGenerateAscenda}
-        >
-          <Sparkles className="mr-2 h-4 w-4" />
-          <span className="font-sans">{HOTKEYS.LIQUID_GENERATE.description}</span>
-          {isAltPressed && (
-            <span className="absolute right-2 text-[10px] font-mono text-muted-foreground bg-muted px-1 rounded">
-              {HOTKEYS.LIQUID_GENERATE.hint}
-            </span>
-          )}
-        </Button>
-      )
-    }
-  }
-
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent 
+      <SheetContent
         side="right"
         className={cn(
           "transition-all duration-300 sm:max-w-none",
@@ -144,7 +109,6 @@ export function LiquidInjector({ type, isOpen, onOpenChange }: LiquidInjectorPro
           <SheetTitle>{type === "local" ? "Local Liquid" : "Shared Liquid"}</SheetTitle>
         </SheetHeader>
         <div className="grid gap-4 py-4">
-          {renderAscendaLiquidGenerateButton()}
           <div className="border rounded-md overflow-hidden">
             <JSONEditor
               value={value}
